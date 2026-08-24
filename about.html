@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Our Story — Hotel Medallion. A boutique residence in Lekki Phase 1, Lagos, built on the observation that Lagos has hotels, but too few residences.">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>Our Story — Hotel Medallion</title>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='62' fill='%23c9a227' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Hotel Medallion">
+  <meta property="og:title" content="Our Story — Hotel Medallion">
+  <meta property="og:description" content="A boutique residence in Lekki Phase 1, Lagos — our mission, values, and the observation Hotel Medallion was built to answer.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80">
+  <meta property="og:url" content="https://medallionhospitalityservices.com/about.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Our Story — Hotel Medallion">
+  <meta name="twitter:description" content="A boutique residence in Lekki Phase 1, Lagos.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "Our Story — Hotel Medallion",
+    "description": "A contemporary boutique hotel — 25 luxurious rooms, minutes from Ikoyi and Victoria Island in Lekki Phase 1, Lagos.",
+    "isPartOf": {
+      "@type": "Hotel",
+      "name": "Hotel Medallion",
+      "url": "https://medallionhospitalityservices.com/"
+    }
+  }
+  </script>
+
+  <style>
+    /* ============================================================
+       ABOUT — shares index.html's design system verbatim
+       (palette, type, loader, cursor, nav, footer, motion language).
+       New CSS below is limited to sections this page needed that the
+       homepage has no equivalent for: Mission/Vision, Personality,
+       and the G.O.L.D. core-values list.
+       ============================================================ */
+    :root {
+      --midnight: #0a0a0f;
+      --midnight-light: #12121a;
+      --midnight-soft: #191922;
+      --warm-white: #faf8f3;
+      --charcoal: #292929;
+      --ivory: #faf8f3;
+      --ivory-dim: #e6e1d4;
+      --champagne: #c9a227;
+      --champagne-dim: #8d7220;
+      --sky: #6ec6e8;
+      --sky-dim: #4d8ba2;
+      --lavender: #b695d6;
+      --lavender-dim: #7f6896;
+      --font-script: 'Parisienne', 'Brush Script MT', cursive;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: auto; font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--midnight);
+      color: var(--ivory);
+      overflow-x: hidden;
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    @media (pointer: coarse) { body { cursor: auto; } .cursor { display: none; } }
+    ::selection { background: var(--champagne); color: var(--midnight); }
+    img { display: block; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ---------------- LOADER ---------------- */
+    .loader {
+      position: fixed; inset: 0; background: var(--midnight); z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 1.1s var(--ease-cinematic), visibility 1.1s;
+    }
+    .loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-word-wrap { opacity: 0; transform: translateY(18px); }
+    .loader-word {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 4.5vw, 3.4rem);
+      font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase;
+      display: inline-block;
+      background-image: linear-gradient(120deg,
+        var(--ivory) 0%, var(--ivory) 35%,
+        var(--champagne) 43%, var(--sky) 50%, var(--lavender) 57%,
+        var(--ivory) 65%, var(--ivory) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      animation: loaderShine 2s linear infinite;
+    }
+    @keyframes loaderShine {
+      0% { background-position: 150% center; }
+      100% { background-position: -50% center; }
+    }
+    .loader-line { width: 0; height: 1px; background: var(--champagne); margin-top: 1.5rem; }
+
+    /* ---------------- CURSOR ---------------- */
+    .cursor {
+      position: fixed; width: 8px; height: 8px; background: var(--champagne);
+      border-radius: 50%; pointer-events: none; z-index: 10000;
+      mix-blend-mode: difference; transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s;
+    }
+    .cursor.hover-image {
+      width: 84px; height: 84px; background: transparent;
+      border: 1px solid var(--champagne); mix-blend-mode: normal;
+    }
+    .cursor.hover-image::after {
+      content: 'EXPLORE'; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); font-size: 0.6rem;
+      letter-spacing: 0.2em; color: var(--champagne);
+    }
+    .cursor.hover-reserve {
+      width: 104px; height: 104px; background: var(--champagne); mix-blend-mode: normal;
+    }
+    .cursor.hover-reserve::after {
+      content: 'RESERVE'; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); font-size: 0.65rem;
+      letter-spacing: 0.15em; color: var(--midnight); font-weight: 600;
+    }
+
+    /* ---------------- GRAIN ---------------- */
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; z-index: 9998; opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 256px 256px;
+    }
+
+    /* ---------------- NAV ---------------- */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center;
+      transition: background 0.6s, padding 0.6s var(--ease-cinematic);
+    }
+    .nav.scrolled {
+      background: rgba(10, 10, 15, 0.82); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
+    }
+    .nav-logo {
+      font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--ivory); text-decoration: none;
+      transition: color 0.4s;
+    }
+    .nav-logo:hover { color: var(--champagne); }
+    .nav-links { display: flex; gap: 2.2rem; align-items: center; list-style: none; }
+    .nav-links a {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ivory-dim); text-decoration: none; position: relative; padding: 0.5rem 0;
+      transition: color 0.4s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
+      background: var(--champagne); transition: width 0.6s var(--ease-cinematic);
+    }
+    .nav-links a:hover { color: var(--ivory); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.current { color: var(--champagne); }
+    .nav-reserve {
+      color: var(--midnight) !important; background: var(--champagne);
+      padding: 0.6em 1.15em !important; border-radius: 999px;
+      transition: background 0.4s, transform 0.3s;
+    }
+    .nav-reserve::after { content: none !important; }
+    .nav-reserve:hover { background: var(--ivory); transform: translateY(-1px); }
+    .nav-mobile-toggle { display: none; background: none; border: none; color: var(--ivory); font-size: 1.2rem; cursor: none; }
+    .nav-mobile-menu {
+      display: none; position: fixed; inset: 0; background: var(--midnight); z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a {
+      font-family: var(--font-display); font-size: 1.5rem; color: var(--ivory);
+      text-decoration: none; letter-spacing: 0.1em;
+    }
+
+    /* ---------------- BRAND RULE ---------------- */
+    .brand-rule {
+      position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 101;
+      background: linear-gradient(90deg, var(--champagne) 0%, var(--sky) 50%, var(--lavender) 100%);
+    }
+
+    /* ---------------- THREAD ---------------- */
+    .thread-boundary { position: relative; width: 100%; height: 96px; overflow: hidden; }
+    .thread-boundary svg { width: 100%; height: 100%; }
+    .thread-stroke { stroke-dasharray: 2000; stroke-dashoffset: 2000; }
+    .thread-stroke.drawn { stroke-dashoffset: 0; transition: stroke-dashoffset 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+
+    /* ---------------- HERO (single image — no slideshow needed on this page) ---------------- */
+    .hero { position: relative; height: 88vh; width: 100%; overflow: hidden; background: var(--midnight); }
+    .hero-shots { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .hero-shot { position: absolute; inset: 0; opacity: 0; transition: opacity 2.4s var(--ease-cinematic); }
+    .hero-shot:nth-child(1) { background: radial-gradient(circle at 72% 24%, rgba(201,162,39,0.16), transparent 52%), linear-gradient(135deg, #0a0a0f 0%, #14212e 55%, #0a0a0f 100%); }
+    .hero-shot.active { opacity: 1; }
+    .hero-shot img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5) saturate(0.95); }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to bottom, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.05) 42%, rgba(10,10,15,0.68) 100%);
+    }
+    .hero-content { position: absolute; bottom: 14%; left: 5%; z-index: 3; max-width: 720px; }
+    .hero-label {
+      font-size: 0.65rem; letter-spacing: 0.34em; text-transform: uppercase;
+      color: var(--champagne); margin-bottom: 1.5rem;
+    }
+    .hero-headline {
+      font-family: var(--font-display); font-size: clamp(2.6rem, 7.5vw, 6rem);
+      font-weight: 400; line-height: 1.04; color: var(--ivory); margin-bottom: 1rem;
+    }
+    .hero-headline .hero-line { display: block; }
+    .hero-sub { font-family: var(--font-script); font-size: clamp(1.3rem, 2.4vw, 1.9rem); color: var(--champagne); opacity: 0.9; }
+
+    /* ---------------- LABELS ---------------- */
+    .label {
+      font-size: 0.65rem; font-weight: 400; letter-spacing: 0.32em;
+      text-transform: uppercase; display: block; margin-bottom: 1.6rem;
+    }
+    .label-champagne { color: var(--champagne); }
+    .label-sky { color: var(--sky-dim); }
+    .label-muted { color: var(--champagne-dim); }
+
+    /* ---------------- ABOUT US (reuses .arrival family from homepage) ---------------- */
+    .arrival { background: var(--ivory); color: var(--midnight); padding: 9rem 5rem; position: relative; overflow: hidden; }
+    .arrival-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; max-width: 1400px; margin: 0 auto; align-items: center; }
+    .arrival-headline {
+      font-family: var(--font-display); font-size: clamp(2.2rem, 4.5vw, 4rem);
+      font-weight: 400; line-height: 1.12; color: var(--midnight); margin-bottom: 2.5rem;
+    }
+    .arrival-headline em { font-style: italic; color: var(--champagne-dim); }
+    .arrival-rule { width: 56px; height: 1px; background: var(--champagne-dim); margin: 2.5rem 0; }
+    .arrival-body { font-size: 0.98rem; line-height: 1.85; color: rgba(10,10,15,0.72); font-weight: 300; max-width: 520px; }
+
+    /* ---------------- OUR STORY (reuses .story sticky-left pattern, single image) ---------------- */
+    .story { background: var(--midnight-light); padding: 9rem 5rem; position: relative; }
+    .story-grid { display: grid; grid-template-columns: 42% 58%; gap: 5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
+    .story-left { position: sticky; top: 160px; align-self: start; }
+    .story-left-inner { display: flex; gap: 24px; }
+    .story-rule { width: 1px; height: 64px; background: var(--champagne); flex-shrink: 0; margin-top: 4px; }
+    .story-headline {
+      font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3.2rem);
+      font-weight: 400; color: var(--ivory); line-height: 1.2; margin-bottom: 1.8rem;
+    }
+    .story-body { font-size: 0.92rem; font-weight: 300; line-height: 1.8; color: var(--ivory-dim); margin-bottom: 1.4rem; max-width: 400px; }
+    .story-right { display: flex; align-items: center; }
+    .story-image { width: 100%; overflow: hidden; position: relative; }
+    .story-image img { width: 100%; height: 64vh; object-fit: cover; }
+    .story-img-1 { clip-path: inset(0 100% 0 0); }
+    .story-caption {
+      position: absolute; bottom: 1.2rem; left: 1.4rem;
+      font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(245,240,232,0.75);
+    }
+
+    /* ---------------- MISSION / VISION (new — no direct homepage equivalent) ---------------- */
+    .pillars { background: var(--midnight); padding: 9rem 5rem; position: relative; }
+    .pillars-grid { display: grid; grid-template-columns: 1fr 1px 1fr; gap: 4.5rem; max-width: 1200px; margin: 0 auto; }
+    .pillars-divider { background: rgba(245,240,232,0.1); }
+    .pillar-eyebrow { font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--champagne); margin-bottom: 1.2rem; }
+    .pillar-question { font-size: 0.78rem; font-weight: 300; color: rgba(245,240,232,0.45); font-style: italic; margin-bottom: 1.4rem; }
+    .pillar-text {
+      font-family: var(--font-display); font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 400;
+      color: var(--ivory); line-height: 1.4;
+    }
+
+    /* ---------------- BRAND PERSONALITY (reuses .location-highlights rhythm, 4-up) ---------------- */
+    .personality { background: var(--ivory); color: var(--midnight); padding: 8rem 5rem 9rem; position: relative; }
+    .personality-header { text-align: center; max-width: 640px; margin: 0 auto 4.5rem; }
+    .personality-headline { font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 400; color: var(--midnight); }
+    .personality-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5rem; max-width: 1100px; margin: 0 auto; text-align: center; }
+    .trait { position: relative; padding-left: 14px; transition: transform 0.3s; }
+    .trait::before {
+      content: ''; position: absolute; left: 0; top: 8px;
+      width: 5px; height: 5px; border-radius: 50%; background: transparent; transition: background 0.3s;
+    }
+    .trait:hover::before { background: var(--sky-dim); }
+    .trait:hover { transform: translateX(4px); }
+    .trait-name { font-family: var(--font-display); font-size: 1.35rem; font-weight: 400; color: var(--midnight); margin-bottom: 8px; }
+    .trait-def { font-size: 0.8rem; font-weight: 300; color: rgba(10,10,15,0.58); line-height: 1.5; }
+
+    /* ---------------- CORE VALUES — G.O.L.D. (new — bespoke acronym treatment) ---------------- */
+    .gold { background: var(--midnight-light); padding: 9rem 5rem; position: relative; overflow: hidden; }
+    .gold-header { max-width: 640px; margin: 0 auto 4.5rem; text-align: center; }
+    .gold-headline { font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 400; color: var(--ivory); }
+    .gold-sub { font-size: 0.85rem; font-weight: 300; color: var(--ivory-dim); margin-top: 1rem; line-height: 1.7; }
+    .gold-list { max-width: 880px; margin: 0 auto; }
+    .gold-row {
+      display: grid; grid-template-columns: 100px 1fr; gap: 2.5rem; align-items: center;
+      padding: 2.2rem 0; border-top: 1px solid rgba(245,240,232,0.1);
+    }
+    .gold-row:last-child { border-bottom: 1px solid rgba(245,240,232,0.1); }
+    .gold-letter {
+      font-family: var(--font-display); font-size: 4.2rem; font-weight: 400;
+      color: var(--champagne); line-height: 1; text-align: center;
+    }
+    .gold-name { font-family: var(--font-display); font-size: 1.35rem; font-weight: 400; color: var(--ivory); margin-bottom: 0.4rem; }
+    .gold-def { font-size: 0.86rem; font-weight: 300; color: var(--ivory-dim); line-height: 1.6; max-width: 560px; }
+
+    /* ---------------- PROMISE (reuses .moment full-bleed pull-quote) ---------------- */
+    .moment { position: relative; height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .moment-image { position: absolute; inset: 0; }
+    .moment-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.36); }
+    .moment-text {
+      position: relative; z-index: 2; font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.6vw, 2.6rem); font-style: italic; color: var(--ivory);
+      letter-spacing: 0.03em; text-align: center; padding: 0 2rem; max-width: 900px; line-height: 1.4;
+    }
+    .moment-attribution {
+      position: relative; z-index: 2; margin-top: 2rem; font-size: 0.68rem; letter-spacing: 0.24em;
+      text-transform: uppercase; color: var(--champagne);
+    }
+    .moment-rule { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); width: 40px; height: 1px; background: var(--champagne); z-index: 2; }
+
+    /* ---------------- IMAGE FALLBACKS ---------------- */
+    .story-image, .moment-image { background: linear-gradient(135deg, var(--midnight-soft) 0%, #1d1d28 100%); }
+    img.img-broken { display: none; }
+
+    /* ---------------- FOOTER ---------------- */
+    .footer { background: var(--midnight); padding: 8rem 5rem 3rem; position: relative; overflow: hidden; }
+    .footer-mark { text-align: center; font-family: var(--font-display); font-size: 8rem; font-weight: 300; color: var(--champagne); opacity: 0.9; line-height: 1; margin-bottom: 4rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto; border-top: 1px solid rgba(245,240,232,0.1); padding-top: 3.5rem; }
+    .footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: var(--ivory); margin-bottom: 1.2rem; letter-spacing: 0.12em; }
+    .footer-signature { font-family: var(--font-script); font-size: 1.8rem; color: var(--champagne); opacity: 0.85; margin: -0.4rem 0 1.6rem; line-height: 1; }
+    .footer-address { font-size: 0.8rem; line-height: 1.9; color: var(--ivory-dim); font-weight: 300; }
+    .footer-col-title { font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--champagne); margin-bottom: 1.4rem; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 0.8rem; }
+    .footer-links a { font-size: 0.8rem; color: var(--ivory-dim); text-decoration: none; transition: color 0.4s; font-weight: 300; }
+    .footer-links a:hover { color: var(--ivory); }
+    .footer-thread { margin-top: 5rem; }
+    .footer-thread svg { width: 100%; height: 40px; }
+    .footer-bottom { max-width: 1400px; margin: 2.5rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(245,240,232,0.06); display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom-text { font-size: 0.68rem; color: rgba(245,240,232,0.35); letter-spacing: 0.12em; }
+
+    /* ---------------- RESPONSIVE ---------------- */
+    @media (max-width: 1024px) {
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; cursor: pointer; }
+      .arrival { padding: 6rem 2rem; }
+      .arrival-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .story { padding: 6rem 2rem; }
+      .story-grid { grid-template-columns: 1fr; }
+      .story-left { position: relative; top: auto; }
+      .pillars { padding: 6rem 2rem; }
+      .pillars-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .pillars-divider { display: none; }
+      .personality { padding: 6rem 2rem; }
+      .personality-grid { grid-template-columns: repeat(2, 1fr); gap: 3rem; }
+      .gold { padding: 6rem 2rem; }
+      .gold-row { grid-template-columns: 64px 1fr; gap: 1.5rem; }
+      .gold-letter { font-size: 3rem; }
+      .footer { padding: 6rem 2rem 2.5rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .hero-content { left: 1.5rem; right: 1.5rem; }
+      .personality-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BRAND RULE -->
+  <div class="brand-rule"></div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-word-wrap" id="loaderWordWrap">
+      <div class="loader-word" id="loaderWord">Hotel Medallion</div>
+    </div>
+    <div class="loader-line" id="loaderLine"></div>
+  </div>
+
+  <!-- CURSOR + GRAIN -->
+  <div class="cursor" id="cursor"></div>
+  <div class="grain"></div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav-logo">Hotel Medallion</a>
+    <ul class="nav-links">
+      <li><a href="index.html#rooms">Rooms</a></li>
+      <li><a href="index.html#dining">Dining</a></li>
+      <li><a href="index.html#wellness">Wellness</a></li>
+      <li><a href="index.html#location">Location</a></li>
+      <li><a href="about.html" class="current">Our Story</a></li>
+      <li><a href="index.html#booking" class="nav-reserve">Reserve</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">☰</button>
+  </nav>
+  <div class="nav-mobile-menu" id="mobileMenu">
+    <a href="index.html#rooms">Rooms</a><a href="index.html#dining">Dining</a>
+    <a href="index.html#wellness">Wellness</a><a href="index.html#location">Location</a>
+    <a href="about.html">Our Story</a><a href="index.html#booking">Reserve</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-shots" id="heroShots">
+      <div class="hero-shot active"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&q=80" alt="Hotel Medallion architectural entrance" loading="eager"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-label" id="heroLabel">Our Story</p>
+      <h1 class="hero-headline">
+        <span class="hero-line">A Quiet</span>
+        <span class="hero-line">Kind of</span>
+        <span class="hero-line">Luxury.</span>
+      </h1>
+      <a href="#about-us" class="hero-sub" id="heroCta"><span id="heroCtaText">Why we built a residence, not a hotel</span></a>
+    </div>
+  </section>
+
+  <!-- THREAD -->
+  <div class="thread-boundary" style="background:var(--midnight-light);">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="threadGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#c9a227"/>
+          <stop offset="50%" stop-color="#6ec6e8"/>
+          <stop offset="100%" stop-color="#b695d6"/>
+        </linearGradient>
+      </defs>
+      <path class="thread-stroke" d="M0,50 C240,20 480,80 720,45 C960,10 1200,70 1440,50" fill="none" stroke="url(#threadGradient)" stroke-width="1.6" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+    </svg>
+  </div>
+
+  <!-- ABOUT US -->
+  <section class="arrival" id="about-us">
+    <div class="arrival-grid">
+      <div>
+        <span class="label label-muted">About Hotel Medallion</span>
+        <h2 class="arrival-headline">A residence, <em>not a room.</em></h2>
+        <div class="arrival-rule"></div>
+        <p class="arrival-body" data-reveal>
+          Hotel Medallion is a modern boutique hotel located in Lekki Phase 1, Lagos. It is
+          carefully crafted and tastefully furnished to provide guests with a clean, tranquil,
+          home-like environment rather than a temporary space. Medallion caters to travellers
+          seeking the comfort and familiarity of home combined with the service and standards
+          of a top-tier hotel — including returning Nigerians abroad, business visitors, and
+          guests who prefer to feel cared for rather than just checked in.
+        </p>
+        <p class="arrival-body" data-reveal style="margin-top:1.2rem;">
+          In addition to accommodation, Medallion operates a comprehensive residence offering
+          amenities such as the Medallion Bar, a 24-hour restaurant with a contemporary
+          European-inspired menu, round-the-clock laundry services, and on-demand car hire —
+          ensuring guests rarely need to leave the property to receive excellent service.
+        </p>
+      </div>
+      <div style="position:relative; overflow:hidden;">
+        <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200&q=80" alt="Hotel Medallion suite detail" loading="lazy" style="width:100%; height:68vh; object-fit:cover;">
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR STORY -->
+  <section class="story" id="story">
+    <div class="story-grid">
+      <div class="story-left">
+        <div class="story-left-inner">
+          <div class="story-rule"></div>
+          <div>
+            <span class="label label-champagne">Our Story</span>
+            <h2 class="story-headline" data-reveal>Lagos has hotels. Not enough residences.</h2>
+            <p class="story-body" data-reveal>
+              Hotel Medallion was built on a simple observation: Lagos has hotels, but too few
+              residences — places where a guest, especially one coming home from abroad or in
+              the city for serious business, can settle rather than merely stay.
+            </p>
+            <p class="story-body" data-reveal>
+              Hotel Medallion was established in Lekki Phase 1 to close that gap: a boutique
+              property with the intimacy and attentiveness of a real home, and the polish and
+              consistency guests expect from an international-standard hotel.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="story-right">
+        <div class="story-image story-img-1">
+          <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80" alt="A quiet corridor at Hotel Medallion" loading="lazy">
+          <span class="story-caption">A place to return to</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MISSION / VISION -->
+  <section class="pillars" id="pillars">
+    <div class="pillars-grid">
+      <div>
+        <span class="pillar-eyebrow" data-reveal>Mission</span>
+        <p class="pillar-question" data-reveal>What do we do, daily?</p>
+        <p class="pillar-text" data-reveal>To give every guest a true residence in Lagos — comfort, calm, and world-class service, delivered consistently, one stay at a time.</p>
+      </div>
+      <div class="pillars-divider"></div>
+      <div>
+        <span class="pillar-eyebrow" data-reveal>Vision</span>
+        <p class="pillar-question" data-reveal>Where are we going?</p>
+        <p class="pillar-text" data-reveal>To be Lagos's most trusted boutique residence — the first name business travellers, diaspora guests, and discerning visitors think of when they need more than a room.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND PERSONALITY -->
+  <section class="personality" id="personality">
+    <div class="personality-header">
+      <span class="label label-muted" style="text-align:center;">Brand Personality</span>
+      <h2 class="personality-headline" data-reveal>The composed, attentive host.</h2>
+    </div>
+    <div class="personality-grid">
+      <div class="trait" data-reveal>
+        <div class="trait-name">Gracious</div>
+        <div class="trait-def">Warm without being intrusive.</div>
+      </div>
+      <div class="trait" data-reveal>
+        <div class="trait-name">Meticulous</div>
+        <div class="trait-def">Nothing left unfinished or unclean.</div>
+      </div>
+      <div class="trait" data-reveal>
+        <div class="trait-name">Composed</div>
+        <div class="trait-def">Calm, unhurried, dependable.</div>
+      </div>
+      <div class="trait" data-reveal>
+        <div class="trait-name">Discreet</div>
+        <div class="trait-def">Professional, private, trustworthy with a guest's time and space.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CORE VALUES — G.O.L.D. -->
+  <section class="gold" id="gold">
+    <div class="gold-header">
+      <span class="label label-champagne" style="text-align:center;">Core Values</span>
+      <h2 class="gold-headline">G.O.L.D.</h2>
+      <p class="gold-sub">A medallion signifies a recognized standard. GOLD is both the acronym and the benchmark.</p>
+    </div>
+    <div class="gold-list">
+      <div class="gold-row" data-reveal>
+        <div class="gold-letter">G</div>
+        <div>
+          <div class="gold-name">Graciousness</div>
+          <div class="gold-def">Every guest is treated as a welcome presence, not a booking number.</div>
+        </div>
+      </div>
+      <div class="gold-row" data-reveal>
+        <div class="gold-letter">O</div>
+        <div>
+          <div class="gold-name">Ownership</div>
+          <div class="gold-def">Every staff member owns the guest's experience from arrival to departure, without passing problems along.</div>
+        </div>
+      </div>
+      <div class="gold-row" data-reveal>
+        <div class="gold-letter">L</div>
+        <div>
+          <div class="gold-name">Luxury, in the details</div>
+          <div class="gold-def">Luxury at Medallion isn't excess — it's the small things done consistently right: clean linen, prompt service, a quiet room.</div>
+        </div>
+      </div>
+      <div class="gold-row" data-reveal>
+        <div class="gold-letter">D</div>
+        <div>
+          <div class="gold-name">Distinction</div>
+          <div class="gold-def">Medallion is boutique by design — never generic, never interchangeable with a chain hotel.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMISE -->
+  <section class="moment" id="promise">
+    <div class="moment-image"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1920&q=80" alt="Hotel Medallion interior detail" loading="lazy"></div>
+    <div>
+      <p class="moment-text" data-reveal>"A clean, quiet residence and attentive service, every stay, without exception."</p>
+      <p class="moment-attribution" data-reveal>The Hotel Medallion Promise</p>
+    </div>
+    <div class="moment-rule"></div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="footer-mark">M</div>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Hotel Medallion</div>
+        <p class="footer-signature">A Quiet Kind of Luxury.</p>
+        <div class="footer-address">
+          Plot 61, Babatunde Anjous Avenue<br>
+          Off Admiralty Way, Lekki Phase 1<br>
+          Lagos, Nigeria<br><br>
+          reservation@medallionhospitalityservices.com<br>
+          09060006382 · 09085820000
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Hotel</div>
+        <ul class="footer-links">
+          <li><a href="index.html#rooms">Rooms</a></li>
+          <li><a href="index.html#dining">Dining</a></li>
+          <li><a href="index.html#experiences">Experiences</a></li>
+          <li><a href="index.html#gallery">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Information</div>
+        <ul class="footer-links">
+          <li><a href="about.html">Our Story</a></li>
+          <li><a href="index.html#location">Location</a></li>
+          <li><a href="index.html#booking">Reservations</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="return false;">Instagram</a></li>
+          <li><a href="#" onclick="return false;">Facebook</a></li>
+          <li><a href="#" onclick="return false;">X</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-thread">
+      <svg viewBox="0 0 1440 50" preserveAspectRatio="none">
+        <path d="M0,25 C240,10 480,40 720,25 C960,10 1200,40 1440,25" fill="none" stroke="url(#threadGradient)" stroke-width="1" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-text">© 2026 Hotel Medallion. All rights reserved.</div>
+      <div class="footer-bottom-text" style="text-align:center;">Warmly, from your home in Lagos.</div>
+      <div class="footer-bottom-text">Medallion is not a room. It is a quiet kind of luxury.</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const coarse = window.matchMedia('(pointer: coarse)').matches;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.set(['#heroLabel', '.hero-line', '#heroCta'], { opacity: 0, y: 24 });
+
+      /* ---------------- LENIS SMOOTH SCROLL ---------------- */
+      let lenis = null;
+      if (!reduced && typeof Lenis !== 'undefined') {
+        lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          smoothTouch: false,
+          touchMultiplier: 1.6
+        });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      function scrollToTarget(target) {
+        if (lenis) lenis.scrollTo(target, { offset: 0, duration: 1.4 });
+        else target.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      /* ---------------- ANCHOR LINKS (same-page fragments only —
+         a[href^="#"] never matches cross-page hrefs like
+         "index.html#rooms", which fall through to normal
+         browser navigation untouched) ---------------- */
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener('click', (e) => {
+          const target = document.querySelector(a.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            closeMobileMenu();
+            scrollToTarget(target);
+          }
+        });
+      });
+
+      /* ---------------- MOBILE MENU ---------------- */
+      const mobileToggle = document.getElementById('mobileToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('open');
+        mobileToggle.textContent = '☰';
+      }
+      mobileToggle.addEventListener('click', () => {
+        const open = mobileMenu.classList.toggle('open');
+        mobileToggle.textContent = open ? '✕' : '☰';
+      });
+
+      /* ---------------- NAV SCROLL STATE ---------------- */
+      const nav = document.getElementById('nav');
+      ScrollTrigger.create({
+        trigger: '#hero',
+        start: 'bottom top',
+        onEnter: () => nav.classList.add('scrolled'),
+        onLeaveBack: () => nav.classList.remove('scrolled')
+      });
+
+      /* ---------------- BROKEN IMAGE FALLBACK ---------------- */
+      document.querySelectorAll('img').forEach((img) => {
+        const swapToFallback = () => {
+          if (img.dataset.fallback && img.src !== img.dataset.fallback) {
+            img.src = img.dataset.fallback;
+          } else {
+            img.classList.add('img-broken');
+          }
+        };
+        img.addEventListener('error', swapToFallback);
+        if (img.complete && img.naturalWidth === 0) {
+          swapToFallback();
+        } else if (!img.complete && img.dataset.fallback) {
+          setTimeout(() => { if (!img.complete) swapToFallback(); }, 20000);
+        }
+      });
+
+      /* ---------------- CUSTOM CURSOR ---------------- */
+      const cursor = document.getElementById('cursor');
+      if (!coarse && cursor) {
+        let mx = 0, my = 0, cx = 0, cy = 0;
+        document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+        (function animateCursor() {
+          cx += (mx - cx) * 0.16;
+          cy += (my - cy) * 0.16;
+          cursor.style.left = cx + 'px';
+          cursor.style.top = cy + 'px';
+          requestAnimationFrame(animateCursor);
+        })();
+
+        document.querySelectorAll('img, .story-image').forEach((el) => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('hover-image'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('hover-image'));
+        });
+        document.querySelectorAll('.nav-reserve, .hero-cta').forEach((el) => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('hover-reserve'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('hover-reserve'));
+        });
+      }
+
+      /* ---------------- LOADER + HERO REVEAL ---------------- */
+      const loader = document.getElementById('loader');
+      const loaderWordWrap = document.getElementById('loaderWordWrap');
+      const loaderLine = document.getElementById('loaderLine');
+
+      function finishLoader() {
+        loader.classList.add('done');
+        heroReveal();
+      }
+
+      function heroReveal() {
+        if (reduced) {
+          gsap.set(['#heroLabel', '.hero-line', '#heroCta'], { opacity: 1, y: 0 });
+          return;
+        }
+        const tl = gsap.timeline();
+        tl.to('#heroLabel', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })
+          .to('.hero-line', { opacity: 1, y: 0, duration: 1.1, stagger: 0.16, ease: 'power3.out' }, '-=0.4')
+          .to('#heroCta', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.5');
+      }
+
+      if (reduced) {
+        loader.style.display = 'none';
+        heroReveal();
+      } else {
+        const loadTl = gsap.timeline();
+        loadTl
+          .to(loaderLine, { width: 220, duration: 0.9, ease: 'power2.inOut' })
+          .to(loaderWordWrap, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+          .to(loaderLine, { opacity: 0, duration: 0.35 }, '+=0.9')
+          .to(loaderWordWrap, { opacity: 0, y: -18, duration: 0.55, ease: 'power3.in' }, '-=0.1')
+          .add(finishLoader, '-=0.15');
+      }
+
+      /* ---------------- STORY IMAGE REVEAL (single-image variant —
+         no watermark on this page, so that homepage snippet is
+         intentionally omitted rather than left dangling on a null
+         element) ---------------- */
+      if (!reduced) {
+        gsap.to('.story-img-1', {
+          clipPath: 'inset(0 0% 0 0)', duration: 1.3, ease: 'power3.out',
+          scrollTrigger: { trigger: '.story-img-1', start: 'top 82%' }
+        });
+      }
+
+      /* ---------------- GENERIC REVEALS ---------------- */
+      gsap.utils.toArray('[data-reveal]').forEach((el) => {
+        if (reduced) { el.style.opacity = 1; return; }
+        gsap.fromTo(el,
+          { opacity: 0, y: 44 },
+          {
+            opacity: 1, y: 0, duration: 1.2, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 86%', toggleActions: 'play none none none' }
+          }
+        );
+      });
+
+      /* ---------------- PARALLAX ON IMAGES ---------------- */
+      if (!reduced && !coarse) {
+        document.querySelectorAll('.story-image img, .moment-image img').forEach((img) => {
+          gsap.to(img, {
+            yPercent: -10,
+            ease: 'none',
+            scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
+          });
+        });
+      }
+
+      window.addEventListener('load', () => ScrollTrigger.refresh());
+    })();
+  </script>
+</body>
+</html>

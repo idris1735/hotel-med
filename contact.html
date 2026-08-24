@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contact Hotel Medallion — Plot 61, Babatunde Anjous Avenue, Lekki Phase 1, Lagos. Reservations, events, and general enquiries.">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>Contact — Hotel Medallion</title>
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='62' fill='%23c9a227' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Hotel Medallion">
+  <meta property="og:title" content="Contact — Hotel Medallion">
+  <meta property="og:description" content="Reservations, events, and general enquiries — Hotel Medallion, Lekki Phase 1, Lagos.">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80">
+  <meta property="og:url" content="https://medallionhospitalityservices.com/contact">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Contact — Hotel Medallion">
+  <meta name="twitter:description" content="Reservations, events, and general enquiries — Hotel Medallion, Lekki Phase 1, Lagos.">
+  <meta name="twitter:image" content="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    "name": "Hotel Medallion",
+    "description": "A contemporary boutique hotel — 25 luxurious rooms, minutes from Ikoyi and Victoria Island in Lekki Phase 1, Lagos.",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Plot 61, Babatunde Anjous Avenue, off Admiralty Way",
+      "addressLocality": "Lekki Phase 1, Lagos",
+      "addressCountry": "NG"
+    },
+    "telephone": "+2349060006382",
+    "email": "reservation@medallionhospitalityservices.com",
+    "url": "https://medallionhospitalityservices.com/",
+    "starRating": { "@type": "Rating", "ratingValue": "4" }
+  }
+  </script>
+
+  <style>
+    /* ============================================================
+       MEDALLION — Contact page.
+       Shared chrome/palette copied verbatim from index.html
+       so this page renders as the same site, not a lookalike. Only
+       new rules live under CONTACT PAGE at the bottom of this block.
+       ============================================================ */
+    :root {
+      --midnight: #0a0a0f;
+      --midnight-light: #12121a;
+      --midnight-soft: #191922;
+      --warm-white: #faf8f3;
+      --charcoal: #292929;
+      --ivory: #faf8f3;
+      --ivory-dim: #e6e1d4;
+      --champagne: #c9a227;
+      --champagne-dim: #8d7220;
+      --sky: #6ec6e8;
+      --sky-dim: #4d8ba2;
+      --lavender: #b695d6;
+      --lavender-dim: #7f6896;
+      --font-script: 'Parisienne', 'Brush Script MT', cursive;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: auto; font-size: 16px; }
+    body {
+      font-family: var(--font-body);
+      background: var(--midnight);
+      color: var(--ivory);
+      overflow-x: hidden;
+      cursor: none;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    @media (pointer: coarse) { body { cursor: auto; } .cursor { display: none; } }
+    ::selection { background: var(--champagne); color: var(--midnight); }
+    img { display: block; }
+    img.img-broken { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ---------------- LOADER ---------------- */
+    .loader {
+      position: fixed; inset: 0; background: var(--midnight); z-index: 9999;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 1.1s var(--ease-cinematic), visibility 1.1s;
+    }
+    .loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loader-word-wrap { opacity: 0; transform: translateY(18px); }
+    .loader-word {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 4.5vw, 3.4rem);
+      font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase;
+      display: inline-block;
+      background-image: linear-gradient(120deg,
+        var(--ivory) 0%, var(--ivory) 35%,
+        var(--champagne) 43%, var(--sky) 50%, var(--lavender) 57%,
+        var(--ivory) 65%, var(--ivory) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+      animation: loaderShine 2s linear infinite;
+    }
+    @keyframes loaderShine {
+      0% { background-position: 150% center; }
+      100% { background-position: -50% center; }
+    }
+    .loader-line { width: 0; height: 1px; background: var(--champagne); margin-top: 1.5rem; }
+
+    /* ---------------- CURSOR ---------------- */
+    .cursor {
+      position: fixed; width: 8px; height: 8px; background: var(--champagne);
+      border-radius: 50%; pointer-events: none; z-index: 10000;
+      mix-blend-mode: difference; transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s;
+    }
+    .cursor.hover-image {
+      width: 84px; height: 84px; background: transparent;
+      border: 1px solid var(--champagne); mix-blend-mode: normal;
+    }
+    .cursor.hover-image::after {
+      content: 'EXPLORE'; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); font-size: 0.6rem;
+      letter-spacing: 0.2em; color: var(--champagne);
+    }
+    .cursor.hover-reserve {
+      width: 104px; height: 104px; background: var(--champagne); mix-blend-mode: normal;
+    }
+    .cursor.hover-reserve::after {
+      content: 'SEND'; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); font-size: 0.65rem;
+      letter-spacing: 0.15em; color: var(--midnight); font-weight: 600;
+    }
+
+    /* ---------------- GRAIN ---------------- */
+    .grain {
+      position: fixed; inset: 0; pointer-events: none; z-index: 9998; opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 256px 256px;
+    }
+
+    /* ---------------- NAV ---------------- */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 2rem 3rem; display: flex; justify-content: space-between; align-items: center;
+      transition: background 0.6s, padding 0.6s var(--ease-cinematic);
+    }
+    .nav.scrolled {
+      background: rgba(10, 10, 15, 0.82); backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
+    }
+    .nav-logo {
+      font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--ivory); text-decoration: none;
+      transition: color 0.4s;
+    }
+    .nav-logo:hover { color: var(--champagne); }
+    .nav-links { display: flex; gap: 2.2rem; align-items: center; list-style: none; }
+    .nav-links a {
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ivory-dim); text-decoration: none; position: relative; padding: 0.5rem 0;
+      transition: color 0.4s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px;
+      background: var(--champagne); transition: width 0.6s var(--ease-cinematic);
+    }
+    .nav-links a:hover { color: var(--ivory); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-links a.nav-current { color: var(--champagne); }
+    .nav-links a.nav-current::after { width: 100%; }
+    .nav-reserve {
+      color: var(--midnight) !important; background: var(--champagne);
+      padding: 0.6em 1.15em !important; border-radius: 999px;
+      transition: background 0.4s, transform 0.3s;
+    }
+    .nav-reserve::after { content: none !important; }
+    .nav-reserve:hover { background: var(--ivory); transform: translateY(-1px); }
+    .nav-mobile-toggle { display: none; background: none; border: none; color: var(--ivory); font-size: 1.2rem; cursor: none; }
+    .nav-mobile-menu {
+      display: none; position: fixed; inset: 0; background: var(--midnight); z-index: 99;
+      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+    }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu a {
+      font-family: var(--font-display); font-size: 1.5rem; color: var(--ivory);
+      text-decoration: none; letter-spacing: 0.1em;
+    }
+
+    /* ---------------- BRAND RULE ---------------- */
+    .brand-rule {
+      position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 101;
+      background: linear-gradient(90deg, var(--champagne) 0%, var(--sky) 50%, var(--lavender) 100%);
+    }
+
+    /* ---------------- LABELS ---------------- */
+    .label {
+      font-size: 0.65rem; font-weight: 400; letter-spacing: 0.32em;
+      text-transform: uppercase; display: block; margin-bottom: 1.6rem;
+    }
+    .label-champagne { color: var(--champagne); }
+
+    /* ---------------- LOCATION / ENGRAVED MAP (verbatim from homepage) ---------------- */
+    .location { background: var(--ivory); color: var(--midnight); padding: 5rem 5rem 4rem; position: relative; }
+    .location-map { max-width: 920px; margin: 0 auto 4rem; position: relative; }
+    .map-frame {
+      position: relative; overflow: hidden;
+      aspect-ratio: 1472 / 1069;
+    }
+    .map-img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      -webkit-mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 68%, transparent 100%);
+      mask-image: radial-gradient(ellipse 78% 78% at 50% 50%, #000 68%, transparent 100%);
+    }
+    .map-pin-ring {
+      position: absolute; left: 45.6%; top: 11%; transform: translate(-50%, -50%);
+      width: 46px; height: 46px; border-radius: 50%; border: 1px solid rgba(201,162,39,0.75);
+      animation: pinPulse 2.4s ease-out infinite;
+    }
+    @keyframes pinPulse {
+      0% { transform: translate(-50%,-50%) scale(1); opacity: 0.8; }
+      100% { transform: translate(-50%,-50%) scale(2.1); opacity: 0; }
+    }
+    .location-address { text-align: center; max-width: 520px; margin: 0 auto; }
+    .address-rule { width: 40px; height: 1px; background: var(--champagne-dim); margin: 0 auto 1.4rem; }
+    .address-text { font-size: 0.92rem; font-weight: 300; color: rgba(10,10,15,0.8); line-height: 1.7; letter-spacing: 0.02em; }
+
+    /* ---------------- FOOTER (verbatim from homepage) ---------------- */
+    .footer { background: var(--midnight); padding: 8rem 5rem 3rem; position: relative; overflow: hidden; }
+    .footer-mark { text-align: center; font-family: var(--font-display); font-size: 8rem; font-weight: 300; color: var(--champagne); opacity: 0.9; line-height: 1; margin-bottom: 4rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto; border-top: 1px solid rgba(245,240,232,0.1); padding-top: 3.5rem; }
+    .footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: var(--ivory); margin-bottom: 1.2rem; letter-spacing: 0.12em; }
+    .footer-signature { font-family: var(--font-script); font-size: 1.8rem; color: var(--champagne); opacity: 0.85; margin: -0.4rem 0 1.6rem; line-height: 1; }
+    .footer-address { font-size: 0.8rem; line-height: 1.9; color: var(--ivory-dim); font-weight: 300; }
+    .footer-col-title { font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--champagne); margin-bottom: 1.4rem; }
+    .footer-links { list-style: none; }
+    .footer-links li { margin-bottom: 0.8rem; }
+    .footer-links a { font-size: 0.8rem; color: var(--ivory-dim); text-decoration: none; transition: color 0.4s; font-weight: 300; }
+    .footer-links a:hover { color: var(--ivory); }
+    .footer-thread { margin-top: 5rem; }
+    .footer-thread svg { width: 100%; height: 40px; }
+    .footer-bottom { max-width: 1400px; margin: 2.5rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(245,240,232,0.06); display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom-text { font-size: 0.68rem; color: rgba(245,240,232,0.35); letter-spacing: 0.12em; }
+
+    /* ---------------- CONTACT PAGE ---------------- */
+    .page-header {
+      min-height: 52vh; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 10rem 2rem 4rem;
+      position: relative; background: var(--midnight);
+    }
+    .page-header-label {
+      font-size: 0.65rem; letter-spacing: 0.34em; text-transform: uppercase;
+      color: var(--champagne); margin-bottom: 1.5rem; opacity: 0; transform: translateY(24px);
+    }
+    .page-header-headline {
+      font-family: var(--font-display); font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+      font-weight: 400; line-height: 1.15; color: var(--ivory); max-width: 780px;
+      opacity: 0; transform: translateY(24px);
+    }
+
+    .contact { background: var(--ivory); color: var(--midnight); padding: 7rem 5rem 8rem; }
+    .contact-grid { display: grid; grid-template-columns: 42% 58%; gap: 6rem; max-width: 1300px; margin: 0 auto; }
+    .contact-details-list { display: flex; flex-direction: column; gap: 2.2rem; margin-bottom: 3rem; }
+    .contact-detail-label {
+      font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--champagne-dim); margin-bottom: 0.5rem; display: block;
+    }
+    .contact-detail-value {
+      font-family: var(--font-display); font-size: 1.3rem; font-weight: 400;
+      color: var(--midnight); line-height: 1.5;
+    }
+    .contact-detail-value a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(10,10,15,0.18); transition: border-color 0.4s, color 0.4s; }
+    .contact-detail-value a:hover { color: var(--champagne-dim); border-color: var(--champagne-dim); }
+    .contact-note { font-size: 0.85rem; font-weight: 300; color: rgba(10,10,15,0.62); line-height: 1.8; max-width: 380px; padding-top: 1.6rem; border-top: 1px solid rgba(10,10,15,0.1); }
+
+    .contact-form { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    .contact-field { display: flex; flex-direction: column; }
+    .contact-field.full { grid-column: 1 / -1; }
+    .contact-field label {
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(10,10,15,0.5); margin-bottom: 0.8rem;
+    }
+    .contact-field input, .contact-field select, .contact-field textarea {
+      width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(10,10,15,0.22);
+      padding: 0.6rem 0; font-family: var(--font-display); font-size: 1.1rem; color: var(--midnight);
+      outline: none; transition: border-color 0.4s; cursor: none; border-radius: 0; resize: vertical;
+    }
+    .contact-field select option { color: var(--midnight); background: var(--ivory); }
+    .contact-field input:focus, .contact-field select:focus, .contact-field textarea:focus { border-bottom-color: var(--champagne-dim); }
+    .contact-field textarea { min-height: 110px; font-family: var(--font-body); font-size: 0.92rem; font-weight: 300; line-height: 1.6; }
+    .contact-submit {
+      display: inline-block; padding: 15px 42px; border: 1px solid var(--champagne-dim);
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--champagne-dim); background: transparent; position: relative; overflow: hidden;
+      transition: color 0.5s; width: fit-content; cursor: none; margin-top: 0.5rem;
+    }
+    .contact-submit::before { content: ''; position: absolute; inset: 0; width: 0; background: var(--champagne-dim); transition: width 0.5s var(--ease-cinematic); z-index: -1; }
+    .contact-submit:hover { color: var(--ivory); }
+    .contact-submit:hover::before { width: 100%; }
+
+    .toast {
+      position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+      background: var(--champagne); color: var(--midnight); font-size: 0.78rem; letter-spacing: 0.04em;
+      padding: 1rem 1.8rem; z-index: 9997; opacity: 0; pointer-events: none;
+      transition: opacity 0.5s, transform 0.5s var(--ease-cinematic);
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    @media (max-width: 1024px) {
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; cursor: pointer; }
+      .location { padding: 4rem 2rem 3rem; }
+      .contact { padding: 5rem 2rem 6rem; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3.5rem; }
+      .footer { padding: 6rem 2rem 2.5rem; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .contact-form { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BRAND RULE — persistent gold / sky / lilac signature strip -->
+  <div class="brand-rule"></div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-word-wrap" id="loaderWordWrap">
+      <div class="loader-word" id="loaderWord">Hotel Medallion</div>
+    </div>
+    <div class="loader-line" id="loaderLine"></div>
+  </div>
+
+  <!-- CURSOR + GRAIN -->
+  <div class="cursor" id="cursor"></div>
+  <div class="grain"></div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">Message received — our team will reply by email or phone shortly.</div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <a href="index.html#hero" class="nav-logo">Hotel Medallion</a>
+    <ul class="nav-links">
+      <li><a href="index.html#rooms">Rooms</a></li>
+      <li><a href="index.html#dining">Dining</a></li>
+      <li><a href="index.html#wellness">Wellness</a></li>
+      <li><a href="index.html#experiences">Experiences</a></li>
+      <li><a href="index.html#location">Location</a></li>
+      <li><a href="index.html#gallery">Gallery</a></li>
+      <li><a href="contact.html" class="nav-current" aria-current="page">Contact</a></li>
+      <li><a href="index.html#booking" class="nav-reserve">Reserve</a></li>
+    </ul>
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">☰</button>
+  </nav>
+  <div class="nav-mobile-menu" id="mobileMenu">
+    <a href="index.html#rooms">Rooms</a><a href="index.html#dining">Dining</a><a href="index.html#wellness">Wellness</a>
+    <a href="index.html#experiences">Experiences</a><a href="index.html#location">Location</a>
+    <a href="index.html#gallery">Gallery</a><a href="contact.html">Contact</a><a href="index.html#booking">Reserve</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <p class="page-header-label" id="pageHeaderLabel">Contact</p>
+    <h1 class="page-header-headline" id="pageHeaderHeadline">However you'd like to reach us, we're listening.</h1>
+  </section>
+
+  <!-- CONTACT DETAILS + FORM -->
+  <section class="contact" id="contact">
+    <div class="contact-grid">
+      <div>
+        <span class="label label-champagne">Get in Touch</span>
+        <div class="contact-details-list">
+          <div>
+            <span class="contact-detail-label">Visit</span>
+            <p class="contact-detail-value">Plot 61, Babatunde Anjous Avenue,<br>Off Admiralty Way, Lekki Phase 1,<br>Lagos, Nigeria.</p>
+          </div>
+          <div>
+            <span class="contact-detail-label">Call</span>
+            <p class="contact-detail-value"><a href="tel:+2349060006382">0906 000 6382</a> · <a href="tel:+2349085820000">0908 582 0000</a></p>
+          </div>
+          <div>
+            <span class="contact-detail-label">Write</span>
+            <p class="contact-detail-value"><a href="mailto:reservation@medallionhospitalityservices.com">reservation@medallionhospitalityservices.com</a></p>
+          </div>
+        </div>
+        <p class="contact-note">We read every message the same day it arrives. For same-day arrivals or urgent changes to an existing booking, a phone call will always reach us faster than email.</p>
+      </div>
+
+      <form class="contact-form" id="contactForm">
+        <div class="contact-field">
+          <label for="cf-name">Full Name</label>
+          <input type="text" id="cf-name" required>
+        </div>
+        <div class="contact-field">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" required>
+        </div>
+        <div class="contact-field">
+          <label for="cf-phone">Phone</label>
+          <input type="tel" id="cf-phone">
+        </div>
+        <div class="contact-field">
+          <label for="cf-subject">Reason for Enquiry</label>
+          <select id="cf-subject">
+            <option>General Enquiry</option>
+            <option>Reservation</option>
+            <option>Event Enquiry</option>
+            <option>Feedback</option>
+          </select>
+        </div>
+        <div class="contact-field full">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" required></textarea>
+        </div>
+        <div class="contact-field full">
+          <button type="submit" class="contact-submit">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- LOCATION / ENGRAVED MAP -->
+  <section class="location" id="location">
+    <div class="location-map">
+      <div class="map-frame">
+        <img class="map-img" src="assets/map-lekki.png" alt="Illustrated engraved map of Lekki Phase 1, Lagos, marking Hotel Medallion's location off Admiralty Way">
+        <div class="map-pin-ring" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div class="location-address">
+      <div class="address-rule"></div>
+      <p class="address-text">Plot 61, Babatunde Anjous Avenue,<br>Off Admiralty Way, Lekki Phase 1, Lagos, Nigeria.</p>
+      <div class="address-rule" style="margin-top:1.4rem;"></div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="footer">
+    <div class="footer-mark">M</div>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Hotel Medallion</div>
+        <p class="footer-signature">A Quiet Kind of Luxury.</p>
+        <div class="footer-address">
+          Plot 61, Babatunde Anjous Avenue<br>
+          Off Admiralty Way, Lekki Phase 1<br>
+          Lagos, Nigeria<br><br>
+          reservation@medallionhospitalityservices.com<br>
+          09060006382 · 09085820000
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Hotel</div>
+        <ul class="footer-links">
+          <li><a href="index.html#rooms">Rooms</a></li>
+          <li><a href="index.html#dining">Dining</a></li>
+          <li><a href="index.html#experiences">Experiences</a></li>
+          <li><a href="index.html#gallery">Gallery</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Information</div>
+        <ul class="footer-links">
+          <li><a href="index.html#story">Our Story</a></li>
+          <li><a href="index.html#location">Location</a></li>
+          <li><a href="index.html#booking">Reservations</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Connect</div>
+        <ul class="footer-links">
+          <li><a href="#" onclick="return false;">Instagram</a></li>
+          <li><a href="#" onclick="return false;">Facebook</a></li>
+          <li><a href="#" onclick="return false;">X</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-thread">
+      <svg viewBox="0 0 1440 50" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="threadGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#c9a227"/>
+            <stop offset="50%" stop-color="#6ec6e8"/>
+            <stop offset="100%" stop-color="#b695d6"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,25 C240,10 480,40 720,25 C960,10 1200,40 1440,25" fill="none" stroke="url(#threadGradient)" stroke-width="1" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-text">© 2026 Hotel Medallion. All rights reserved.</div>
+      <div class="footer-bottom-text" style="text-align:center;">Warmly, from your home in Lagos.</div>
+      <div class="footer-bottom-text">Medallion is not a room. It is a quiet kind of luxury.</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const coarse = window.matchMedia('(pointer: coarse)').matches;
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      gsap.set(['#pageHeaderLabel', '#pageHeaderHeadline'], { opacity: 0, y: 24 });
+
+      /* ---------------- LENIS SMOOTH SCROLL ---------------- */
+      let lenis = null;
+      if (!reduced && typeof Lenis !== 'undefined') {
+        lenis = new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          smoothWheel: true,
+          smoothTouch: false,
+          touchMultiplier: 1.6
+        });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+      }
+
+      function scrollToTarget(target) {
+        if (lenis) lenis.scrollTo(target, { offset: 0, duration: 1.4 });
+        else target.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      /* ---------------- ANCHOR LINKS (in-page only; cross-page links to
+         index.html#... are left alone to navigate normally) ---------------- */
+      document.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.addEventListener('click', (e) => {
+          const target = document.querySelector(a.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            closeMobileMenu();
+            scrollToTarget(target);
+          }
+        });
+      });
+
+      /* ---------------- MOBILE MENU ---------------- */
+      const mobileToggle = document.getElementById('mobileToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      function closeMobileMenu() {
+        mobileMenu.classList.remove('open');
+        mobileToggle.textContent = '☰';
+      }
+      mobileToggle.addEventListener('click', () => {
+        const open = mobileMenu.classList.toggle('open');
+        mobileToggle.textContent = open ? '✕' : '☰';
+      });
+
+      /* ---------------- NAV SCROLL STATE ---------------- */
+      const nav = document.getElementById('nav');
+      ScrollTrigger.create({
+        trigger: '.page-header',
+        start: 'bottom top',
+        onEnter: () => nav.classList.add('scrolled'),
+        onLeaveBack: () => nav.classList.remove('scrolled')
+      });
+
+      /* ---------------- BROKEN IMAGE FALLBACK ---------------- */
+      document.querySelectorAll('img').forEach((img) => {
+        const swapToFallback = () => {
+          if (img.dataset.fallback && img.src !== img.dataset.fallback) {
+            img.src = img.dataset.fallback;
+          } else {
+            img.classList.add('img-broken');
+          }
+        };
+        img.addEventListener('error', swapToFallback);
+        if (img.complete && img.naturalWidth === 0) {
+          swapToFallback();
+        } else if (!img.complete && img.dataset.fallback) {
+          setTimeout(() => { if (!img.complete) swapToFallback(); }, 20000);
+        }
+      });
+
+      /* ---------------- CUSTOM CURSOR ---------------- */
+      const cursor = document.getElementById('cursor');
+      if (!coarse && cursor) {
+        let mx = 0, my = 0, cx = 0, cy = 0;
+        document.addEventListener('mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+        (function animateCursor() {
+          cx += (mx - cx) * 0.16;
+          cy += (my - cy) * 0.16;
+          cursor.style.left = cx + 'px';
+          cursor.style.top = cy + 'px';
+          requestAnimationFrame(animateCursor);
+        })();
+
+        document.querySelectorAll('img').forEach((el) => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('hover-image'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('hover-image'));
+        });
+        document.querySelectorAll('.nav-reserve, .contact-submit').forEach((el) => {
+          el.addEventListener('mouseenter', () => cursor.classList.add('hover-reserve'));
+          el.addEventListener('mouseleave', () => cursor.classList.remove('hover-reserve'));
+        });
+      }
+
+      /* ---------------- LOADER + PAGE HEADER REVEAL ---------------- */
+      const loader = document.getElementById('loader');
+      const loaderWordWrap = document.getElementById('loaderWordWrap');
+      const loaderLine = document.getElementById('loaderLine');
+
+      function finishLoader() {
+        loader.classList.add('done');
+        pageHeaderReveal();
+      }
+
+      function pageHeaderReveal() {
+        if (reduced) {
+          gsap.set(['#pageHeaderLabel', '#pageHeaderHeadline'], { opacity: 1, y: 0 });
+          return;
+        }
+        const tl = gsap.timeline();
+        tl.to('#pageHeaderLabel', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })
+          .to('#pageHeaderHeadline', { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }, '-=0.4');
+      }
+
+      if (reduced) {
+        loader.style.display = 'none';
+        pageHeaderReveal();
+      } else {
+        const loadTl = gsap.timeline();
+        loadTl
+          .to(loaderLine, { width: 220, duration: 0.9, ease: 'power2.inOut' })
+          .to(loaderWordWrap, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+          .to(loaderLine, { opacity: 0, duration: 0.35 }, '+=0.9')
+          .to(loaderWordWrap, { opacity: 0, y: -18, duration: 0.55, ease: 'power3.in' }, '-=0.1')
+          .add(finishLoader, '-=0.15');
+      }
+
+      /* ---------------- LOCATION MAP PIN PULSE ---------------- */
+      const mapPinRing = document.querySelector('.map-pin-ring');
+      if (mapPinRing && !reduced) {
+        mapPinRing.style.animationPlayState = 'paused';
+        ScrollTrigger.create({
+          trigger: '.map-frame',
+          start: 'top 75%',
+          onEnter: () => { mapPinRing.style.animationPlayState = 'running'; },
+          once: true
+        });
+      }
+
+      /* ---------------- CONTACT FORM ---------------- */
+      const contactForm = document.getElementById('contactForm');
+      const toast = document.getElementById('toast');
+      contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 4000);
+        contactForm.reset();
+      });
+
+      /* ---------------- GENERIC REVEALS ---------------- */
+      gsap.utils.toArray('[data-reveal]').forEach((el) => {
+        if (reduced) { el.style.opacity = 1; return; }
+        gsap.fromTo(el,
+          { opacity: 0, y: 44 },
+          {
+            opacity: 1, y: 0, duration: 1.2, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 86%', toggleActions: 'play none none none' }
+          }
+        );
+      });
+
+      window.addEventListener('load', () => ScrollTrigger.refresh());
+    })();
+  </script>
+</body>
+</html>

@@ -7,7 +7,8 @@
   <meta name="theme-color" content="#0a0a0f">
   <title>Hotel Medallion — Lekki Phase 1, Lagos</title>
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='62' fill='%23c9a227' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hotel Medallion">
@@ -23,17 +24,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
+  <!-- Only the first hero shot is preloaded (and only its first-slide size is
+       forced) — preloading all six 1920px shots eagerly was the single heaviest
+       thing on the page for mobile connections. The rest load via srcset below. -->
   <link rel="preload" as="image" href="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80">
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1920&q=80">
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1920&q=80">
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80">
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&q=80">
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1920&q=80">
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script type="application/ld+json">
   {
@@ -188,10 +182,12 @@
       -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
     }
     .nav-logo {
+      display: inline-flex; align-items: center; gap: 0.65rem;
       font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
       text-transform: uppercase; color: var(--ivory); text-decoration: none;
       transition: color 0.4s;
     }
+    .nav-logo-icon { height: 30px; width: auto; display: block; }
     .nav-logo:hover { color: var(--champagne); }
     .nav-links { display: flex; gap: 1.7rem; align-items: center; list-style: none; }
     .nav-links a {
@@ -212,16 +208,47 @@
     }
     .nav-reserve::after { content: none !important; }
     .nav-reserve:hover { background: var(--ivory); transform: translateY(-1px); }
-    .nav-mobile-toggle { display: none; background: none; border: none; color: var(--ivory); font-size: 1.2rem; cursor: none; }
+    .nav-mobile-toggle {
+      display: none; background: none; border: none; cursor: none;
+      width: 44px; height: 44px; position: relative; z-index: 102;
+      flex-direction: column; align-items: center; justify-content: center; gap: 7px;
+    }
+    .burger-line {
+      display: block; width: 26px; height: 1.5px; background: var(--ivory);
+      transition: transform 0.5s var(--ease-cinematic), opacity 0.3s, background 0.4s;
+    }
+    .nav-mobile-toggle.open .burger-line:nth-child(1) { transform: translateY(4.25px) rotate(45deg); background: var(--champagne); }
+    .nav-mobile-toggle.open .burger-line:nth-child(2) { transform: translateY(-4.25px) rotate(-45deg); background: var(--champagne); }
+    /* Mobile menu: always in the layout, revealed with a fade + slight rise so
+       it feels like a curtain lifting rather than a block popping in. Links
+       stagger in via transition-delay set from JS-free nth-child rules. */
     .nav-mobile-menu {
-      display: none; position: fixed; inset: 0; background: var(--midnight); z-index: 99;
-      flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+      position: fixed; inset: 0; background: rgba(10, 10, 15, 0.97);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      z-index: 99; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 1.4rem;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity 0.55s var(--ease-cinematic), visibility 0.55s;
     }
-    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu.open { opacity: 1; visibility: visible; pointer-events: auto; }
     .nav-mobile-menu a {
-      font-family: var(--font-display); font-size: 1.5rem; color: var(--ivory);
-      text-decoration: none; letter-spacing: 0.1em;
+      font-family: var(--font-display); font-size: 1.7rem; color: var(--ivory);
+      text-decoration: none; letter-spacing: 0.1em; padding: 0.45rem 1rem;
+      opacity: 0; transform: translateY(22px);
+      transition: opacity 0.6s var(--ease-cinematic), transform 0.6s var(--ease-cinematic), color 0.4s;
     }
+    .nav-mobile-menu a:hover, .nav-mobile-menu a:active { color: var(--champagne); }
+    .nav-mobile-menu.open a { opacity: 1; transform: translateY(0); }
+    .nav-mobile-menu.open a:nth-child(1) { transition-delay: 0.08s; }
+    .nav-mobile-menu.open a:nth-child(2) { transition-delay: 0.14s; }
+    .nav-mobile-menu.open a:nth-child(3) { transition-delay: 0.20s; }
+    .nav-mobile-menu.open a:nth-child(4) { transition-delay: 0.26s; }
+    .nav-mobile-menu.open a:nth-child(5) { transition-delay: 0.32s; }
+    .nav-mobile-menu.open a:nth-child(6) { transition-delay: 0.38s; }
+    .nav-mobile-menu.open a:nth-child(7) { transition-delay: 0.44s; }
+    .nav-mobile-menu.open a:nth-child(8) { transition-delay: 0.50s; }
+    .nav-mobile-menu.open a:nth-child(9) { transition-delay: 0.56s; }
+    body.menu-locked { overflow: hidden; }
 
     /* ---------------- BRAND RULE ---------------- */
     .brand-rule {
@@ -236,7 +263,7 @@
     .thread-stroke.drawn { stroke-dashoffset: 0; transition: stroke-dashoffset 2.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 
     /* ---------------- HERO ---------------- */
-    .hero { position: relative; height: 100vh; width: 100%; overflow: hidden; background: var(--midnight); }
+    .hero { position: relative; height: 100vh; height: 100svh; width: 100%; overflow: hidden; background: var(--midnight); }
     /* #heroShots previously had NO CSS at all: an unstyled static block whose only
        children are position:absolute collapses to 0 height (abs-positioned kids never
        contribute to a static parent's auto height). That alone was harmless, because
@@ -360,9 +387,9 @@
 
     /* ---------------- ROOMS (pinned horizontal) ---------------- */
     .rooms { background: var(--midnight); position: relative; overflow: hidden; }
-    .rooms-wrapper { display: flex; width: fit-content; height: 100vh; }
+    .rooms-wrapper { display: flex; width: fit-content; height: 100vh; height: 100svh; }
     .room-card {
-      width: 100vw; height: 100vh; display: grid; grid-template-columns: 58% 42%;
+      width: 100vw; height: 100vh; height: 100svh; display: grid; grid-template-columns: 58% 42%;
       flex-shrink: 0; position: relative; overflow: hidden;
     }
     .room-image { width: 100%; height: 100%; overflow: hidden; position: relative; }
@@ -474,7 +501,7 @@
 
     /* ---------------- DINING ---------------- */
     .dining { background: var(--midnight); position: relative; overflow: hidden; }
-    .dining-grid { display: grid; grid-template-columns: 50% 50%; min-height: 100vh; }
+    .dining-grid { display: grid; grid-template-columns: 50% 50%; min-height: 100vh; min-height: 100svh; }
     .dining-visual { position: relative; overflow: hidden; }
     .dining-visual img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55) saturate(0.9); }
     #dining-particles { position: absolute; inset: 0; pointer-events: none; }
@@ -627,7 +654,16 @@
     .testimonial-text { font-family: var(--font-display); font-size: clamp(1.4rem, 2.6vw, 2.1rem); font-weight: 400; font-style: italic; color: var(--ivory); line-height: 1.45; margin-bottom: 2rem; }
     .testimonial-attribution { font-size: 0.72rem; font-weight: 400; color: var(--champagne); letter-spacing: 0.22em; text-transform: uppercase; }
     .testimonial-dots { display: flex; justify-content: center; gap: 0.8rem; margin-top: 2.5rem; }
-    .testimonial-dot { width: 6px; height: 6px; background: rgba(245,240,232,0.25); border: none; cursor: none; transition: all 0.4s; padding: 0; }
+    .testimonial-dot {
+      width: 6px; height: 6px; background: rgba(245,240,232,0.25); border: none; cursor: none; transition: all 0.4s; padding: 0;
+      position: relative;
+    }
+    /* Invisible 28px hit area around the 6px dot — the visible dot stays
+       delicate, the tappable region meets touch-target guidance. */
+    .testimonial-dot::after {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      width: 28px; height: 28px; transform: translate(-50%, -50%);
+    }
     .testimonial-dot.active { background: var(--champagne); width: 26px; }
 
     /* ---------------- BOOKING ---------------- */
@@ -667,7 +703,8 @@
 
     /* ---------------- FOOTER ---------------- */
     .footer { background: var(--midnight); padding: 8rem 5rem 3rem; position: relative; overflow: hidden; }
-    .footer-mark { text-align: center; font-family: var(--font-display); font-size: 8rem; font-weight: 300; color: var(--champagne); opacity: 0.9; line-height: 1; margin-bottom: 4rem; }
+    .footer-mark { display: flex; justify-content: center; margin-bottom: 4rem; }
+    .footer-mark img { height: 108px; width: auto; opacity: 0.92; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto; border-top: 1px solid rgba(245,240,232,0.1); padding-top: 3.5rem; }
     .footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: var(--ivory); margin-bottom: 1.2rem; letter-spacing: 0.12em; }
     .footer-signature { font-family: var(--font-script); font-size: 1.8rem; color: var(--champagne); opacity: 0.85; margin: -0.4rem 0 1.6rem; line-height: 1; }
@@ -682,10 +719,95 @@
     .footer-bottom { max-width: 1400px; margin: 2.5rem auto 0; padding-top: 2rem; border-top: 1px solid rgba(245,240,232,0.06); display: flex; justify-content: space-between; align-items: center; }
     .footer-bottom-text { font-size: 0.68rem; color: rgba(245,240,232,0.35); letter-spacing: 0.12em; }
 
+    /* ---------------- HEADLINE WORD REVEALS ---------------- */
+    /* JS splits these headlines into .w spans; each word rises with a soft
+       blur-out, giving every section the same cinematic entrance the hero has. */
+    .split-headline .w {
+      display: inline-block; opacity: 0; transform: translateY(0.55em);
+      filter: blur(6px); will-change: transform, opacity, filter;
+    }
+    .split-headline.revealed .w {
+      opacity: 1; transform: translateY(0); filter: blur(0);
+      transition: opacity 0.9s var(--ease-cinematic), transform 0.9s var(--ease-cinematic), filter 0.9s var(--ease-cinematic);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .split-headline .w { opacity: 1; transform: none; filter: none; }
+    }
+
+    /* ---------------- MAGNETIC CTAS ---------------- */
+    /* JS moves these a few px toward the pointer; the transition gives the
+       springy return. pointer: coarse never gets the JS, so no cost on touch. */
+    .magnetic { transition: transform 0.4s var(--ease-cinematic), background 0.4s, color 0.4s; will-change: transform; }
+
+    /* ---------------- PAGE TRANSITION CURTAIN ---------------- */
+    .page-transition {
+      position: fixed; inset: 0; z-index: 10001; background: var(--midnight);
+      display: flex; align-items: center; justify-content: center;
+      transform: translateY(0); pointer-events: none;
+    }
+    .page-transition-mark {
+      font-family: var(--font-display); font-size: 3.4rem; color: var(--champagne);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .page-transition.leaving .page-transition-mark { opacity: 1; }
+    /* Entering state is set inline by JS before the first paint, then released. */
+    .page-transition.released {
+      transform: translateY(-101%);
+      transition: transform 0.9s var(--ease-cinematic);
+    }
+    .page-transition.leaving {
+      transform: translateY(0); pointer-events: auto;
+      transition: transform 0.7s var(--ease-cinematic);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .page-transition { display: none; }
+    }
+
+    /* ---------------- LIGHTBOX ---------------- */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 10002; background: rgba(10, 10, 15, 0.96);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; visibility: hidden; pointer-events: none;
+      transition: opacity 0.5s var(--ease-cinematic), visibility 0.5s;
+    }
+    .lightbox.open { opacity: 1; visibility: visible; pointer-events: auto; }
+    .lightbox-stage { max-width: min(1100px, 88vw); text-align: center; }
+    .lightbox-img {
+      max-width: 100%; max-height: 78vh; max-height: 78svh; object-fit: contain;
+      margin: 0 auto; box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+      transform: scale(0.96); opacity: 0;
+      transition: transform 0.6s var(--ease-cinematic), opacity 0.6s;
+    }
+    .lightbox.open .lightbox-img { transform: scale(1); opacity: 1; }
+    .lightbox-caption {
+      margin-top: 1.1rem; font-size: 0.65rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--champagne);
+    }
+    .lightbox-close {
+      position: absolute; top: 1.4rem; right: 1.6rem; width: 48px; height: 48px;
+      background: none; border: 1px solid rgba(245,240,232,0.25); border-radius: 50%;
+      color: var(--ivory); font-size: 1rem; cursor: pointer; transition: border-color 0.4s, color 0.4s, transform 0.4s;
+    }
+    .lightbox-close:hover { border-color: var(--champagne); color: var(--champagne); transform: rotate(90deg); }
+    .lightbox-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 52px; height: 52px; background: none; border: 1px solid rgba(245,240,232,0.2);
+      border-radius: 50%; color: var(--ivory); font-size: 1.1rem; cursor: pointer;
+      transition: border-color 0.4s, color 0.4s, background 0.4s;
+    }
+    .lightbox-arrow:hover { border-color: var(--champagne); color: var(--champagne); }
+    .lightbox-prev { left: 1.6rem; }
+    .lightbox-next { right: 1.6rem; }
+    @media (max-width: 768px) {
+      .lightbox-arrow { display: none; } /* swipe is the mobile affordance */
+      .lightbox-stage { max-width: 94vw; }
+    }
+
     /* ---------------- RESPONSIVE ---------------- */
     @media (max-width: 1024px) {
       .nav-links { display: none; }
-      .nav-mobile-toggle { display: block; cursor: pointer; }
+      .nav-mobile-toggle { display: flex; cursor: pointer; }
       .arrival { padding: 7rem 2rem; }
       .arrival-grid { grid-template-columns: 1fr; gap: 3rem; }
       .arrival-stats { gap: 2rem; }
@@ -694,27 +816,36 @@
       .story-left { position: relative; top: auto; }
       .story-right { padding-top: 0; gap: 3.5rem; }
       .dining-grid { grid-template-columns: 1fr; }
-      .dining-visual { height: 52vh; }
+      .dining-visual { height: 52vh; height: 52svh; }
       .dining-content { padding: 4rem 2rem; }
       .experiences { padding: 7rem 2rem; }
       .experiences-grid { grid-template-columns: 1fr; }
-      .experiences-item { height: 46vh; }
+      .experiences-item { height: 46vh; height: 46svh; }
       .events { padding: 7rem 2rem; }
       .events-grid { grid-template-columns: 1fr; }
-      .events-image { height: 46vh; }
+      .events-image { height: 46vh; height: 46svh; }
       .location { padding: 7rem 2rem 3rem; }
       .location-highlights { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; }
       .booking-form { grid-template-columns: 1fr 1fr; }
       .footer { padding: 6rem 2rem 2.5rem; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
+      /* Stacked room cards: image gets a little more presence on tablets/phones */
+      .rooms-wrapper.stacked .room-image { height: 52vh; height: 52svh; }
     }
     @media (max-width: 768px) {
-      .hero-content { left: 1.5rem; right: 1.5rem; }
-      .hero-progress { right: 1.5rem; }
+      .hero-content { left: 1.5rem; right: 1.5rem; bottom: 12%; }
+      .hero-progress { right: 1.5rem; bottom: 2.2rem; }
+      .hero-cta { padding: 0.9rem 0; } /* taller tap target */
+      .scroll-indicator { display: none; } /* collides with progress bar on narrow screens */
+      .gallery-item { width: 85vw; height: 46vh; height: 46svh; }
+      .room-cta, .dining-cta, .events-cta { padding: 1em 1.6em; } /* ≥44px tap height */
+      .booking-submit { padding: 1.3rem 2rem; }
+      .rooms-tab { padding: 0.6rem 0; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
       .booking-form { grid-template-columns: 1fr; }
       .arrival-stats { flex-wrap: wrap; }
+      .testimonials-quote-mark { left: 4%; top: 2.5rem; font-size: 140px; }
     }
   </style>
 </head>
@@ -736,11 +867,9 @@
   <div class="grain"></div>
 
   <!-- TOAST -->
-  <div class="toast" id="toast">Request received — our reservations team will confirm by email or phone.</div>
-
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <a href="#hero" class="nav-logo">Hotel Medallion</a>
+    <a href="#hero" class="nav-logo"><img class="nav-logo-icon" src="assets/logo-icon.png" alt="" width="30" height="30">Hotel Medallion</a>
     <ul class="nav-links">
       <li><a href="#rooms">Rooms</a></li>
       <li><a href="#dining">Dining</a></li>
@@ -752,7 +881,10 @@
       <li><a href="contact.html">Contact</a></li>
       <li><a href="reservation.html" class="nav-reserve">Reserve</a></li>
     </ul>
-    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu">☰</button>
+    <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span class="burger-line"></span>
+      <span class="burger-line"></span>
+    </button>
   </nav>
   <div class="nav-mobile-menu" id="mobileMenu">
     <a href="#rooms">Rooms</a><a href="#dining">Dining</a><a href="#wellness">Wellness</a>
@@ -764,12 +896,12 @@
   <!-- HERO -->
   <section class="hero" id="hero">
     <div class="hero-shots" id="heroShots">
-      <div class="hero-shot active" data-label="Hotel &amp; Hospitality — Lagos" data-l1="A Quiet" data-l2="Kind of" data-l3="Luxury." data-cta="Discover" data-href="#rooms"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80" alt="Hotel Medallion exterior arrival" loading="eager" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220503_121955.jpg"></div>
-      <div class="hero-shot" data-label="The Arrival" data-l1="Not a Lobby." data-l2="A First" data-l3="Impression." data-cta="Step Inside" data-href="#story"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1920&q=80" alt="Hotel lobby architecture" loading="eager" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_180303.jpg"></div>
-      <div class="hero-shot" data-label="The Residence" data-l1="Twenty-Five" data-l2="Rooms. One" data-l3="Standard." data-cta="See the Rooms" data-href="#rooms"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1920&q=80" alt="Luxury suite interior" loading="eager" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_162542.jpg"></div>
-      <div class="hero-shot" data-label="Culinary — 24 Hours" data-l1="Lagos Never" data-l2="Sleeps. Neither" data-l3="Does the Kitchen." data-cta="View Dining" data-href="#dining"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80" alt="Fine dining experience" loading="eager" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_180044.jpg"></div>
-      <div class="hero-shot" data-label="Evenings" data-l1="Rest, the" data-l2="Way Lagos" data-l3="Rarely Does." data-cta="Find Stillness" data-href="#wellness"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&q=80" alt="Pool evening atmosphere" loading="eager" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/ms9.jpg"></div>
-      <div class="hero-shot" data-label="The Location" data-l1="Minutes from" data-l2="Ikoyi. Miles" data-l3="from the Noise." data-cta="Explore Lekki" data-href="#location"><img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1920&q=80" alt="Lagos city lights" loading="eager" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_161935.jpg"></div>
+      <div class="hero-shot active" data-label="Hotel &amp; Hospitality — Lagos" data-l1="A Quiet" data-l2="Kind of" data-l3="Luxury." data-cta="Discover" data-href="#rooms"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80" srcset="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=768&q=75 768w, https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1280&q=78 1280w, https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80 1920w" sizes="100vw" alt="Hotel Medallion exterior arrival" loading="eager" fetchpriority="high" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220503_121955.jpg"></div>
+      <div class="hero-shot" data-label="The Arrival" data-l1="Not a Lobby." data-l2="A First" data-l3="Impression." data-cta="Step Inside" data-href="#story"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1920&q=80" srcset="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=768&q=75 768w, https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1280&q=78 1280w, https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1920&q=80 1920w" sizes="100vw" alt="Hotel lobby architecture" loading="eager" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_180303.jpg"></div>
+      <div class="hero-shot" data-label="The Residence" data-l1="Twenty-Five" data-l2="Rooms. One" data-l3="Standard." data-cta="See the Rooms" data-href="#rooms"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1920&q=80" srcset="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=768&q=75 768w, https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1280&q=78 1280w, https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1920&q=80 1920w" sizes="100vw" alt="Luxury suite interior" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_162542.jpg"></div>
+      <div class="hero-shot" data-label="Culinary — 24 Hours" data-l1="Lagos Never" data-l2="Sleeps. Neither" data-l3="Does the Kitchen." data-cta="View Dining" data-href="#dining"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80" srcset="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=768&q=75 768w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1280&q=78 1280w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80 1920w" sizes="100vw" alt="Fine dining experience" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_180044.jpg"></div>
+      <div class="hero-shot" data-label="Evenings" data-l1="Rest, the" data-l2="Way Lagos" data-l3="Rarely Does." data-cta="Find Stillness" data-href="#wellness"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&q=80" srcset="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=768&q=75 768w, https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1280&q=78 1280w, https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1920&q=80 1920w" sizes="100vw" alt="Pool evening atmosphere" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/ms9.jpg"></div>
+      <div class="hero-shot" data-label="The Location" data-l1="Minutes from" data-l2="Ikoyi. Miles" data-l3="from the Noise." data-cta="Explore Lekki" data-href="#location"><img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1920&q=80" srcset="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=768&q=75 768w, https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1280&q=78 1280w, https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1920&q=80 1920w" sizes="100vw" alt="Lagos city lights" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_161935.jpg"></div>
     </div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
@@ -883,39 +1015,64 @@
     <div class="rooms-wrapper" id="roomsWrapper">
 
       <div class="room-card active">
-        <div class="room-image"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1400&q=80" alt="Medallion Suite"></div>
+        <div class="room-image"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1400&q=80" alt="2 Bedroom Deluxe Suite"></div>
         <div class="room-content">
           <div class="room-indicator" aria-hidden="true">
             <svg class="room-indicator-arrow" viewBox="0 0 96 66" xmlns="http://www.w3.org/2000/svg"><path d="M94.84 59.556c-5.707-5.177-35.018-26.16-42.323-27.937a24.683 24.683 0 00-5.194-.533c-3.968-5.77-8.922-10.334-14.62-13.468-6.067-3.367-12.662-5.56-19.604-6.52a67.272 67.272 0 00-6.477-.688l14.636-6.862c1.594-.749.937-3.493-.691-2.714A2751.783 2751.783 0 011.309 9.868C.266 10.35.23 11.906.751 12.562l13.206 16.656c1.008 1.258 2.747-1.398 1.756-2.64L5.352 13.507c8.572.192 16.741 2.235 24.164 6.045 5.49 2.685 10.336 6.693 14.316 11.84-2.198.357-4.412 1.126-6.567 2.28-1.849.964-3.587 2.402-5.086 4.207a21.48 21.48 0 00-3.57 6.218c-.884 2.764-1.228 5.617-1 8.29.229 2.672 1.022 5.077 2.305 6.99 1.423 2.123 3.239 3.77 5.342 4.846 2.103 1.076 4.453 1.56 6.911 1.421 4.18-.194 8.927-2.804 10.976-8.365 2.991-8.102-.725-16.839-3.62-22.452l-.249-.481c8.016.753 37.73 22.665 43.81 27.85 1.211.973 2.9-1.565 1.757-2.64zm-43.31-9.944c.301 2.718.179 5.987-1.441 8.63-2.92 4.867-8.51 4.806-11.931 3.671-4.518-1.486-8.105-5.79-8.208-12.076-.002-2.084.472-4.256 1.37-6.269.9-2.013 2.185-3.788 3.714-5.124 3.242-2.954 7.12-4.01 10.722-4.17a62.3 62.3 0 011.318 2.19c2.237 3.78 3.75 8.247 4.457 13.148z"/></svg>
           </div>
           <div class="room-num">01 — Suite</div>
-          <h3 class="room-name">Medallion Suite</h3>
-          <p class="room-desc">The largest of our residences. A separate living area, king bed, private balcony overlooking Lekki, and the kind of silence that only comes from thoughtful architecture.</p>
+          <h3 class="room-name">2 Bedroom Deluxe Suite</h3>
+          <p class="room-desc">Two full bedrooms under one reservation. A separate living area, king bed, private balcony overlooking Lekki — one of only three in the residence.</p>
           <div class="room-meta">
-            <div class="room-meta-item">Size<span>45 m²</span></div>
-            <div class="room-meta-item">Guests<span>2 Adults</span></div>
+            <div class="room-meta-item">Size<span>58 m²</span></div>
+            <div class="room-meta-item">Guests<span>4 Adults</span></div>
             <div class="room-meta-item">View<span>City &amp; Garden</span></div>
           </div>
           <div class="room-amenities">
-            <div class="room-amenity">King-size bed · Sitting room · 2 bedrooms</div>
+            <div class="room-amenity">King-size bed · Second bedroom · Sitting room</div>
             <div class="room-amenity">Breakfast included · Free laundry service</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price">₦95,000 <small>per night</small></p>
+          <p class="room-price">₦135,000 <small>per night</small> <small>(~$100)</small></p>
           <a href="room-suite.html" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
       </div>
 
       <div class="room-card">
-        <div class="room-image"><img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?w=1400&q=80" alt="Medallion Comfort"></div>
+        <div class="room-image"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1400&q=80" alt="1 Bedroom Deluxe Suite"></div>
         <div class="room-content">
           <div class="room-indicator" aria-hidden="true">
             <svg class="room-indicator-arrow" viewBox="0 0 96 66" xmlns="http://www.w3.org/2000/svg"><path d="M94.84 59.556c-5.707-5.177-35.018-26.16-42.323-27.937a24.683 24.683 0 00-5.194-.533c-3.968-5.77-8.922-10.334-14.62-13.468-6.067-3.367-12.662-5.56-19.604-6.52a67.272 67.272 0 00-6.477-.688l14.636-6.862c1.594-.749.937-3.493-.691-2.714A2751.783 2751.783 0 011.309 9.868C.266 10.35.23 11.906.751 12.562l13.206 16.656c1.008 1.258 2.747-1.398 1.756-2.64L5.352 13.507c8.572.192 16.741 2.235 24.164 6.045 5.49 2.685 10.336 6.693 14.316 11.84-2.198.357-4.412 1.126-6.567 2.28-1.849.964-3.587 2.402-5.086 4.207a21.48 21.48 0 00-3.57 6.218c-.884 2.764-1.228 5.617-1 8.29.229 2.672 1.022 5.077 2.305 6.99 1.423 2.123 3.239 3.77 5.342 4.846 2.103 1.076 4.453 1.56 6.911 1.421 4.18-.194 8.927-2.804 10.976-8.365 2.991-8.102-.725-16.839-3.62-22.452l-.249-.481c8.016.753 37.73 22.665 43.81 27.85 1.211.973 2.9-1.565 1.757-2.64zm-43.31-9.944c.301 2.718.179 5.987-1.441 8.63-2.92 4.867-8.51 4.806-11.931 3.671-4.518-1.486-8.105-5.79-8.208-12.076-.002-2.084.472-4.256 1.37-6.269.9-2.013 2.185-3.788 3.714-5.124 3.242-2.954 7.12-4.01 10.722-4.17a62.3 62.3 0 011.318 2.19c2.237 3.78 3.75 8.247 4.457 13.148z"/></svg>
           </div>
-          <div class="room-num">02 — Comfort</div>
-          <h3 class="room-name">Medallion Comfort</h3>
-          <p class="room-desc">Generous space without excess. A queen bed, work desk, private bathroom with bath and shower, and the familiar comfort of a room that knows what you need before you ask.</p>
+          <div class="room-num">02 — Suite</div>
+          <h3 class="room-name">1 Bedroom Deluxe Suite</h3>
+          <p class="room-desc">A private bedroom, a separate sitting area, and the same suite-level finish as its larger sibling. Hotel Medallion's sole single-bedroom suite.</p>
+          <div class="room-meta">
+            <div class="room-meta-item">Size<span>38 m²</span></div>
+            <div class="room-meta-item">Guests<span>2 Adults</span></div>
+            <div class="room-meta-item">View<span>City</span></div>
+          </div>
+          <div class="room-amenities">
+            <div class="room-amenity">King-size bed · Separate sitting area</div>
+            <div class="room-amenity">Breakfast included · Free laundry service</div>
+            <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
+          </div>
+          <p class="room-price">₦115,000 <small>per night</small> <small>(~$85)</small></p>
+          <a href="room-mini-suite.html" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
+        </div>
+        <div class="room-light-leak"></div>
+      </div>
+
+      <div class="room-card">
+        <div class="room-image"><img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?w=1400&q=80" alt="Medallion Deluxe Comfort"></div>
+        <div class="room-content">
+          <div class="room-indicator" aria-hidden="true">
+            <svg class="room-indicator-arrow" viewBox="0 0 96 66" xmlns="http://www.w3.org/2000/svg"><path d="M94.84 59.556c-5.707-5.177-35.018-26.16-42.323-27.937a24.683 24.683 0 00-5.194-.533c-3.968-5.77-8.922-10.334-14.62-13.468-6.067-3.367-12.662-5.56-19.604-6.52a67.272 67.272 0 00-6.477-.688l14.636-6.862c1.594-.749.937-3.493-.691-2.714A2751.783 2751.783 0 011.309 9.868C.266 10.35.23 11.906.751 12.562l13.206 16.656c1.008 1.258 2.747-1.398 1.756-2.64L5.352 13.507c8.572.192 16.741 2.235 24.164 6.045 5.49 2.685 10.336 6.693 14.316 11.84-2.198.357-4.412 1.126-6.567 2.28-1.849.964-3.587 2.402-5.086 4.207a21.48 21.48 0 00-3.57 6.218c-.884 2.764-1.228 5.617-1 8.29.229 2.672 1.022 5.077 2.305 6.99 1.423 2.123 3.239 3.77 5.342 4.846 2.103 1.076 4.453 1.56 6.911 1.421 4.18-.194 8.927-2.804 10.976-8.365 2.991-8.102-.725-16.839-3.62-22.452l-.249-.481c8.016.753 37.73 22.665 43.81 27.85 1.211.973 2.9-1.565 1.757-2.64zm-43.31-9.944c.301 2.718.179 5.987-1.441 8.63-2.92 4.867-8.51 4.806-11.931 3.671-4.518-1.486-8.105-5.79-8.208-12.076-.002-2.084.472-4.256 1.37-6.269.9-2.013 2.185-3.788 3.714-5.124 3.242-2.954 7.12-4.01 10.722-4.17a62.3 62.3 0 011.318 2.19c2.237 3.78 3.75 8.247 4.457 13.148z"/></svg>
+          </div>
+          <div class="room-num">03 — Comfort</div>
+          <h3 class="room-name">Medallion Deluxe Comfort</h3>
+          <p class="room-desc">Generous space without excess. A queen bed, work desk, private bathroom with bath and shower — the most numerous room in the residence, and often the first available.</p>
           <div class="room-meta">
             <div class="room-meta-item">Size<span>32 m²</span></div>
             <div class="room-meta-item">Guests<span>2 Adults</span></div>
@@ -926,45 +1083,20 @@
             <div class="room-amenity">Breakfast included · Coffee &amp; tea facilities</div>
             <div class="room-amenity">Air conditioning · Flat-screen TV · Free Wi-Fi</div>
           </div>
-          <p class="room-price">₦68,000 <small>per night</small></p>
+          <p class="room-price">₦68,000 <small>per night</small> <small>(~$51)</small></p>
           <a href="room-comfort.html" class="room-cta">Reserve this room <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
       </div>
 
       <div class="room-card">
-        <div class="room-image"><img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=1400&q=80" alt="Medallion Mini-Suite"></div>
-        <div class="room-content">
-          <div class="room-indicator" aria-hidden="true">
-            <svg class="room-indicator-arrow" viewBox="0 0 96 66" xmlns="http://www.w3.org/2000/svg"><path d="M94.84 59.556c-5.707-5.177-35.018-26.16-42.323-27.937a24.683 24.683 0 00-5.194-.533c-3.968-5.77-8.922-10.334-14.62-13.468-6.067-3.367-12.662-5.56-19.604-6.52a67.272 67.272 0 00-6.477-.688l14.636-6.862c1.594-.749.937-3.493-.691-2.714A2751.783 2751.783 0 011.309 9.868C.266 10.35.23 11.906.751 12.562l13.206 16.656c1.008 1.258 2.747-1.398 1.756-2.64L5.352 13.507c8.572.192 16.741 2.235 24.164 6.045 5.49 2.685 10.336 6.693 14.316 11.84-2.198.357-4.412 1.126-6.567 2.28-1.849.964-3.587 2.402-5.086 4.207a21.48 21.48 0 00-3.57 6.218c-.884 2.764-1.228 5.617-1 8.29.229 2.672 1.022 5.077 2.305 6.99 1.423 2.123 3.239 3.77 5.342 4.846 2.103 1.076 4.453 1.56 6.911 1.421 4.18-.194 8.927-2.804 10.976-8.365 2.991-8.102-.725-16.839-3.62-22.452l-.249-.481c8.016.753 37.73 22.665 43.81 27.85 1.211.973 2.9-1.565 1.757-2.64zm-43.31-9.944c.301 2.718.179 5.987-1.441 8.63-2.92 4.867-8.51 4.806-11.931 3.671-4.518-1.486-8.105-5.79-8.208-12.076-.002-2.084.472-4.256 1.37-6.269.9-2.013 2.185-3.788 3.714-5.124 3.242-2.954 7.12-4.01 10.722-4.17a62.3 62.3 0 011.318 2.19c2.237 3.78 3.75 8.247 4.457 13.148z"/></svg>
-          </div>
-          <div class="room-num">03 — Mini-Suite</div>
-          <h3 class="room-name">Medallion Mini-Suite</h3>
-          <p class="room-desc">Compact, intelligent, and warm. A double bed, kitchenette, essential workspace, and all the amenities of our larger rooms in a more intimate footprint.</p>
-          <div class="room-meta">
-            <div class="room-meta-item">Size<span>24 m²</span></div>
-            <div class="room-meta-item">Guests<span>2 Adults</span></div>
-            <div class="room-meta-item">View<span>Interior</span></div>
-          </div>
-          <div class="room-amenities">
-            <div class="room-amenity">Double bed · Kitchenette · Workspace</div>
-            <div class="room-amenity">Breakfast included · Mini bar</div>
-            <div class="room-amenity">Air conditioning · Flat-screen TV · Free Wi-Fi</div>
-          </div>
-          <p class="room-price">₦55,000 <small>per night</small></p>
-          <a href="room-mini-suite.html" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
-        </div>
-        <div class="room-light-leak"></div>
-      </div>
-
-      <div class="room-card">
-        <div class="room-image"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1400&q=80" alt="Medallion Executive"></div>
+        <div class="room-image"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1400&q=80" alt="Medallion Deluxe Executive"></div>
         <div class="room-content">
           <div class="room-indicator" aria-hidden="true">
             <svg class="room-indicator-arrow" viewBox="0 0 96 66" xmlns="http://www.w3.org/2000/svg"><path d="M94.84 59.556c-5.707-5.177-35.018-26.16-42.323-27.937a24.683 24.683 0 00-5.194-.533c-3.968-5.77-8.922-10.334-14.62-13.468-6.067-3.367-12.662-5.56-19.604-6.52a67.272 67.272 0 00-6.477-.688l14.636-6.862c1.594-.749.937-3.493-.691-2.714A2751.783 2751.783 0 011.309 9.868C.266 10.35.23 11.906.751 12.562l13.206 16.656c1.008 1.258 2.747-1.398 1.756-2.64L5.352 13.507c8.572.192 16.741 2.235 24.164 6.045 5.49 2.685 10.336 6.693 14.316 11.84-2.198.357-4.412 1.126-6.567 2.28-1.849.964-3.587 2.402-5.086 4.207a21.48 21.48 0 00-3.57 6.218c-.884 2.764-1.228 5.617-1 8.29.229 2.672 1.022 5.077 2.305 6.99 1.423 2.123 3.239 3.77 5.342 4.846 2.103 1.076 4.453 1.56 6.911 1.421 4.18-.194 8.927-2.804 10.976-8.365 2.991-8.102-.725-16.839-3.62-22.452l-.249-.481c8.016.753 37.73 22.665 43.81 27.85 1.211.973 2.9-1.565 1.757-2.64zm-43.31-9.944c.301 2.718.179 5.987-1.441 8.63-2.92 4.867-8.51 4.806-11.931 3.671-4.518-1.486-8.105-5.79-8.208-12.076-.002-2.084.472-4.256 1.37-6.269.9-2.013 2.185-3.788 3.714-5.124 3.242-2.954 7.12-4.01 10.722-4.17a62.3 62.3 0 011.318 2.19c2.237 3.78 3.75 8.247 4.457 13.148z"/></svg>
           </div>
           <div class="room-num">04 — Executive</div>
-          <h3 class="room-name">Medallion Executive</h3>
+          <h3 class="room-name">Medallion Deluxe Executive</h3>
           <p class="room-desc">Designed for the business traveller who refuses to compromise. Expanded workspace, high-speed connectivity, and the quiet authority of a room built for both rest and resolve.</p>
           <div class="room-meta">
             <div class="room-meta-item">Size<span>38 m²</span></div>
@@ -976,8 +1108,33 @@
             <div class="room-amenity">Breakfast included · High-speed Wi-Fi</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price">₦82,000 <small>per night</small></p>
+          <p class="room-price">₦85,000 <small>per night</small> <small>(~$63)</small></p>
           <a href="room-executive.html" class="room-cta">Reserve this room <span class="arrow">→</span></a>
+        </div>
+        <div class="room-light-leak"></div>
+      </div>
+
+      <div class="room-card">
+        <div class="room-image"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1400&q=80" alt="Double Bed Deluxe Executive"></div>
+        <div class="room-content">
+          <div class="room-indicator" aria-hidden="true">
+            <svg class="room-indicator-arrow" viewBox="0 0 96 66" xmlns="http://www.w3.org/2000/svg"><path d="M94.84 59.556c-5.707-5.177-35.018-26.16-42.323-27.937a24.683 24.683 0 00-5.194-.533c-3.968-5.77-8.922-10.334-14.62-13.468-6.067-3.367-12.662-5.56-19.604-6.52a67.272 67.272 0 00-6.477-.688l14.636-6.862c1.594-.749.937-3.493-.691-2.714A2751.783 2751.783 0 011.309 9.868C.266 10.35.23 11.906.751 12.562l13.206 16.656c1.008 1.258 2.747-1.398 1.756-2.64L5.352 13.507c8.572.192 16.741 2.235 24.164 6.045 5.49 2.685 10.336 6.693 14.316 11.84-2.198.357-4.412 1.126-6.567 2.28-1.849.964-3.587 2.402-5.086 4.207a21.48 21.48 0 00-3.57 6.218c-.884 2.764-1.228 5.617-1 8.29.229 2.672 1.022 5.077 2.305 6.99 1.423 2.123 3.239 3.77 5.342 4.846 2.103 1.076 4.453 1.56 6.911 1.421 4.18-.194 8.927-2.804 10.976-8.365 2.991-8.102-.725-16.839-3.62-22.452l-.249-.481c8.016.753 37.73 22.665 43.81 27.85 1.211.973 2.9-1.565 1.757-2.64zm-43.31-9.944c.301 2.718.179 5.987-1.441 8.63-2.92 4.867-8.51 4.806-11.931 3.671-4.518-1.486-8.105-5.79-8.208-12.076-.002-2.084.472-4.256 1.37-6.269.9-2.013 2.185-3.788 3.714-5.124 3.242-2.954 7.12-4.01 10.722-4.17a62.3 62.3 0 011.318 2.19c2.237 3.78 3.75 8.247 4.457 13.148z"/></svg>
+          </div>
+          <div class="room-num">05 — Executive</div>
+          <h3 class="room-name">Double Bed Deluxe Executive</h3>
+          <p class="room-desc">The Executive's business-ready workspace paired with a double bed for two. Only two of these exist in the residence.</p>
+          <div class="room-meta">
+            <div class="room-meta-item">Size<span>40 m²</span></div>
+            <div class="room-meta-item">Guests<span>2 Adults</span></div>
+            <div class="room-meta-item">View<span>City</span></div>
+          </div>
+          <div class="room-amenities">
+            <div class="room-amenity">Double bed · Expanded workspace</div>
+            <div class="room-amenity">Breakfast included · High-speed Wi-Fi</div>
+            <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
+          </div>
+          <p class="room-price">₦100,000 <small>per night</small> <small>(~$75)</small></p>
+          <a href="room-executive-double.html" class="room-cta">Reserve this room <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
       </div>
@@ -985,9 +1142,10 @@
     </div>
     <div class="rooms-tabs" id="roomsTabs">
       <button class="rooms-tab active" data-index="0" type="button">Suite</button>
-      <button class="rooms-tab" data-index="1" type="button">Comfort</button>
-      <button class="rooms-tab" data-index="2" type="button">Mini-Suite</button>
+      <button class="rooms-tab" data-index="1" type="button">1-Bed</button>
+      <button class="rooms-tab" data-index="2" type="button">Comfort</button>
       <button class="rooms-tab" data-index="3" type="button">Executive</button>
+      <button class="rooms-tab" data-index="4" type="button">Exec. Double</button>
     </div>
   </section>
 
@@ -1115,6 +1273,14 @@
           <div class="event-name">Private Dining</div>
           <div class="event-detail">Intimate gatherings, curated menus</div>
         </div>
+        <div class="event-item">
+          <div class="event-name">Conference Room</div>
+          <div class="event-detail">One available · price on request</div>
+        </div>
+        <div class="event-item">
+          <div class="event-name">The Hall</div>
+          <div class="event-detail">One available · price on request</div>
+        </div>
         <a href="contact.html" class="events-cta">Plan Your Event</a>
       </div>
     </div>
@@ -1156,14 +1322,14 @@
       <h2 class="gallery-headline">A Visual Residence</h2>
     </div>
     <div class="gallery-track">
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80" alt="Hotel exterior" loading="lazy"><span class="gallery-caption">Arrival</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80" alt="Lobby" loading="lazy"><span class="gallery-caption">The Lobby</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80" alt="Suite" loading="lazy"><span class="gallery-caption">The Suite</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80" alt="Dining" loading="lazy"><span class="gallery-caption">The Table</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80" alt="Pool" loading="lazy"><span class="gallery-caption">Evening Pool</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200&q=80" alt="Interior detail" loading="lazy"><span class="gallery-caption">Detail</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80" alt="Architecture" loading="lazy"><span class="gallery-caption">Architecture</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80" alt="Room" loading="lazy"><span class="gallery-caption">Residence</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Arrival"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80" srcset="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=640&q=75 640w, https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80 1200w, https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1800&q=80 1800w" sizes="(max-width: 768px) 85vw, 62vw" alt="Hotel exterior" loading="lazy"><span class="gallery-caption">Arrival</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: The Lobby"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80" srcset="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=640&q=75 640w, https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80 1200w, https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1800&q=80 1800w" sizes="(max-width: 768px) 85vw, 62vw" alt="Lobby" loading="lazy"><span class="gallery-caption">The Lobby</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: The Suite"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80" srcset="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=640&q=75 640w, https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80 1200w, https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1800&q=80 1800w" sizes="(max-width: 768px) 85vw, 62vw" alt="Suite" loading="lazy"><span class="gallery-caption">The Suite</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: The Table"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80" srcset="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=640&q=75 640w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80 1200w, https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800&q=80 1800w" sizes="(max-width: 768px) 85vw, 62vw" alt="Dining" loading="lazy"><span class="gallery-caption">The Table</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Evening Pool"><img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80" srcset="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=640&q=75 640w, https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80 1200w, https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1800&q=80 1800w" sizes="(max-width: 768px) 85vw, 62vw" alt="Pool" loading="lazy"><span class="gallery-caption">Evening Pool</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Detail"><img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200&q=80" srcset="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=640&q=75 640w, https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200&q=80 1200w, https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1800&q=80 1800w" sizes="(max-width: 768px) 85vw, 62vw" alt="Interior detail" loading="lazy"><span class="gallery-caption">Detail</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Architecture"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80" srcset="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=640&q=75 640w, https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80 1200w, https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1800&q=80 1800w" sizes="(max-width: 768px) 85vw, 62vw" alt="Architecture" loading="lazy"><span class="gallery-caption">Architecture</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Residence"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80" srcset="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=640&q=75 640w, https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80 1200w, https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1800&q=80 1800w" sizes="(max-width: 768px) 85vw, 62vw" alt="Room" loading="lazy"><span class="gallery-caption">Residence</span></div>
     </div>
   </section>
 
@@ -1224,17 +1390,38 @@
         <div class="booking-field">
           <label for="roomType">Room</label>
           <select id="roomType">
-            <option>Medallion Suite</option>
-            <option>Medallion Comfort</option>
-            <option>Medallion Mini-Suite</option>
-            <option>Medallion Executive</option>
+            <option>2 Bedroom Deluxe Suite</option>
+            <option>1 Bedroom Deluxe Suite</option>
+            <option>Medallion Deluxe Comfort</option>
+            <option>Medallion Deluxe Executive</option>
+            <option>Double Bed Deluxe Executive</option>
           </select>
         </div>
+        <div class="booking-field">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="NGN" selected>₦ Naira</option>
+            <option value="USD">$ US Dollar</option>
+          </select>
+        </div>
+        <div class="booking-field">
+          <label for="fullName">Full name</label>
+          <input type="text" id="fullName" autocomplete="name" required>
+        </div>
+        <div class="booking-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" autocomplete="email" required>
+        </div>
+        <div class="booking-field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" autocomplete="tel" required>
+        </div>
         <div class="booking-field" style="grid-column:1/-1; text-align:center;">
-          <button type="submit" class="booking-submit">Request Availability</button>
+          <button type="submit" class="booking-submit">Reserve &amp; Pay</button>
         </div>
       </form>
       <p class="booking-note">
+        Secure payment via Paystack — your reservation is confirmed the moment payment clears.<br>
         For immediate assistance —<br>
         <a href="mailto:reservation@medallionhospitalityservices.com">reservation@medallionhospitalityservices.com</a><br>
         09060006382 · 09085820000
@@ -1244,7 +1431,7 @@
 
   <!-- FOOTER -->
   <footer class="footer" id="footer">
-    <div class="footer-mark">M</div>
+    <div class="footer-mark"><img src="assets/logo-icon.png" alt="Hotel Medallion" width="108" height="108"></div>
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Hotel Medallion</div>
@@ -1295,6 +1482,30 @@
       <div class="footer-bottom-text">Medallion is not a room. It is a quiet kind of luxury.</div>
     </div>
   </footer>
+
+  <!-- PAGE TRANSITION CURTAIN -->
+  <div class="page-transition" id="pageTransition" aria-hidden="true">
+    <span class="page-transition-mark">M</span>
+  </div>
+
+  <!-- GALLERY LIGHTBOX -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">✕</button>
+    <button class="lightbox-arrow lightbox-prev" id="lightboxPrev" aria-label="Previous photo">←</button>
+    <figure class="lightbox-stage">
+      <img class="lightbox-img" id="lightboxImg" src="" alt="">
+      <figcaption class="lightbox-caption" id="lightboxCaption"></figcaption>
+    </figure>
+    <button class="lightbox-arrow lightbox-next" id="lightboxNext" aria-label="Next photo">→</button>
+  </div>
+
+  <!-- Moved from <head>: these were render-blocking up there. Placing them
+       just before the inline script keeps execution order identical while
+       letting the page paint first. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" integrity="sha384-B2WBjDzEjJpYvhmi2UyEn7rektqkf5suS6sNoyyrf0EBAwBHdkiXxIlU0V5Ru2ed" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
   <script>
     (function () {
@@ -1347,11 +1558,19 @@
       const mobileMenu = document.getElementById('mobileMenu');
       function closeMobileMenu() {
         mobileMenu.classList.remove('open');
-        mobileToggle.textContent = '☰';
+        mobileToggle.classList.remove('open');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+        document.body.classList.remove('menu-locked');
+        if (lenis) lenis.start();
       }
       mobileToggle.addEventListener('click', () => {
         const open = mobileMenu.classList.toggle('open');
-        mobileToggle.textContent = open ? '✕' : '☰';
+        mobileToggle.classList.toggle('open', open);
+        mobileToggle.setAttribute('aria-expanded', String(open));
+        document.body.classList.toggle('menu-locked', open);
+        // Freeze smooth-scroll while the menu is up so the page can't drift
+        // behind the overlay.
+        if (lenis) { open ? lenis.stop() : lenis.start(); }
       });
 
       /* ---------------- NAV SCROLL STATE ---------------- */
@@ -1480,10 +1699,26 @@
           .to(heroCtaEl, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.45');
       }
 
+      function goToShot(index) {
+        if (index === currentShot) return;
+        shots[currentShot].classList.remove('active');
+        currentShot = ((index % shots.length) + shots.length) % shots.length;
+        shots[currentShot].classList.add('active');
+        heroNum.textContent = String(currentShot + 1).padStart(2, '0');
+        transitionHeroText(shots[currentShot]);
+      }
+
       function startHeroSlideshow() {
         if (shots.length < 2) return;
         let elapsed = 0;
         let last = performance.now();
+        const heroSection = document.getElementById('hero');
+
+        function restart() {
+          elapsed = 0;
+          last = performance.now();
+        }
+
         heroTimer = setInterval(() => {
           const now = performance.now();
           elapsed += now - last;
@@ -1492,21 +1727,45 @@
           if (elapsed >= shotDuration) {
             const flips = Math.floor(elapsed / shotDuration);
             elapsed = elapsed % shotDuration;
-            shots[currentShot].classList.remove('active');
-            currentShot = (currentShot + flips) % shots.length;
-            shots[currentShot].classList.add('active');
-            heroNum.textContent = String(currentShot + 1).padStart(2, '0');
-            transitionHeroText(shots[currentShot]);
+            goToShot(currentShot + flips);
           }
 
           heroFill.style.width = ((elapsed / shotDuration) * 100) + '%';
         }, 100);
+
+        // Don't burn cycles (or jump slides) while the tab is hidden.
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) last = performance.now();
+        });
+
+        // Swipe left/right to move through the shots (touch only).
+        let touchX = null, touchY = null;
+        heroSection.addEventListener('touchstart', (e) => {
+          touchX = e.touches[0].clientX;
+          touchY = e.touches[0].clientY;
+        }, { passive: true });
+        heroSection.addEventListener('touchend', (e) => {
+          if (touchX === null) return;
+          const dx = e.changedTouches[0].clientX - touchX;
+          const dy = e.changedTouches[0].clientY - touchY;
+          touchX = null;
+          if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            goToShot(currentShot + (dx < 0 ? 1 : -1));
+            restart();
+          }
+        }, { passive: true });
+
+        // Tapping the progress bar advances to the next shot (desktop nicety).
+        document.querySelector('.hero-progress-bar').addEventListener('click', () => {
+          goToShot(currentShot + 1);
+          restart();
+        });
       }
 
       /* ---------------- HERO PARALLAX ---------------- */
-      if (!reduced && !coarse) {
+      if (!reduced) {
         gsap.to('#heroShots', {
-          yPercent: 12,
+          yPercent: coarse ? 7 : 12,
           ease: 'none',
           scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true }
         });
@@ -1603,7 +1862,24 @@
         '(max-width: 1024px), (pointer: coarse), (prefers-reduced-motion: reduce)': function () {
           roomsWrapper.classList.add('stacked');
           gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
-          return () => { roomsWrapper.classList.remove('stacked'); };
+          // Stacked cards still deserve an entrance: fade the content stack up
+          // as each card scrolls into view (skipped under reduced-motion).
+          if (!reduced) {
+            roomCards.forEach((card) => {
+              const els = card.querySelectorAll('.room-content > *');
+              gsap.set(els, { opacity: 0, y: 26 });
+              ScrollTrigger.create({
+                trigger: card,
+                start: 'top 70%',
+                once: true,
+                onEnter: () => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, ease: 'power3.out' })
+              });
+            });
+          }
+          return () => {
+            roomsWrapper.classList.remove('stacked');
+            gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
+          };
         }
       });
 
@@ -1631,12 +1907,15 @@
           diningH = visual.offsetHeight;
           diningCanvas.width = diningW;
           diningCanvas.height = diningH;
-          particles = Array.from({ length: 42 }, () => ({
+          // Fewer, slightly larger particles on touch devices — same shimmer,
+          // fraction of the per-frame fill cost on mobile GPUs.
+          const count = coarse ? 22 : 42;
+          particles = Array.from({ length: count }, () => ({
             x: Math.random() * diningW,
             y: Math.random() * diningH,
             vx: (Math.random() - 0.5) * 0.3,
             vy: (Math.random() - 0.5) * 0.3 - 0.08,
-            size: Math.random() * 2 + 0.5,
+            size: Math.random() * 2 + (coarse ? 1 : 0.5),
             opacity: Math.random() * 0.14 + 0.03
           }));
         }
@@ -1681,7 +1960,9 @@
             wRenderer = new THREE.WebGLRenderer({ canvas: wellnessCanvas, alpha: true, antialias: true });
             const section = document.querySelector('.wellness');
             wRenderer.setSize(section.clientWidth, section.clientHeight, false);
-            wRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            // Cap pixel ratio harder on phones — 2x DPR on a small screen is
+            // wasted work for an effect this subtle.
+            wRenderer.setPixelRatio(Math.min(window.devicePixelRatio, coarse ? 1.25 : 2));
 
             const vertexShader = 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = vec4(position, 1.0); }';
             const fragmentShader = `
@@ -1709,19 +1990,34 @@
             const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), wMaterial);
             wScene.add(mesh);
 
+            // Gate rendering on visibility (same pattern as the dining
+            // particles) — previously this rendered every frame forever,
+            // even scrolled far past the section.
+            let wellnessVisible = false;
+            new IntersectionObserver((entries) => {
+              wellnessVisible = entries[0].isIntersecting;
+            }, { threshold: 0.05 }).observe(section);
+
             (function animateWellness() {
               requestAnimationFrame(animateWellness);
+              if (!wellnessVisible) return;
               wMaterial.uniforms.uTime.value += 0.016;
               wMaterial.uniforms.uMouse.value.x += (mouse.x - wMaterial.uniforms.uMouse.value.x) * 0.05;
               wMaterial.uniforms.uMouse.value.y += (mouse.y - wMaterial.uniforms.uMouse.value.y) * 0.05;
               wRenderer.render(wScene, wCamera);
             })();
 
-            document.querySelector('.wellness').addEventListener('mousemove', (e) => {
-              const rect = e.currentTarget.getBoundingClientRect();
-              mouse.x = (e.clientX - rect.left) / rect.width;
-              mouse.y = 1.0 - (e.clientY - rect.top) / rect.height;
-            });
+            function updateRipplePointer(clientX, clientY) {
+              const rect = section.getBoundingClientRect();
+              mouse.x = (clientX - rect.left) / rect.width;
+              mouse.y = 1.0 - (clientY - rect.top) / rect.height;
+            }
+            section.addEventListener('mousemove', (e) => updateRipplePointer(e.clientX, e.clientY));
+            // Touch gets the ripple too — a finger dragging across the
+            // wellness section stirs the water.
+            section.addEventListener('touchmove', (e) => {
+              updateRipplePointer(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
           } catch (err) {
             wellnessCanvas.style.display = 'none';
           }
@@ -1805,15 +2101,9 @@
         }
       }
 
-      /* ---------------- BOOKING FORM ---------------- */
-      const bookingForm = document.getElementById('bookingForm');
-      const toast = document.getElementById('toast');
-      bookingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 4000);
-        bookingForm.reset();
-      });
+      /* Booking form submission is handled by assets/checkout.js (shared
+         across every page with a booking form) — it POSTs to /api/bookings
+         and opens the real Paystack popup. No listener needed here. */
 
       /* ---------------- GENERIC REVEALS ---------------- */
       gsap.utils.toArray('[data-reveal]').forEach((el) => {
@@ -1828,19 +2118,169 @@
       });
 
       /* ---------------- PARALLAX ON IMAGES ---------------- */
-      if (!reduced && !coarse) {
+      if (!reduced) {
         document.querySelectorAll('.story-image img, .moment-image img, .events-image img').forEach((img) => {
           gsap.to(img, {
-            yPercent: -10,
+            yPercent: coarse ? -6 : -10,
             ease: 'none',
             scrollTrigger: { trigger: img.parentElement, start: 'top bottom', end: 'bottom top', scrub: true }
           });
         });
       }
 
+      /* ---------------- HEADLINE WORD REVEALS ---------------- */
+      // Split section headlines into words so every section enters with the
+      // same staggered, blurred rise the hero headline has.
+      if (!reduced) {
+        document.querySelectorAll(
+          '.arrival-headline, .story-headline, .dining-headline, .wellness-headline, .events-headline, .gallery-headline, .booking-headline'
+        ).forEach((headline) => {
+          headline.classList.add('split-headline');
+          const words = [];
+          headline.childNodes.forEach((node) => {
+            if (node.nodeType === Node.TEXT_NODE) {
+              const frag = document.createDocumentFragment();
+              node.textContent.split(/(\s+)/).forEach((piece) => {
+                if (!piece) return;
+                if (/^\s+$/.test(piece)) { frag.appendChild(document.createTextNode(' ')); return; }
+                const span = document.createElement('span');
+                span.className = 'w';
+                span.textContent = piece;
+                frag.appendChild(span);
+                words.push(span);
+              });
+              headline.replaceChild(frag, node);
+            } else if (node.nodeType === Node.ELEMENT_NODE) {
+              // Keep <em> etc. intact — wrap the element itself as one word.
+              const span = document.createElement('span');
+              span.className = 'w';
+              headline.replaceChild(span, node);
+              span.appendChild(node);
+              words.push(span);
+            }
+          });
+          words.forEach((w, i) => { w.style.transitionDelay = (i * 0.05) + 's'; });
+          ScrollTrigger.create({
+            trigger: headline,
+            start: 'top 84%',
+            onEnter: () => headline.classList.add('revealed'),
+            once: true
+          });
+        });
+      }
+
+      /* ---------------- MAGNETIC CTAS (fine pointers only) ---------------- */
+      if (!reduced && !coarse) {
+        document.querySelectorAll('.nav-reserve, .booking-submit, .hero-cta, .room-cta, .dining-cta, .events-cta').forEach((el) => {
+          el.classList.add('magnetic');
+          const strength = 0.28;
+          el.addEventListener('mousemove', (e) => {
+            const rect = el.getBoundingClientRect();
+            const dx = e.clientX - (rect.left + rect.width / 2);
+            const dy = e.clientY - (rect.top + rect.height / 2);
+            el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
+          });
+          el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+        });
+      }
+
+      /* ---------------- GALLERY LIGHTBOX ---------------- */
+      const lightbox = document.getElementById('lightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const lightboxCaption = document.getElementById('lightboxCaption');
+      const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+      let lightboxIndex = 0;
+
+      function openLightbox(index) {
+        lightboxIndex = ((index % galleryItems.length) + galleryItems.length) % galleryItems.length;
+        const item = galleryItems[lightboxIndex];
+        const img = item.querySelector('img');
+        // Show the largest variant the srcset offers.
+        const candidates = (img.getAttribute('srcset') || '').split(',')
+          .map((s) => s.trim().split(' ')).filter((p) => p.length === 2);
+        const largest = candidates.sort((a, b) => parseInt(b[1]) - parseInt(a[1]))[0];
+        lightboxImg.src = largest ? largest[0] : img.src;
+        lightboxImg.alt = img.alt;
+        lightboxCaption.textContent = (item.querySelector('.gallery-caption') || {}).textContent || '';
+        lightbox.classList.add('open');
+        document.body.classList.add('menu-locked');
+        if (lenis) lenis.stop();
+      }
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        document.body.classList.remove('menu-locked');
+        if (lenis) lenis.start();
+      }
+      galleryItems.forEach((item, i) => {
+        item.addEventListener('click', () => openLightbox(i));
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(i); }
+        });
+      });
+      document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+      document.getElementById('lightboxPrev').addEventListener('click', () => openLightbox(lightboxIndex - 1));
+      document.getElementById('lightboxNext').addEventListener('click', () => openLightbox(lightboxIndex + 1));
+      lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') openLightbox(lightboxIndex - 1);
+        if (e.key === 'ArrowRight') openLightbox(lightboxIndex + 1);
+      });
+      // Swipe between photos on touch.
+      let lbTouchX = null;
+      lightbox.addEventListener('touchstart', (e) => { lbTouchX = e.touches[0].clientX; }, { passive: true });
+      lightbox.addEventListener('touchend', (e) => {
+        if (lbTouchX === null) return;
+        const dx = e.changedTouches[0].clientX - lbTouchX;
+        lbTouchX = null;
+        if (Math.abs(dx) > 48) openLightbox(lightboxIndex + (dx < 0 ? 1 : -1));
+      }, { passive: true });
+
+      /* ---------------- PAGE TRANSITIONS ---------------- */
+      // The curtain covers the page by default (plain CSS, no JS needed for
+      // the initial paint), lifts on load, and sweeps back down when
+      // navigating to another page of the site.
+      const pageTransition = document.getElementById('pageTransition');
+      if (!reduced && pageTransition) {
+        pageTransition.classList.add('released');
+        pageTransition.addEventListener('transitionend', () => {
+          if (pageTransition.classList.contains('released')) pageTransition.style.display = 'none';
+        }, { once: true });
+
+        document.querySelectorAll('a[href$=".html"]').forEach((a) => {
+          a.addEventListener('click', (e) => {
+            const href = a.getAttribute('href');
+            if (!href || href.startsWith('http') || e.metaKey || e.ctrlKey || e.shiftKey) return;
+            e.preventDefault();
+            pageTransition.style.display = '';
+            // Force a reflow so the leaving transition runs from the released state.
+            void pageTransition.offsetWidth;
+            pageTransition.classList.remove('released');
+            pageTransition.classList.add('leaving');
+            setTimeout(() => { window.location.href = href; }, 700);
+          });
+        });
+        // Back/forward cache: if the page is restored, lift the curtain again.
+        window.addEventListener('pageshow', (e) => {
+          if (e.persisted) {
+            pageTransition.classList.remove('leaving');
+            pageTransition.classList.add('released');
+          }
+        });
+      } else if (pageTransition) {
+        pageTransition.style.display = 'none';
+      }
+
       /* ---------------- REFRESH PINNED ROOMS ---------------- */
       window.addEventListener('load', () => ScrollTrigger.refresh());
     })();
   </script>
+
+  <!-- Paystack cannot be pinned with SRI: they intentionally serve this
+       unversioned so security patches roll out without every merchant
+       re-deploying -- the same convention Stripe.js uses for its CDN. -->
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+  <script src="assets/checkout.js"></script>
 </body>
 </html>

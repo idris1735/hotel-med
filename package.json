@@ -1,0 +1,15 @@
+{
+  "name": "hotel-medallion",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hotel Medallion — static site + Vercel serverless functions for Paystack payments, Supabase Postgres",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "postgres": "^3.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

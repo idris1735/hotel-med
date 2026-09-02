@@ -3,20 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Medallion Executive — built for the business traveller. Expanded workspace, high-speed Wi-Fi, city view. Hotel Medallion, Lekki Phase 1, Lagos.">
+  <meta name="description" content="Medallion Deluxe Executive — built for the business traveller. Expanded workspace, high-speed Wi-Fi, city view. Hotel Medallion, Lekki Phase 1, Lagos.">
   <meta name="theme-color" content="#0a0a0f">
-  <title>Medallion Executive — Hotel Medallion, Lekki Phase 1, Lagos</title>
+  <title>Medallion Deluxe Executive — Hotel Medallion, Lekki Phase 1, Lagos</title>
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='62' fill='%23c9a227' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hotel Medallion">
-  <meta property="og:title" content="Medallion Executive — Hotel Medallion">
-  <meta property="og:description" content="Designed for the business traveller who refuses to compromise. Expanded workspace, high-speed connectivity — 38 m², ₦82,000 per night.">
+  <meta property="og:title" content="Medallion Deluxe Executive — Hotel Medallion">
+  <meta property="og:description" content="Designed for the business traveller who refuses to compromise. Expanded workspace, high-speed connectivity — 38 m², ₦85,000 per night (~$63 USD).">
   <meta property="og:image" content="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80">
-  <meta property="og:url" content="https://medallionhospitalityservices.com/rooms/medallion-executive">
+  <meta property="og:url" content="https://medallionhospitalityservices.com/rooms/medallion-deluxe-executive">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Medallion Executive — Hotel Medallion">
+  <meta name="twitter:title" content="Medallion Deluxe Executive — Hotel Medallion">
   <meta name="twitter:description" content="Designed for the business traveller who refuses to compromise. Expanded workspace, city view.">
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80">
 
@@ -33,9 +34,9 @@
   {
     "@context": "https://schema.org",
     "@type": "HotelRoom",
-    "name": "Medallion Executive",
+    "name": "Medallion Deluxe Executive",
     "description": "Designed for the business traveller who refuses to compromise — expanded workspace, high-speed connectivity, and a city view.",
-    "url": "https://medallionhospitalityservices.com/rooms/medallion-executive",
+    "url": "https://medallionhospitalityservices.com/rooms/medallion-deluxe-executive",
     "occupancy": { "@type": "QuantitativeValue", "maxValue": 2 },
     "floorSize": { "@type": "QuantitativeValue", "value": 38, "unitCode": "MTK" },
     "amenityFeature": [
@@ -161,10 +162,12 @@
       -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
     }
     .nav-logo {
+      display: inline-flex; align-items: center; gap: 0.65rem;
       font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
       text-transform: uppercase; color: var(--ivory); text-decoration: none;
       transition: color 0.4s;
     }
+    .nav-logo-icon { height: 30px; width: auto; display: block; }
     .nav-logo:hover { color: var(--champagne); }
     .nav-links { display: flex; gap: 2.2rem; align-items: center; list-style: none; }
     .nav-links a {
@@ -320,7 +323,7 @@
     .compare { background: var(--ivory); color: var(--midnight); padding: 9rem 5rem 10rem; }
     .compare-header { text-align: center; margin-bottom: 4rem; }
     .compare-headline { font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 400; color: var(--midnight); }
-    .compare-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .compare-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; max-width: 1400px; margin: 0 auto; }
     .compare-card { position: relative; height: 44vh; overflow: hidden; text-decoration: none; display: block; background: var(--midnight-soft); }
     .compare-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55) saturate(0.9); transition: transform 1.6s var(--ease-cinematic), filter 1.6s; }
     .compare-card:hover img { transform: scale(1.06); filter: brightness(0.7) saturate(1); }
@@ -336,7 +339,8 @@
 
     /* ---------------- FOOTER ---------------- */
     .footer { background: var(--midnight); padding: 8rem 5rem 3rem; position: relative; overflow: hidden; }
-    .footer-mark { text-align: center; font-family: var(--font-display); font-size: 8rem; font-weight: 300; color: var(--champagne); opacity: 0.9; line-height: 1; margin-bottom: 4rem; }
+    .footer-mark { display: flex; justify-content: center; margin-bottom: 4rem; }
+    .footer-mark img { height: 108px; width: auto; opacity: 0.92; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto; border-top: 1px solid rgba(245,240,232,0.1); padding-top: 3.5rem; }
     .footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: var(--ivory); margin-bottom: 1.2rem; letter-spacing: 0.12em; }
     .footer-signature { font-family: var(--font-script); font-size: 1.8rem; color: var(--champagne); opacity: 0.85; margin: -0.4rem 0 1.6rem; line-height: 1; }
@@ -360,7 +364,7 @@
       .amenities-section { padding: 6rem 2rem 7rem; }
       .room-meta { flex-wrap: wrap; gap: 1.8rem; }
       .compare { padding: 6rem 2rem 7rem; }
-      .compare-grid { grid-template-columns: 1fr; gap: 1.4rem; }
+      .compare-grid { grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
       .compare-card { height: 38vh; }
       .booking-form { grid-template-columns: 1fr 1fr; }
       .footer { padding: 6rem 2rem 2.5rem; }
@@ -392,11 +396,9 @@
   <div class="grain"></div>
 
   <!-- TOAST -->
-  <div class="toast" id="toast">Request received — our reservations team will confirm by email or phone.</div>
-
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <a href="index.html#hero" class="nav-logo">Hotel Medallion</a>
+    <a href="index.html#hero" class="nav-logo"><img class="nav-logo-icon" src="assets/logo-icon.png" alt="" width="30" height="30">Hotel Medallion</a>
     <ul class="nav-links">
       <li><a href="index.html#rooms">Rooms</a></li>
       <li><a href="index.html#dining">Dining</a></li>
@@ -416,12 +418,12 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-shot"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=2000&q=80" alt="Medallion Executive — expanded workspace" loading="eager"></div>
+    <div class="hero-shot"><img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=2000&q=80" alt="Medallion Deluxe Executive — expanded workspace" loading="eager"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <p class="hero-label" data-reveal>04 — Executive</p>
       <h1 class="hero-headline">
-        <span class="hero-line" data-reveal>Medallion</span>
+        <span class="hero-line" data-reveal>Medallion Deluxe</span>
         <span class="hero-line" data-reveal>Executive</span>
       </h1>
       <p class="hero-sub" data-reveal>Designed for the business traveller who refuses to compromise. Expanded workspace, high-speed connectivity, and the quiet authority of a room built for both rest and resolve.</p>
@@ -451,15 +453,15 @@
   <section class="arrival">
     <div class="arrival-grid">
       <div>
-        <span class="label label-muted" data-reveal>The Medallion Executive</span>
+        <span class="label label-muted" data-reveal>The Medallion Deluxe Executive</span>
         <h2 class="arrival-headline" data-reveal>Rest, without <em>losing the thread.</em></h2>
         <div class="arrival-rule"></div>
         <p class="arrival-body" data-reveal>The Executive room was built around a specific kind of guest: the one who is in Lagos to work, and who needs the room to keep up. A queen bed, an expanded workspace with room to actually spread out, and connectivity fast enough that a video call is never the reason you're behind.</p>
         <p class="arrival-body" data-reveal>The city sits just outside — close enough that you're never far from Victoria Island or Ikoyi, quiet enough that it doesn't follow you in. Breakfast is included, the mini bar is stocked, and housekeeping keeps the room the way you left your desk: in order.</p>
-        <p class="arrival-body" data-reveal>This is not a room designed to make you forget you're working. It's designed to make the work easier, and the rest that follows it actually feel like rest.</p>
+        <p class="arrival-body" data-reveal>This is not a room designed to make you forget you're working. It's designed to make the work easier, and the rest that follows it actually feel like rest. Sixteen of these sit across the residence — enough that a business trip rarely has to be planned around availability.</p>
       </div>
       <div style="position:relative; overflow:hidden;">
-        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80" alt="Medallion Executive interior detail" loading="lazy" style="width:100%; height:72vh; object-fit:cover;">
+        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=1200&q=80" alt="Medallion Deluxe Executive interior detail" loading="lazy" style="width:100%; height:72vh; object-fit:cover;">
       </div>
     </div>
   </section>
@@ -475,7 +477,7 @@
   <section class="amenities-section">
     <div class="amenities-inner">
       <span class="label label-champagne" data-reveal>What's Included</span>
-      <h2 class="amenities-headline" data-reveal>Everything the Executive includes</h2>
+      <h2 class="amenities-headline" data-reveal>Everything the Deluxe Executive includes</h2>
       <div class="room-meta" data-reveal>
         <div class="room-meta-item">Size<span>38 m²</span></div>
         <div class="room-meta-item">Guests<span>2 Adults</span></div>
@@ -491,7 +493,8 @@
         <div class="room-amenity">Multi-channel satellite TV</div>
         <div class="room-amenity">Coffee &amp; tea making facilities</div>
       </div>
-      <p class="room-price" data-reveal>₦82,000 <small>per night</small></p>
+      <p class="room-price" data-reveal>₦85,000 <small>per night</small></p>
+      <p style="font-size:0.72rem; letter-spacing:0.04em; color:var(--ivory-dim); font-weight:300; margin-top:0.6rem;" data-reveal>≈ $63 USD per night — pay in either currency at checkout</p>
     </div>
   </section>
 
@@ -499,13 +502,13 @@
   <section class="gallery">
     <div class="gallery-header">
       <span class="label label-champagne" style="text-align:center;">Gallery</span>
-      <h2 class="gallery-headline">The Executive, in Detail</h2>
+      <h2 class="gallery-headline">The Deluxe Executive, in Detail</h2>
     </div>
     <div class="gallery-track">
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80" alt="Executive room, exterior arrival" loading="lazy"><span class="gallery-caption">Arrival</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1200&q=80" alt="City view from the Executive room" loading="lazy"><span class="gallery-caption">City View</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80" alt="Executive room approach" loading="lazy"><span class="gallery-caption">Architecture</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=80" alt="Executive room finishing detail" loading="lazy"><span class="gallery-caption">Finish</span></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80" alt="Deluxe Executive room, exterior arrival" loading="lazy"><span class="gallery-caption">Arrival</span></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1489392191049-fc10c97e64b6?w=1200&q=80" alt="City view from the Deluxe Executive room" loading="lazy"><span class="gallery-caption">City View</span></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80" alt="Deluxe Executive room approach" loading="lazy"><span class="gallery-caption">Architecture</span></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=80" alt="Deluxe Executive room finishing detail" loading="lazy"><span class="gallery-caption">Finish</span></div>
     </div>
   </section>
 
@@ -519,7 +522,7 @@
     </svg>
     <div class="booking-inner">
       <span class="label label-champagne" style="text-align:center;">Reservation</span>
-      <h2 class="booking-headline">Reserve the Executive</h2>
+      <h2 class="booking-headline">Reserve the Deluxe Executive</h2>
       <p class="booking-sub">A residence, not a room. Tell us when — we will handle the rest.</p>
       <form class="booking-form" id="bookingForm">
         <div class="booking-field">
@@ -537,14 +540,34 @@
         <div class="booking-field">
           <label for="roomType">Room</label>
           <select id="roomType">
-            <option>Medallion Suite</option>
-            <option>Medallion Comfort</option>
-            <option>Medallion Mini-Suite</option>
-            <option selected>Medallion Executive</option>
+            <option>2 Bedroom Deluxe Suite</option>
+            <option>1 Bedroom Deluxe Suite</option>
+            <option>Medallion Deluxe Comfort</option>
+            <option selected>Medallion Deluxe Executive</option>
+            <option>Double Bed Deluxe Executive</option>
           </select>
         </div>
+        <div class="booking-field">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="NGN" selected>₦ Naira</option>
+            <option value="USD">$ US Dollar</option>
+          </select>
+        </div>
+        <div class="booking-field">
+          <label for="fullName">Full name</label>
+          <input type="text" id="fullName" autocomplete="name" required>
+        </div>
+        <div class="booking-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" autocomplete="email" required>
+        </div>
+        <div class="booking-field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" autocomplete="tel" required>
+        </div>
         <div class="booking-field" style="grid-column:1/-1; text-align:center;">
-          <button type="submit" class="booking-submit">Request Availability</button>
+          <button type="submit" class="booking-submit">Reserve &amp; Pay</button>
         </div>
       </form>
       <p class="booking-note">
@@ -563,26 +586,34 @@
     </div>
     <div class="compare-grid">
       <a href="room-suite.html" class="compare-card">
-        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=80" alt="Medallion Suite">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=80" alt="2 Bedroom Deluxe Suite">
         <div class="compare-card-content">
-          <div class="compare-card-name">Medallion Suite</div>
-          <div class="compare-card-price">₦95,000 per night</div>
-          <span class="compare-card-link">View Room <span class="arrow">→</span></span>
-        </div>
-      </a>
-      <a href="room-comfort.html" class="compare-card">
-        <img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?w=900&q=80" alt="Medallion Comfort">
-        <div class="compare-card-content">
-          <div class="compare-card-name">Medallion Comfort</div>
-          <div class="compare-card-price">₦68,000 per night</div>
+          <div class="compare-card-name">2 Bedroom Deluxe Suite</div>
+          <div class="compare-card-price">₦135,000 per night (~$100)</div>
           <span class="compare-card-link">View Room <span class="arrow">→</span></span>
         </div>
       </a>
       <a href="room-mini-suite.html" class="compare-card">
-        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&q=80" alt="Medallion Mini-Suite">
+        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&q=80" alt="1 Bedroom Deluxe Suite">
         <div class="compare-card-content">
-          <div class="compare-card-name">Medallion Mini-Suite</div>
-          <div class="compare-card-price">₦55,000 per night</div>
+          <div class="compare-card-name">1 Bedroom Deluxe Suite</div>
+          <div class="compare-card-price">₦115,000 per night (~$85)</div>
+          <span class="compare-card-link">View Room <span class="arrow">→</span></span>
+        </div>
+      </a>
+      <a href="room-comfort.html" class="compare-card">
+        <img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?w=900&q=80" alt="Medallion Deluxe Comfort">
+        <div class="compare-card-content">
+          <div class="compare-card-name">Medallion Deluxe Comfort</div>
+          <div class="compare-card-price">₦68,000 per night (~$51)</div>
+          <span class="compare-card-link">View Room <span class="arrow">→</span></span>
+        </div>
+      </a>
+      <a href="room-executive-double.html" class="compare-card">
+        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&q=80" alt="Double Bed Deluxe Executive">
+        <div class="compare-card-content">
+          <div class="compare-card-name">Double Bed Deluxe Executive</div>
+          <div class="compare-card-price">₦100,000 per night (~$75)</div>
           <span class="compare-card-link">View Room <span class="arrow">→</span></span>
         </div>
       </a>
@@ -591,7 +622,7 @@
 
   <!-- FOOTER -->
   <footer class="footer" id="footer">
-    <div class="footer-mark">M</div>
+    <div class="footer-mark"><img src="assets/logo-icon.png" alt="Hotel Medallion" width="108" height="108"></div>
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Hotel Medallion</div>
@@ -782,15 +813,9 @@
         }
       }
 
-      /* ---------------- BOOKING FORM ---------------- */
-      const bookingForm = document.getElementById('bookingForm');
-      const toast = document.getElementById('toast');
-      bookingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 4000);
-        bookingForm.reset();
-      });
+      /* Booking form submission is handled by assets/checkout.js (shared
+         across every page with a booking form) -- it POSTs to /api/bookings
+         and opens the real Paystack popup. No listener needed here. */
 
       /* ---------------- GENERIC REVEALS ---------------- */
       gsap.utils.toArray('[data-reveal]').forEach((el) => {
@@ -807,5 +832,11 @@
       window.addEventListener('load', () => ScrollTrigger.refresh());
     })();
   </script>
+
+  <!-- Paystack cannot be pinned with SRI: they intentionally serve this
+       unversioned so security patches roll out without every merchant
+       re-deploying -- the same convention Stripe.js uses for its CDN. -->
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+  <script src="assets/checkout.js"></script>
 </body>
 </html>

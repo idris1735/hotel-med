@@ -7,7 +7,8 @@
   <meta name="theme-color" content="#0a0a0f">
   <title>Our Story — Hotel Medallion</title>
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='62' fill='%23c9a227' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hotel Medallion">
@@ -164,10 +165,12 @@
       -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
     }
     .nav-logo {
+      display: inline-flex; align-items: center; gap: 0.65rem;
       font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
       text-transform: uppercase; color: var(--ivory); text-decoration: none;
       transition: color 0.4s;
     }
+    .nav-logo-icon { height: 30px; width: auto; display: block; }
     .nav-logo:hover { color: var(--champagne); }
     .nav-links { display: flex; gap: 2.2rem; align-items: center; list-style: none; }
     .nav-links a {
@@ -340,7 +343,8 @@
 
     /* ---------------- FOOTER ---------------- */
     .footer { background: var(--midnight); padding: 8rem 5rem 3rem; position: relative; overflow: hidden; }
-    .footer-mark { text-align: center; font-family: var(--font-display); font-size: 8rem; font-weight: 300; color: var(--champagne); opacity: 0.9; line-height: 1; margin-bottom: 4rem; }
+    .footer-mark { display: flex; justify-content: center; margin-bottom: 4rem; }
+    .footer-mark img { height: 108px; width: auto; opacity: 0.92; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto; border-top: 1px solid rgba(245,240,232,0.1); padding-top: 3.5rem; }
     .footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: var(--ivory); margin-bottom: 1.2rem; letter-spacing: 0.12em; }
     .footer-signature { font-family: var(--font-script); font-size: 1.8rem; color: var(--champagne); opacity: 0.85; margin: -0.4rem 0 1.6rem; line-height: 1; }
@@ -402,7 +406,7 @@
 
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <a href="index.html" class="nav-logo">Hotel Medallion</a>
+    <a href="index.html" class="nav-logo"><img class="nav-logo-icon" src="assets/logo-icon.png" alt="" width="30" height="30">Hotel Medallion</a>
     <ul class="nav-links">
       <li><a href="index.html#rooms">Rooms</a></li>
       <li><a href="index.html#dining">Dining</a></li>
@@ -603,7 +607,7 @@
 
   <!-- FOOTER -->
   <footer class="footer" id="footer">
-    <div class="footer-mark">M</div>
+    <div class="footer-mark"><img src="assets/logo-icon.png" alt="Hotel Medallion" width="108" height="108"></div>
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Hotel Medallion</div>

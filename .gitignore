@@ -1,1 +1,10 @@
 archive/
+node_modules/
+.env
+.env.local
+.vercel
+
+# Internal client planning doc (affiliate/commission/OTA integration
+# details) -- not meant for a public repo. The brand manual .docx is fine
+# to keep tracked; this one isn't.
+Hotel_Medallion_Website_Backend_Brief.docx

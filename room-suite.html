@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Medallion Suite — the largest of Hotel Medallion's residences. King-size bed, private sitting room, two bedrooms, private balcony. Lekki Phase 1, Lagos.">
+  <meta name="description" content="2 Bedroom Deluxe Suite — Hotel Medallion's largest residence. Two full bedrooms, king bed, private sitting room, private balcony. Lekki Phase 1, Lagos.">
   <meta name="theme-color" content="#0a0a0f">
-  <title>Medallion Suite — Hotel Medallion, Lekki Phase 1, Lagos</title>
+  <title>2 Bedroom Deluxe Suite — Hotel Medallion, Lekki Phase 1, Lagos</title>
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='62' fill='%23c9a227' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hotel Medallion">
-  <meta property="og:title" content="Medallion Suite — Hotel Medallion">
-  <meta property="og:description" content="The largest of our residences. A separate living area, king bed, private balcony overlooking Lekki — 45 m², two bedrooms, ₦95,000 per night.">
+  <meta property="og:title" content="2 Bedroom Deluxe Suite — Hotel Medallion">
+  <meta property="og:description" content="Two full bedrooms under one reservation. King bed, private sitting room, private balcony overlooking Lekki — 58 m², ₦135,000 per night (~$100 USD).">
   <meta property="og:image" content="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80">
-  <meta property="og:url" content="https://medallionhospitalityservices.com/rooms/medallion-suite">
+  <meta property="og:url" content="https://medallionhospitalityservices.com/rooms/2-bedroom-deluxe-suite">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Medallion Suite — Hotel Medallion">
-  <meta name="twitter:description" content="The largest of our residences. King-size bed, sitting room, two bedrooms, private balcony.">
+  <meta name="twitter:title" content="2 Bedroom Deluxe Suite — Hotel Medallion">
+  <meta name="twitter:description" content="Two full bedrooms, king bed, private sitting room, private balcony overlooking Lekki.">
   <meta name="twitter:image" content="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,11 +34,11 @@
   {
     "@context": "https://schema.org",
     "@type": "HotelRoom",
-    "name": "Medallion Suite",
-    "description": "The largest of Hotel Medallion's residences — a separate living area, king bed, private balcony overlooking Lekki.",
-    "url": "https://medallionhospitalityservices.com/rooms/medallion-suite",
-    "occupancy": { "@type": "QuantitativeValue", "maxValue": 2 },
-    "floorSize": { "@type": "QuantitativeValue", "value": 45, "unitCode": "MTK" },
+    "name": "2 Bedroom Deluxe Suite",
+    "description": "Hotel Medallion's largest residence — two full bedrooms, a private sitting room, king bed, private balcony overlooking Lekki.",
+    "url": "https://medallionhospitalityservices.com/rooms/2-bedroom-deluxe-suite",
+    "occupancy": { "@type": "QuantitativeValue", "maxValue": 4 },
+    "floorSize": { "@type": "QuantitativeValue", "value": 58, "unitCode": "MTK" },
     "amenityFeature": [
       { "@type": "LocationFeatureSpecification", "name": "King-size bed" },
       { "@type": "LocationFeatureSpecification", "name": "Private sitting room" },
@@ -162,10 +163,12 @@
       -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
     }
     .nav-logo {
+      display: inline-flex; align-items: center; gap: 0.65rem;
       font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
       text-transform: uppercase; color: var(--ivory); text-decoration: none;
       transition: color 0.4s;
     }
+    .nav-logo-icon { height: 30px; width: auto; display: block; }
     .nav-logo:hover { color: var(--champagne); }
     .nav-links { display: flex; gap: 2.2rem; align-items: center; list-style: none; }
     .nav-links a {
@@ -321,7 +324,7 @@
     .compare { background: var(--ivory); color: var(--midnight); padding: 9rem 5rem 10rem; }
     .compare-header { text-align: center; margin-bottom: 4rem; }
     .compare-headline { font-family: var(--font-display); font-size: clamp(2rem, 3.6vw, 3rem); font-weight: 400; color: var(--midnight); }
-    .compare-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+    .compare-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6rem; max-width: 1400px; margin: 0 auto; }
     .compare-card { position: relative; height: 44vh; overflow: hidden; text-decoration: none; display: block; background: var(--midnight-soft); }
     .compare-card img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.55) saturate(0.9); transition: transform 1.6s var(--ease-cinematic), filter 1.6s; }
     .compare-card:hover img { transform: scale(1.06); filter: brightness(0.7) saturate(1); }
@@ -337,7 +340,8 @@
 
     /* ---------------- FOOTER ---------------- */
     .footer { background: var(--midnight); padding: 8rem 5rem 3rem; position: relative; overflow: hidden; }
-    .footer-mark { text-align: center; font-family: var(--font-display); font-size: 8rem; font-weight: 300; color: var(--champagne); opacity: 0.9; line-height: 1; margin-bottom: 4rem; }
+    .footer-mark { display: flex; justify-content: center; margin-bottom: 4rem; }
+    .footer-mark img { height: 108px; width: auto; opacity: 0.92; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto; border-top: 1px solid rgba(245,240,232,0.1); padding-top: 3.5rem; }
     .footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: var(--ivory); margin-bottom: 1.2rem; letter-spacing: 0.12em; }
     .footer-signature { font-family: var(--font-script); font-size: 1.8rem; color: var(--champagne); opacity: 0.85; margin: -0.4rem 0 1.6rem; line-height: 1; }
@@ -361,7 +365,7 @@
       .amenities-section { padding: 6rem 2rem 7rem; }
       .room-meta { flex-wrap: wrap; gap: 1.8rem; }
       .compare { padding: 6rem 2rem 7rem; }
-      .compare-grid { grid-template-columns: 1fr; gap: 1.4rem; }
+      .compare-grid { grid-template-columns: repeat(2, 1fr); gap: 1.4rem; }
       .compare-card { height: 38vh; }
       .booking-form { grid-template-columns: 1fr 1fr; }
       .footer { padding: 6rem 2rem 2.5rem; }
@@ -393,11 +397,9 @@
   <div class="grain"></div>
 
   <!-- TOAST -->
-  <div class="toast" id="toast">Request received — our reservations team will confirm by email or phone.</div>
-
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <a href="index.html#hero" class="nav-logo">Hotel Medallion</a>
+    <a href="index.html#hero" class="nav-logo"><img class="nav-logo-icon" src="assets/logo-icon.png" alt="" width="30" height="30">Hotel Medallion</a>
     <ul class="nav-links">
       <li><a href="index.html#rooms">Rooms</a></li>
       <li><a href="index.html#dining">Dining</a></li>
@@ -417,15 +419,15 @@
 
   <!-- HERO -->
   <section class="hero" id="hero">
-    <div class="hero-shot"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=2000&q=80" alt="Medallion Suite — king bed and sitting room" loading="eager"></div>
+    <div class="hero-shot"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=2000&q=80" alt="2 Bedroom Deluxe Suite — king bed and sitting room" loading="eager"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <p class="hero-label" data-reveal>01 — Suite</p>
       <h1 class="hero-headline">
-        <span class="hero-line" data-reveal>Medallion</span>
-        <span class="hero-line" data-reveal>Suite</span>
+        <span class="hero-line" data-reveal>2 Bedroom</span>
+        <span class="hero-line" data-reveal>Deluxe Suite</span>
       </h1>
-      <p class="hero-sub" data-reveal>The largest of our residences. A separate living area, king bed, private balcony overlooking Lekki, and the kind of silence that only comes from thoughtful architecture.</p>
+      <p class="hero-sub" data-reveal>Two full bedrooms under one reservation — a separate living area, king bed, private balcony overlooking Lekki, and space enough that a family or a small group can travel together without living on top of each other.</p>
       <a href="#reserve" class="hero-cta" data-reveal>
         <span>Reserve This Suite</span>
         <span class="hero-cta-line"></span>
@@ -452,15 +454,15 @@
   <section class="arrival">
     <div class="arrival-grid">
       <div>
-        <span class="label label-muted" data-reveal>The Medallion Suite</span>
-        <h2 class="arrival-headline" data-reveal>Space, kept <em>quiet.</em></h2>
+        <span class="label label-muted" data-reveal>The 2 Bedroom Deluxe Suite</span>
+        <h2 class="arrival-headline" data-reveal>Two rooms, <em>one address.</em></h2>
         <div class="arrival-rule"></div>
-        <p class="arrival-body" data-reveal>The Suite is built around a distinction most rooms don't bother making: the living area and the bedroom are two separate spaces, not one room doing double duty. A king-size bed sits apart from where you'd take a call, read, or receive a guest — the day and the evening don't have to share the same square footage.</p>
-        <p class="arrival-body" data-reveal>Step out onto the private balcony and Lekki arrives at a distance — close enough to feel present, far enough that it stays quiet. With two bedrooms, the Suite suits a family travelling together, or simply a stay where a little more room changes how the whole visit feels.</p>
-        <p class="arrival-body" data-reveal>Breakfast is included every morning, and laundry is handled at no additional cost — the kind of detail that lets a longer stay feel unhurried rather than like something to manage.</p>
+        <p class="arrival-body" data-reveal>Most suites borrow space from a single room and call it generous. This one doesn't need to borrow anything — two genuine bedrooms, each with its own door, built around a shared living area that does the work a hotel room usually can't: hosting a conversation without waking anyone, or giving two travellers a night apart without ending the trip together.</p>
+        <p class="arrival-body" data-reveal>A king-size bed anchors the primary room; the second bedroom keeps its own rhythm. Step onto the private balcony and Lekki sits at a comfortable distance — near enough to feel like the city, far enough that it stays quiet.</p>
+        <p class="arrival-body" data-reveal>There are only three of these in the entire residence. Breakfast is included every morning, and laundry is handled at no additional cost — for whichever of your two bedrooms fills up first with the day's clothes.</p>
       </div>
       <div style="position:relative; overflow:hidden;">
-        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80" alt="Medallion Suite interior detail" loading="lazy" style="width:100%; height:72vh; object-fit:cover;">
+        <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1200&q=80" alt="2 Bedroom Deluxe Suite interior detail" loading="lazy" style="width:100%; height:72vh; object-fit:cover;">
       </div>
     </div>
   </section>
@@ -468,7 +470,7 @@
   <!-- MOMENT -->
   <section class="moment">
     <div class="moment-image"><img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920&q=80" alt="Suite in low evening light" loading="lazy"></div>
-    <div class="moment-text" data-reveal>Space, the quiet luxury.</div>
+    <div class="moment-text" data-reveal>Two rooms. One quiet.</div>
     <div class="moment-rule"></div>
   </section>
 
@@ -476,16 +478,16 @@
   <section class="amenities-section">
     <div class="amenities-inner">
       <span class="label label-champagne" data-reveal>What's Included</span>
-      <h2 class="amenities-headline" data-reveal>Everything the Suite includes</h2>
+      <h2 class="amenities-headline" data-reveal>Everything the 2 Bedroom Deluxe Suite includes</h2>
       <div class="room-meta" data-reveal>
-        <div class="room-meta-item">Size<span>45 m²</span></div>
-        <div class="room-meta-item">Guests<span>2 Adults</span></div>
+        <div class="room-meta-item">Size<span>58 m²</span></div>
+        <div class="room-meta-item">Guests<span>4 Adults</span></div>
         <div class="room-meta-item">View<span>City &amp; Garden</span></div>
       </div>
       <div class="room-amenities" data-reveal>
         <div class="room-amenity">King-size bed</div>
+        <div class="room-amenity">Second bedroom with queen bed</div>
         <div class="room-amenity">Private sitting room</div>
-        <div class="room-amenity">Two bedrooms</div>
         <div class="room-amenity">Private balcony overlooking Lekki</div>
         <div class="room-amenity">Breakfast included, every morning</div>
         <div class="room-amenity">Free 24-hour laundry service</div>
@@ -495,7 +497,8 @@
         <div class="room-amenity">Multi-channel satellite TV</div>
         <div class="room-amenity">Free Wi-Fi</div>
       </div>
-      <p class="room-price" data-reveal>₦95,000 <small>per night</small></p>
+      <p class="room-price" data-reveal>₦135,000 <small>per night</small></p>
+      <p style="font-size:0.72rem; letter-spacing:0.04em; color:var(--ivory-dim); font-weight:300; margin-top:0.6rem;" data-reveal>≈ $100 USD per night — pay in either currency at checkout</p>
     </div>
   </section>
 
@@ -503,13 +506,13 @@
   <section class="gallery">
     <div class="gallery-header">
       <span class="label label-champagne" style="text-align:center;">Gallery</span>
-      <h2 class="gallery-headline">The Suite, in Detail</h2>
+      <h2 class="gallery-headline">The 2 Bedroom Deluxe Suite, in Detail</h2>
     </div>
     <div class="gallery-track">
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80" alt="Suite architectural entrance" loading="lazy"><span class="gallery-caption">Arrival</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200&q=80" alt="Suite interior detail" loading="lazy"><span class="gallery-caption">Detail, considered</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80" alt="Suite residence view" loading="lazy"><span class="gallery-caption">A place to return to</span></div>
-      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=80" alt="Suite finishing detail" loading="lazy"><span class="gallery-caption">Finish</span></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80" alt="2 Bedroom Deluxe Suite architectural entrance" loading="lazy"><span class="gallery-caption">Arrival</span></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=1200&q=80" alt="2 Bedroom Deluxe Suite interior detail" loading="lazy"><span class="gallery-caption">Detail, considered</span></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=80" alt="2 Bedroom Deluxe Suite residence view" loading="lazy"><span class="gallery-caption">A place to return to</span></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=1200&q=80" alt="2 Bedroom Deluxe Suite finishing detail" loading="lazy"><span class="gallery-caption">Finish</span></div>
     </div>
   </section>
 
@@ -523,7 +526,7 @@
     </svg>
     <div class="booking-inner">
       <span class="label label-champagne" style="text-align:center;">Reservation</span>
-      <h2 class="booking-headline">Reserve the Suite</h2>
+      <h2 class="booking-headline">Reserve the 2 Bedroom Deluxe Suite</h2>
       <p class="booking-sub">A residence, not a room. Tell us when — we will handle the rest.</p>
       <form class="booking-form" id="bookingForm">
         <div class="booking-field">
@@ -541,14 +544,34 @@
         <div class="booking-field">
           <label for="roomType">Room</label>
           <select id="roomType">
-            <option selected>Medallion Suite</option>
-            <option>Medallion Comfort</option>
-            <option>Medallion Mini-Suite</option>
-            <option>Medallion Executive</option>
+            <option selected>2 Bedroom Deluxe Suite</option>
+            <option>1 Bedroom Deluxe Suite</option>
+            <option>Medallion Deluxe Comfort</option>
+            <option>Medallion Deluxe Executive</option>
+            <option>Double Bed Deluxe Executive</option>
           </select>
         </div>
+        <div class="booking-field">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="NGN" selected>₦ Naira</option>
+            <option value="USD">$ US Dollar</option>
+          </select>
+        </div>
+        <div class="booking-field">
+          <label for="fullName">Full name</label>
+          <input type="text" id="fullName" autocomplete="name" required>
+        </div>
+        <div class="booking-field">
+          <label for="email">Email</label>
+          <input type="email" id="email" autocomplete="email" required>
+        </div>
+        <div class="booking-field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" autocomplete="tel" required>
+        </div>
         <div class="booking-field" style="grid-column:1/-1; text-align:center;">
-          <button type="submit" class="booking-submit">Request Availability</button>
+          <button type="submit" class="booking-submit">Reserve &amp; Pay</button>
         </div>
       </form>
       <p class="booking-note">
@@ -566,27 +589,35 @@
       <h2 class="compare-headline">Compare Other Rooms</h2>
     </div>
     <div class="compare-grid">
-      <a href="room-comfort.html" class="compare-card">
-        <img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?w=900&q=80" alt="Medallion Comfort">
+      <a href="room-mini-suite.html" class="compare-card">
+        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&q=80" alt="1 Bedroom Deluxe Suite">
         <div class="compare-card-content">
-          <div class="compare-card-name">Medallion Comfort</div>
-          <div class="compare-card-price">₦68,000 per night</div>
+          <div class="compare-card-name">1 Bedroom Deluxe Suite</div>
+          <div class="compare-card-price">₦115,000 per night (~$85)</div>
           <span class="compare-card-link">View Room <span class="arrow">→</span></span>
         </div>
       </a>
-      <a href="room-mini-suite.html" class="compare-card">
-        <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=900&q=80" alt="Medallion Mini-Suite">
+      <a href="room-comfort.html" class="compare-card">
+        <img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?w=900&q=80" alt="Medallion Deluxe Comfort">
         <div class="compare-card-content">
-          <div class="compare-card-name">Medallion Mini-Suite</div>
-          <div class="compare-card-price">₦55,000 per night</div>
+          <div class="compare-card-name">Medallion Deluxe Comfort</div>
+          <div class="compare-card-price">₦68,000 per night (~$51)</div>
           <span class="compare-card-link">View Room <span class="arrow">→</span></span>
         </div>
       </a>
       <a href="room-executive.html" class="compare-card">
-        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=900&q=80" alt="Medallion Executive">
+        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=900&q=80" alt="Medallion Deluxe Executive">
         <div class="compare-card-content">
-          <div class="compare-card-name">Medallion Executive</div>
-          <div class="compare-card-price">₦82,000 per night</div>
+          <div class="compare-card-name">Medallion Deluxe Executive</div>
+          <div class="compare-card-price">₦85,000 per night (~$63)</div>
+          <span class="compare-card-link">View Room <span class="arrow">→</span></span>
+        </div>
+      </a>
+      <a href="room-executive-double.html" class="compare-card">
+        <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=900&q=80" alt="Double Bed Deluxe Executive">
+        <div class="compare-card-content">
+          <div class="compare-card-name">Double Bed Deluxe Executive</div>
+          <div class="compare-card-price">₦100,000 per night (~$75)</div>
           <span class="compare-card-link">View Room <span class="arrow">→</span></span>
         </div>
       </a>
@@ -595,7 +626,7 @@
 
   <!-- FOOTER -->
   <footer class="footer" id="footer">
-    <div class="footer-mark">M</div>
+    <div class="footer-mark"><img src="assets/logo-icon.png" alt="Hotel Medallion" width="108" height="108"></div>
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Hotel Medallion</div>
@@ -786,15 +817,9 @@
         }
       }
 
-      /* ---------------- BOOKING FORM ---------------- */
-      const bookingForm = document.getElementById('bookingForm');
-      const toast = document.getElementById('toast');
-      bookingForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 4000);
-        bookingForm.reset();
-      });
+      /* Booking form submission is handled by assets/checkout.js (shared
+         across every page with a booking form) -- it POSTs to /api/bookings
+         and opens the real Paystack popup. No listener needed here. */
 
       /* ---------------- GENERIC REVEALS ---------------- */
       gsap.utils.toArray('[data-reveal]').forEach((el) => {
@@ -811,5 +836,11 @@
       window.addEventListener('load', () => ScrollTrigger.refresh());
     })();
   </script>
+
+  <!-- Paystack cannot be pinned with SRI: they intentionally serve this
+       unversioned so security patches roll out without every merchant
+       re-deploying -- the same convention Stripe.js uses for its CDN. -->
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+  <script src="assets/checkout.js"></script>
 </body>
 </html>

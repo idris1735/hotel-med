@@ -7,7 +7,8 @@
   <meta name="theme-color" content="#0a0a0f">
   <title>Reserve Your Stay — Hotel Medallion</title>
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230a0a0f'/%3E%3Ctext x='50' y='68' font-family='Georgia,serif' font-size='62' fill='%23c9a227' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="assets/favicon-32.png">
+  <link rel="apple-touch-icon" href="assets/favicon-180.png">
 
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hotel Medallion">
@@ -168,10 +169,12 @@
       -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
     }
     .nav-logo {
+      display: inline-flex; align-items: center; gap: 0.65rem;
       font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
       text-transform: uppercase; color: var(--ivory); text-decoration: none;
       transition: color 0.4s;
     }
+    .nav-logo-icon { height: 30px; width: auto; display: block; }
     .nav-logo:hover { color: var(--champagne); }
     .nav-links { display: flex; gap: 2.2rem; align-items: center; list-style: none; }
     .nav-links a {
@@ -227,7 +230,8 @@
 
     /* ---------------- FOOTER (reused verbatim) ---------------- */
     .footer { background: var(--midnight); padding: 8rem 5rem 3rem; position: relative; overflow: hidden; }
-    .footer-mark { text-align: center; font-family: var(--font-display); font-size: 8rem; font-weight: 300; color: var(--champagne); opacity: 0.9; line-height: 1; margin-bottom: 4rem; }
+    .footer-mark { display: flex; justify-content: center; margin-bottom: 4rem; }
+    .footer-mark img { height: 108px; width: auto; opacity: 0.92; }
     .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; max-width: 1400px; margin: 0 auto; border-top: 1px solid rgba(245,240,232,0.1); padding-top: 3.5rem; }
     .footer-brand { font-family: var(--font-display); font-size: 1.6rem; color: var(--ivory); margin-bottom: 1.2rem; letter-spacing: 0.12em; }
     .footer-signature { font-family: var(--font-script); font-size: 1.8rem; color: var(--champagne); opacity: 0.85; margin: -0.4rem 0 1.6rem; line-height: 1; }
@@ -314,6 +318,7 @@
     .res-form-row { display: grid; gap: 2rem; }
     .res-form-row.cols-5 { grid-template-columns: 1.3fr 1fr 1fr 0.7fr 0.7fr; }
     .res-form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .res-form-row.cols-4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
     .res-field label { display: block; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(245,240,232,0.45); margin-bottom: 0.8rem; }
     .res-field input, .res-field select, .res-field textarea {
       width: 100%; background: transparent; border: none; border-bottom: 1px solid rgba(245,240,232,0.22);
@@ -344,12 +349,14 @@
       .res-form-section { padding: 4rem 2rem 6rem; }
       .res-form-row.cols-5 { grid-template-columns: 1fr 1fr; }
       .res-form-row.cols-3 { grid-template-columns: 1fr 1fr; }
+      .res-form-row.cols-4 { grid-template-columns: 1fr 1fr; }
       .footer { padding: 6rem 2rem 2.5rem; }
       .footer-grid { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
       .res-form-row.cols-5 { grid-template-columns: 1fr 1fr; }
       .res-form-row.cols-3 { grid-template-columns: 1fr; }
+      .res-form-row.cols-4 { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; text-align: center; }
     }
@@ -373,11 +380,9 @@
   <div class="grain"></div>
 
   <!-- TOAST -->
-  <div class="toast" id="toast">Request received — our reservations team will confirm by email or phone.</div>
-
   <!-- NAV -->
   <nav class="nav" id="nav">
-    <a href="index.html#hero" class="nav-logo">Hotel Medallion</a>
+    <a href="index.html#hero" class="nav-logo"><img class="nav-logo-icon" src="assets/logo-icon.png" alt="" width="30" height="30">Hotel Medallion</a>
     <ul class="nav-links">
       <li><a href="index.html#rooms">Rooms</a></li>
       <li><a href="index.html#dining">Dining</a></li>
@@ -419,63 +424,78 @@
       </div>
       <div class="room-select-grid" id="roomSelectGrid">
 
-        <div class="room-select-card active" data-room="Medallion Suite" data-price="95000">
+        <div class="room-select-card active" data-room="2 Bedroom Deluxe Suite" data-price="135000">
           <div class="room-select-image">
-            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80" alt="Medallion Suite" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/sut.jpg">
+            <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=800&q=80" alt="2 Bedroom Deluxe Suite" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/sut.jpg">
             <div class="room-select-badge" aria-hidden="true"></div>
           </div>
           <div class="room-select-body">
             <div class="room-select-top">
-              <span class="room-select-name">Medallion Suite</span>
-              <span class="room-select-price">₦95,000 <small>/ night</small></span>
+              <span class="room-select-name">2 Bedroom Deluxe Suite</span>
+              <span class="room-select-price">₦135,000 <small>/ night (~$100)</small></span>
             </div>
-            <p class="room-select-desc">The largest of our residences — separate living area, king bed, private balcony overlooking Lekki.</p>
+            <p class="room-select-desc">Two full bedrooms under one reservation — king bed, private balcony overlooking Lekki. One of only three.</p>
             <a href="room-suite.html" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
           </div>
         </div>
 
-        <div class="room-select-card" data-room="Medallion Comfort" data-price="68000">
+        <div class="room-select-card" data-room="1 Bedroom Deluxe Suite" data-price="115000">
           <div class="room-select-image">
-            <img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?w=800&q=80" alt="Medallion Comfort" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_175954.jpg">
+            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800&q=80" alt="1 Bedroom Deluxe Suite" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220503_152803.jpg">
             <div class="room-select-badge" aria-hidden="true"></div>
           </div>
           <div class="room-select-body">
             <div class="room-select-top">
-              <span class="room-select-name">Medallion Comfort</span>
-              <span class="room-select-price">₦68,000 <small>/ night</small></span>
+              <span class="room-select-name">1 Bedroom Deluxe Suite</span>
+              <span class="room-select-price">₦115,000 <small>/ night (~$85)</small></span>
+            </div>
+            <p class="room-select-desc">A private bedroom and separate sitting area — suite-level finish, scaled to two. Our sole 1-Bedroom Suite.</p>
+            <a href="room-mini-suite.html" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
+          </div>
+        </div>
+
+        <div class="room-select-card" data-room="Medallion Deluxe Comfort" data-price="68000">
+          <div class="room-select-image">
+            <img src="https://images.unsplash.com/photo-1591088398332-8a7791972843?w=800&q=80" alt="Medallion Deluxe Comfort" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220502_175954.jpg">
+            <div class="room-select-badge" aria-hidden="true"></div>
+          </div>
+          <div class="room-select-body">
+            <div class="room-select-top">
+              <span class="room-select-name">Medallion Deluxe Comfort</span>
+              <span class="room-select-price">₦68,000 <small>/ night (~$51)</small></span>
             </div>
             <p class="room-select-desc">Generous space without excess — queen bed, work desk, private bath and shower.</p>
             <a href="room-comfort.html" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
           </div>
         </div>
 
-        <div class="room-select-card" data-room="Medallion Mini-Suite" data-price="55000">
+        <div class="room-select-card" data-room="Medallion Deluxe Executive" data-price="85000">
           <div class="room-select-image">
-            <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800&q=80" alt="Medallion Mini-Suite" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220503_152803.jpg">
+            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80" alt="Medallion Deluxe Executive" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220503_112140.jpg">
             <div class="room-select-badge" aria-hidden="true"></div>
           </div>
           <div class="room-select-body">
             <div class="room-select-top">
-              <span class="room-select-name">Medallion Mini-Suite</span>
-              <span class="room-select-price">₦55,000 <small>/ night</small></span>
-            </div>
-            <p class="room-select-desc">Compact, intelligent, and warm — double bed, kitchenette, essential workspace.</p>
-            <a href="room-mini-suite.html" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
-          </div>
-        </div>
-
-        <div class="room-select-card" data-room="Medallion Executive" data-price="82000">
-          <div class="room-select-image">
-            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=800&q=80" alt="Medallion Executive" loading="lazy" data-fallback="https://medallionhospitalityservices.com/wp-content/uploads/2023/08/20220503_112140.jpg">
-            <div class="room-select-badge" aria-hidden="true"></div>
-          </div>
-          <div class="room-select-body">
-            <div class="room-select-top">
-              <span class="room-select-name">Medallion Executive</span>
-              <span class="room-select-price">₦82,000 <small>/ night</small></span>
+              <span class="room-select-name">Medallion Deluxe Executive</span>
+              <span class="room-select-price">₦85,000 <small>/ night (~$63)</small></span>
             </div>
             <p class="room-select-desc">For the business traveller — expanded workspace, high-speed connectivity.</p>
             <a href="room-executive.html" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
+          </div>
+        </div>
+
+        <div class="room-select-card" data-room="Double Bed Deluxe Executive" data-price="100000">
+          <div class="room-select-image">
+            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80" alt="Double Bed Deluxe Executive" loading="lazy">
+            <div class="room-select-badge" aria-hidden="true"></div>
+          </div>
+          <div class="room-select-body">
+            <div class="room-select-top">
+              <span class="room-select-name">Double Bed Deluxe Executive</span>
+              <span class="room-select-price">₦100,000 <small>/ night (~$75)</small></span>
+            </div>
+            <p class="room-select-desc">Executive workspace paired with a double bed for two. Only two of these exist.</p>
+            <a href="room-executive-double.html" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
           </div>
         </div>
 
@@ -495,10 +515,11 @@
           <div class="res-field">
             <label for="roomType">Room</label>
             <select id="roomType">
-              <option>Medallion Suite</option>
-              <option>Medallion Comfort</option>
-              <option>Medallion Mini-Suite</option>
-              <option>Medallion Executive</option>
+              <option>2 Bedroom Deluxe Suite</option>
+              <option>1 Bedroom Deluxe Suite</option>
+              <option>Medallion Deluxe Comfort</option>
+              <option>Medallion Deluxe Executive</option>
+              <option>Double Bed Deluxe Executive</option>
             </select>
           </div>
           <div class="res-field">
@@ -518,7 +539,7 @@
             <input type="number" id="children" min="0" max="4" value="0">
           </div>
         </div>
-        <div class="res-form-row cols-3">
+        <div class="res-form-row cols-4">
           <div class="res-field">
             <label for="fullName">Full name</label>
             <input type="text" id="fullName" autocomplete="name" required>
@@ -531,15 +552,22 @@
             <label for="phone">Phone</label>
             <input type="tel" id="phone" autocomplete="tel" required>
           </div>
+          <div class="res-field">
+            <label for="currency">Currency</label>
+            <select id="currency">
+              <option value="NGN" selected>₦ Naira</option>
+              <option value="USD">$ US Dollar</option>
+            </select>
+          </div>
         </div>
         <div class="res-field">
           <label for="requests">Special requests <span style="text-transform:none; letter-spacing:0;">(optional)</span></label>
           <textarea id="requests" placeholder="Airport transfer, early check-in, dietary notes…"></textarea>
         </div>
-        <button type="submit" class="res-submit">Request Availability</button>
+        <button type="submit" class="res-submit">Reserve &amp; Pay</button>
       </form>
       <p class="res-note">
-        This request does not charge your card — reservations are confirmed by email or phone.<br>
+        Secure payment via Paystack — your reservation is confirmed the moment payment clears.<br>
         For immediate assistance — <a href="mailto:reservation@medallionhospitalityservices.com">reservation@medallionhospitalityservices.com</a> · 09060006382 · 09085820000
       </p>
     </div>
@@ -547,7 +575,7 @@
 
   <!-- FOOTER -->
   <footer class="footer" id="footer">
-    <div class="footer-mark">M</div>
+    <div class="footer-mark"><img src="assets/logo-icon.png" alt="Hotel Medallion" width="108" height="108"></div>
     <div class="footer-grid">
       <div>
         <div class="footer-brand">Hotel Medallion</div>
@@ -775,15 +803,13 @@
       });
 
       /* ---------------- RESERVATION FORM ---------------- */
+      // Actual submission is handled by assets/checkout.js — it POSTs to
+      // /api/bookings/create and opens the real Paystack popup. This just
+      // resyncs the room-card selection UI after a successful reset (a
+      // programmatic .reset() doesn't fire the select's 'change' event, so
+      // nothing else would notice the form went back to its first option).
       const reservationForm = document.getElementById('reservationForm');
-      const toast = document.getElementById('toast');
-      reservationForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 4500);
-        reservationForm.reset();
-        selectRoomCard(roomCards[0]);
-      });
+      reservationForm.addEventListener('reset', () => selectRoomCard(roomCards[0]));
 
       /* ---------------- ROOM CARD REVEAL ---------------- */
       if (!reduced) {
@@ -801,5 +827,11 @@
       window.addEventListener('load', () => ScrollTrigger.refresh());
     })();
   </script>
+
+  <!-- Paystack cannot be pinned with SRI: they intentionally serve this
+       unversioned so security patches roll out without every merchant
+       re-deploying -- the same convention Stripe.js uses for its CDN. -->
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+  <script src="assets/checkout.js"></script>
 </body>
 </html>

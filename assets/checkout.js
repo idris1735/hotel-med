@@ -328,7 +328,7 @@
     const paid = typeof onPaid === 'function' ? onPaid : () => {};
     if (!bookingData || !bookingData.publicKey) {
       showError(
-        'Online payment isn’t connected yet — please email reservation@medallionhospitalityservices.com or call 09060006382 to complete your booking.'
+        'Online payment isn’t connected yet — please email info@hotelmedallion.com or call 09060006382 to complete your booking.'
       );
       settle();
       return;

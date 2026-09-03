@@ -135,7 +135,7 @@ async function sendBookingConfirmationEmail(booking) {
       body: JSON.stringify({
         from: fromAddress,
         to: booking.guest_email,
-        reply_to: 'reservation@medallionhospitalityservices.com',
+        reply_to: 'info@hotelmedallion.com',
         subject: `Reservation Confirmed — ${roomName}`,
         html,
         text,

@@ -21,7 +21,13 @@ function buildSystemInstruction() {
     .map((r) => `- ${r.name}: ₦${r.pricePerNightNaira.toLocaleString('en-NG')} or $${r.pricePerNightUsd} per night, ${r.quantity} available`)
     .join('\n');
 
+  const today = new Date();
+  const todayIso = today.toISOString().slice(0, 10);
+  const todayReadable = today.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+
   return `You are Medalie, the AI concierge for Hotel Medallion, a boutique hotel at Plot 61, Babatunde Anjous Avenue, off Admiralty Way, Lekki Phase 1, Lagos, Nigeria. Tagline: "A Quiet Kind of Luxury." Phone 09060006382, email reservation@medallionhospitalityservices.com.
+
+TODAY'S DATE IS ${todayIso} (${todayReadable}). You have no other way of knowing the current date, so always resolve relative or year-less dates against this: "next Saturday", "tomorrow", "this weekend", or a bare "11th of October" with no year given all mean the nearest occurrence ON OR AFTER today -- never a date that's already in the past relative to ${todayIso}, and never guess a year from anywhere else. When a guest gives a date without a year, silently resolve it to the correct one yourself (don't make the guest say the year) and pass that resolved YYYY-MM-DD to your tools.
 
 ROOMS (name, price per night, availability -- always exact, never round or estimate):
 ${roomLines}
@@ -34,6 +40,11 @@ WELLNESS / SPA: Deep Tissue Massage (90 min, ₦45,000), Hydrating Facial (60 mi
 EVENTS: Weddings (up to 120 guests, rooftop terrace), corporate events (boardroom to ballroom), private dining, one conference room and one event hall (price on request -- direct these to reservation@medallionhospitalityservices.com or 09060006382).
 
 LOCATION: Elegushi Royal Beach 10 min, Nike Art Gallery 25 min. Minutes from Ikoyi and Victoria Island. Airport transfer and car hire can be arranged by concierge.
+
+PERSONALITY:
+You have real personality -- warm, sharp, genuinely witty, the kind of concierge people enjoy talking to, not a scripted customer-service bot. Light, natural humor is welcome and encouraged (a wry aside, a fond joke about Lagos traffic or the guest's chosen date-night room) -- but read the room: never force a joke into a refusal, a payment problem, or anything the guest seems stressed about.
+The guest already knows who you are after your very first message -- never re-introduce yourself or restate "I'm Medalie" again in the same conversation.
+Hard rule on repeating yourself: describe a room's features and sell it ONCE per conversation. The moment you've named a room and its 2-3 selling points one time, that's done -- every reply after that refers to it by name only ("the 1 Bedroom Deluxe Suite") with NO re-listing of its features, no re-comparing it to the alternative, even if the guest's reply is just a date, a price confirmation, or their contact details. Before you write a reply, check: have I already described this room in an earlier turn? If yes, do not describe it again -- just move the conversation forward (acknowledge what they gave you, ask only for what's still missing, or quote the price). This applies even across many turns, not just consecutive ones.
 
 HOW YOU HELP:
 - Answer questions about rooms, pricing, dining, wellness, events, and the property warmly and concisely -- this is a chat bubble, keep replies short (2-4 sentences typically), not an email.
@@ -139,6 +150,22 @@ async function chatWithMedalie({ history, message }) {
 
   const contents = [...(Array.isArray(history) ? history : []), { role: 'user', parts: [{ text: message }] }];
 
+  // Two escalating system-prompt rules alone weren't consistently enough to
+  // stop the model re-describing a room's features every time its price got
+  // looked up again for the same room across several turns (confirmed by
+  // testing). Tracking it structurally, from the actual conversation so
+  // far, means the reminder only has to fire -- forcefully -- on an actual
+  // repeat, rather than relying on the model reliably noticing on its own.
+  const pricedRoomTypes = new Set();
+  for (const turn of contents) {
+    for (const part of turn.parts || []) {
+      const fr = part.functionResponse;
+      if (fr && fr.name === 'calculate_price' && fr.response && fr.response.roomType) {
+        pricedRoomTypes.add(fr.response.roomType);
+      }
+    }
+  }
+
   let action = null;
   // Capped so a model stuck alternating tool calls can't run up API cost or
   // hang the request indefinitely -- five round trips is far more than any
@@ -154,11 +181,12 @@ async function chatWithMedalie({ history, message }) {
         // This model spends a substantial, variable number of tokens on
         // internal "thinking" before producing visible output, and that
         // comes out of the same maxOutputTokens budget -- 500 was too low
-        // and silently truncated a function call mid-JSON (confirmed via
-        // testing: finishReason MALFORMED_FUNCTION_CALL with the args cut
-        // off mid-string). 2048 leaves enough room for thinking plus a
-        // full function call or a normal conversational reply.
-        generationConfig: { temperature: 0.6, maxOutputTokens: 2048 },
+        // and silently truncated a function call mid-JSON, and even 2048
+        // wasn't enough headroom once the conversation got long enough that
+        // the model spent more on thinking (confirmed via testing: a plain
+        // text reply got cut off mid-sentence on a 7-turn conversation,
+        // finishReason MAX_TOKENS). 4096 leaves real headroom either way.
+        generationConfig: { temperature: 0.6, maxOutputTokens: 4096 },
       }),
     });
     if (!resp.ok) {
@@ -172,6 +200,12 @@ async function chatWithMedalie({ history, message }) {
     const functionCallParts = parts.filter((p) => p.functionCall);
     if (functionCallParts.length === 0) {
       const text = parts.map((p) => p.text || '').join('').trim();
+      if (candidate && candidate.finishReason && candidate.finishReason !== 'STOP') {
+        // Not fatal (there's still a reply to show), but worth knowing about
+        // immediately rather than guessing later -- this is exactly how the
+        // MAX_TOKENS mid-sentence cutoff got diagnosed the first time.
+        console.warn(`Gemini reply finished with reason ${candidate.finishReason} (text length ${text.length})`);
+      }
       return { reply: text || "Sorry, I didn't quite catch that -- could you say it differently?", history: contents, action };
     }
     const functionCalls = functionCallParts.map((p) => p.functionCall);
@@ -186,8 +220,27 @@ async function chatWithMedalie({ history, message }) {
     const responseParts = [];
     for (const call of functionCalls) {
       const result = await executeFunctionCall(call);
+      if (call.name === 'calculate_price' && result && result.roomType) {
+        if (pricedRoomTypes.has(result.roomType)) {
+          result.reminderForYou =
+            'REPEAT LOOKUP -- you have ALREADY recommended and described this exact room to this guest earlier in this conversation. Do NOT list its features or compare it to alternatives again, under any circumstances. Reply with only the price/date confirmation and move the conversation forward (ask for whatever booking detail is still missing, or proceed toward booking).';
+        }
+        pricedRoomTypes.add(result.roomType);
+      }
       if (call.name === 'create_booking' && result && result.success) {
-        action = { type: 'open_checkout', booking: result, guestEmail: (call.args || {}).guestEmail };
+        // checkIn/checkOut/guestName come from the tool call args, not
+        // `result` -- createBookingRecord's response (shared with the
+        // plain HTTP endpoint) doesn't echo them back, but the frontend
+        // needs them here to write a real post-payment message instead of
+        // going silent once the Paystack popup closes.
+        action = {
+          type: 'open_checkout',
+          booking: result,
+          guestEmail: (call.args || {}).guestEmail,
+          guestName: (call.args || {}).guestName,
+          checkIn: (call.args || {}).checkIn,
+          checkOut: (call.args || {}).checkOut,
+        };
       }
       responseParts.push({ functionResponse: { name: call.name, response: result } });
     }

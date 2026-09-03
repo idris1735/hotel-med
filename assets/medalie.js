@@ -171,6 +171,28 @@
   const AVATAR = 'assets/medalie-face-96.jpg';
   const GREETING = "Hi, I'm Medalie, Hotel Medallion's AI concierge. Ask me about rooms, rates, dining, or the property — or tell me your dates and I can hold a room for you right here.";
 
+  function formatDate(value) {
+    if (!value) return '';
+    const d = new Date(value);
+    if (Number.isNaN(d.getTime())) return value;
+    return d.toLocaleDateString('en-NG', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  // A few warm, on-brand variants so a guest who books more than once (or a
+  // demo run multiple times) doesn't see the exact same line twice -- this
+  // fires instantly on the client the moment payment is confirmed, rather
+  // than waiting on another Gemini round-trip for a message that needs to
+  // feel immediate.
+  function successMessage({ firstName, roomName, checkIn, checkOut, reference }) {
+    const dates = checkIn && checkOut ? `${formatDate(checkIn)} to ${formatDate(checkOut)}` : 'your dates';
+    const variants = [
+      `🎉 That's a wrap, ${firstName}! Your ${roomName} is locked in for ${dates} — reference ${reference}. A confirmation email is on its way. I'll go make sure the pillows are properly fluffed.`,
+      `🥂 Booked and confirmed! ${roomName}, ${dates}, reference ${reference}. Confirmation email is on its way to you now. I can't promise anything about Lekki traffic, but the room's taken care of.`,
+      `Payment received, ${firstName} — you're officially in for ${dates} in the ${roomName}. Reference ${reference}, and your confirmation email should land shortly. Go ahead and start looking forward to it.`,
+    ];
+    return variants[Math.floor(Math.random() * variants.length)];
+  }
+
   function injectMedalie() {
     injectStyles();
 
@@ -255,12 +277,36 @@
           history = data.history || history;
           appendMessage('bot', data.reply);
           if (data.action && data.action.type === 'open_checkout' && window.MedallionCheckout) {
-            const booking = data.action.booking;
-            const guestEmail = data.action.guestEmail;
+            const { booking, guestEmail, guestName, checkIn, checkOut } = data.action;
+            const firstName = (guestName || '').trim().split(/\s+/)[0] || 'there';
+            let paidOk = false;
             // Small delay so the guest reads Medalie's confirmation line
             // before the Paystack popup takes over the screen.
             setTimeout(() => {
-              window.MedallionCheckout.openPaystackForBooking(booking, guestEmail, () => {});
+              window.MedallionCheckout.openPaystackForBooking(
+                booking,
+                guestEmail,
+                // onSettled -- fires after success, cancel, AND error alike,
+                // so it can't tell those apart on its own. Only speak up here
+                // when payment did NOT end up confirmed (paidOk still false)
+                // -- the confirmed case is already covered by onPaid below,
+                // and would otherwise get two messages for one outcome.
+                () => {
+                  if (!paidOk) {
+                    appendMessage('bot', "No stress if that didn't go through — I've still got the room held for a little while. Say the word whenever you're ready to try again, or let me know if something's not working and I'll help sort it out.");
+                  }
+                },
+                () => {
+                  paidOk = true;
+                  appendMessage('bot', successMessage({
+                    firstName,
+                    roomName: (booking && booking.roomName) || 'room',
+                    checkIn,
+                    checkOut,
+                    reference: booking && booking.reference,
+                  }));
+                }
+              );
             }, 700);
           }
         }
@@ -314,6 +360,12 @@
       if (!greeted) {
         greeted = true;
         appendMessage('bot', GREETING);
+        // Seed it into the history sent to Gemini too, not just the visible
+        // bubble -- otherwise her first real reply has no way of knowing an
+        // introduction already happened and re-introduces herself on top of
+        // it (the exact "Hi, I'm Medalie... / Hello! I'm Medalie..." double
+        // greeting a guest actually hit).
+        history = [{ role: 'model', parts: [{ text: GREETING }] }];
       }
       syncMobileViewport();
       setTimeout(() => input.focus(), 300);

@@ -8,6 +8,7 @@
 // guest to see confirmation immediately.
 const { sql } = require('../_lib/db');
 const { getRoom } = require('../_lib/rooms');
+const { sendBookingConfirmationEmail } = require('../_lib/email');
 
 module.exports = async (req, res) => {
   if (req.method !== 'GET') {
@@ -41,16 +42,17 @@ module.exports = async (req, res) => {
     return res.status(502).json({ error: 'Could not reach Paystack' });
   }
 
-  // guest_name / guest_email intentionally not selected: this endpoint
-  // takes only a reference, with no other auth, to look up a booking. Even
-  // with generateReference() now using a real CSPRNG (see api/_lib/reference.js),
-  // keeping PII out of the response entirely is a cheap second layer — a
-  // reference that leaked via a log, a shared link, or a browser history
-  // shouldn't hand over someone else's name and email.
+  // guest_name/guest_email/guest_phone ARE selected here (needed
+  // server-side to send the confirmation email below) but must NEVER be
+  // put into the JSON response at the bottom of this function — this
+  // endpoint takes only a reference, with no other auth, so anything in
+  // the response is effectively public to anyone who has (or guesses) a
+  // reference.
   // `postgres` (unlike @vercel/postgres) resolves the tagged template to
   // the rows array directly, not `{ rows }` -- no destructuring here.
   const rows = await sql`
-    SELECT reference, room_type, check_in, check_out, currency, amount_subunit, status
+    SELECT reference, room_type, check_in, check_out, currency, amount_subunit, status,
+      guest_name, guest_email, guest_phone, adults, children
     FROM bookings WHERE reference = ${reference}
   `;
   const booking = rows[0];
@@ -67,6 +69,14 @@ module.exports = async (req, res) => {
 
   if (paid && booking.status !== 'paid') {
     await sql`UPDATE bookings SET status = 'paid', updated_at = now() WHERE reference = ${reference}`;
+    // Must be awaited, not fire-and-forget: this is a standard Node
+    // serverless function (not an Edge Function with waitUntil), so once
+    // the response below is sent, Vercel can freeze this execution before
+    // an un-awaited call finishes -- silently dropping the email. The
+    // small added latency here is worth the email actually sending
+    // reliably. sendBookingConfirmationEmail already swallows its own
+    // errors internally, so a Resend outage still can't break this response.
+    await sendBookingConfirmationEmail(booking);
   } else if (!paid && booking.status === 'pending') {
     await sql`UPDATE bookings SET status = 'failed', updated_at = now() WHERE reference = ${reference}`;
   }

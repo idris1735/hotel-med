@@ -117,6 +117,7 @@
     }
     .loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
     .loader-word-wrap { opacity: 0; transform: translateY(18px); }
+    .loader-icon { width: 56px; height: 56px; display: block; margin: 0 auto 1.2rem; }
     /* Shiny text — plain "shiny-text" mechanic: resting ivory word with a
        single diagonal band (carrying the three brand colors) continuously
        looping through it, same as a ShinyText-style component. */
@@ -361,9 +362,8 @@
     .story { background: var(--midnight-light); padding: 10rem 5rem; position: relative; }
     .story-watermark-clip { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
     .story-watermark {
-      position: absolute; font-family: var(--font-display); font-size: 46vw; font-weight: 300;
-      color: var(--champagne); opacity: 0.07; pointer-events: none;
-      top: 50%; left: 50%; transform: translate(-50%, -50%); line-height: 1;
+      position: absolute; width: 46vw; height: auto; opacity: 0.07; pointer-events: none;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
     }
     .story-grid { display: grid; grid-template-columns: 42% 58%; gap: 5rem; max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
     .story-left { position: sticky; top: 160px; align-self: start; }
@@ -746,8 +746,7 @@
       transform: translateY(0); pointer-events: none;
     }
     .page-transition-mark {
-      font-family: var(--font-display); font-size: 3.4rem; color: var(--champagne);
-      opacity: 0; transition: opacity 0.4s;
+      width: 48px; height: 48px; opacity: 0; transition: opacity 0.4s;
     }
     .page-transition.leaving .page-transition-mark { opacity: 1; }
     /* Entering state is set inline by JS before the first paint, then released. */
@@ -857,6 +856,7 @@
   <!-- LOADER -->
   <div class="loader" id="loader">
     <div class="loader-word-wrap" id="loaderWordWrap">
+      <img class="loader-icon" src="assets/logo-icon.png" alt="">
       <div class="loader-word" id="loaderWord">Hotel Medallion</div>
     </div>
     <div class="loader-line" id="loaderLine"></div>
@@ -971,7 +971,7 @@
 
   <!-- STORY -->
   <section class="story" id="story">
-    <div class="story-watermark-clip"><div class="story-watermark" id="storyWatermark">M</div></div>
+    <div class="story-watermark-clip"><img class="story-watermark" id="storyWatermark" src="assets/logo-icon.png" alt=""></div>
     <div class="story-grid">
       <div class="story-left">
         <div class="story-left-inner">
@@ -1485,7 +1485,7 @@
 
   <!-- PAGE TRANSITION CURTAIN -->
   <div class="page-transition" id="pageTransition" aria-hidden="true">
-    <span class="page-transition-mark">M</span>
+    <img class="page-transition-mark" src="assets/logo-icon.png" alt="" width="48" height="48">
   </div>
 
   <!-- GALLERY LIGHTBOX -->
@@ -2282,5 +2282,6 @@
        re-deploying -- the same convention Stripe.js uses for its CDN. -->
   <script src="https://js.paystack.co/v2/inline.js"></script>
   <script src="assets/checkout.js"></script>
+  <script src="assets/medalie.js"></script>
 </body>
 </html>

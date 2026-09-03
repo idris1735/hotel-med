@@ -101,6 +101,7 @@
     }
     .loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
     .loader-word-wrap { opacity: 0; transform: translateY(18px); }
+    .loader-icon { width: 56px; height: 56px; display: block; margin: 0 auto 1.2rem; }
     .loader-word {
       font-family: var(--font-display); font-size: clamp(1.8rem, 4.5vw, 3.4rem);
       font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase;
@@ -387,6 +388,7 @@
   <!-- LOADER -->
   <div class="loader" id="loader">
     <div class="loader-word-wrap" id="loaderWordWrap">
+      <img class="loader-icon" src="assets/logo-icon.png" alt="">
       <div class="loader-word" id="loaderWord">Hotel Medallion</div>
     </div>
     <div class="loader-line" id="loaderLine"></div>
@@ -842,5 +844,6 @@
        re-deploying -- the same convention Stripe.js uses for its CDN. -->
   <script src="https://js.paystack.co/v2/inline.js"></script>
   <script src="assets/checkout.js"></script>
+  <script src="assets/medalie.js"></script>
 </body>
 </html>

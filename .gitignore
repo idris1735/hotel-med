@@ -3,6 +3,7 @@ node_modules/
 .env
 .env.local
 .vercel
+.claude/
 
 # Internal client planning doc (affiliate/commission/OTA integration
 # details) -- not meant for a public repo. The brand manual .docx is fine

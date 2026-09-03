@@ -9,6 +9,7 @@
 const crypto = require('crypto');
 const { sql } = require('../_lib/db');
 const { getRawBody } = require('../_lib/raw-body');
+const { sendBookingConfirmationEmail } = require('../_lib/email');
 
 module.exports.config = { api: { bodyParser: false } };
 
@@ -69,7 +70,11 @@ module.exports = async (req, res) => {
 
   try {
     // `postgres` resolves to the rows array directly, not `{ rows }`.
-    const rows = await sql`SELECT amount_subunit, currency, status FROM bookings WHERE reference = ${reference}`;
+    const rows = await sql`
+      SELECT amount_subunit, currency, status, room_type, check_in, check_out,
+        guest_name, guest_email, guest_phone, adults, children
+      FROM bookings WHERE reference = ${reference}
+    `;
     const booking = rows[0];
 
     if (!booking) {
@@ -104,6 +109,11 @@ module.exports = async (req, res) => {
       UPDATE bookings SET status = 'paid', paystack_event_data = ${sql.json(event)}, updated_at = now()
       WHERE reference = ${reference}
     `;
+    // This is the only one of the two possible "first to mark paid" paths
+    // that fired for this booking (see the idempotency check above) — the
+    // other (api/paystack/verify.js) will see status already 'paid' and
+    // skip sending its own copy.
+    await sendBookingConfirmationEmail({ ...booking, reference });
   } catch (err) {
     console.error('webhook processing failed', err);
     // Still 200 — we don't want Paystack hammering retries for our own DB

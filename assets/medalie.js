@@ -13,6 +13,30 @@
     return div.innerHTML;
   }
 
+  // Gemini's replies routinely use light markdown (**bold**, "- " bullet
+  // lists, blank-line-separated paragraphs). Escaping happens FIRST, on the
+  // raw text -- every tag below is then built only out of that already-safe
+  // string, so nothing the model or a guest types can inject real markup.
+  function inlineFormat(line) {
+    return line.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  }
+  function formatBotText(raw) {
+    const escaped = escapeHtml(raw);
+    return escaped
+      .split(/\n{2,}/)
+      .map((block) => {
+        const lines = block.split('\n').filter((l) => l.trim() !== '');
+        if (lines.length === 0) return '';
+        const isList = lines.every((l) => /^[-*•]\s+/.test(l));
+        if (isList) {
+          const items = lines.map((l) => `<li>${inlineFormat(l.replace(/^[-*•]\s+/, ''))}</li>`).join('');
+          return `<ul>${items}</ul>`;
+        }
+        return `<p>${lines.map(inlineFormat).join('<br>')}</p>`;
+      })
+      .join('');
+  }
+
   function injectStyles() {
     if (document.getElementById('medalie-styles')) return;
     const style = document.createElement('style');
@@ -93,10 +117,18 @@
       .medalie-msg.user { align-self: flex-end; flex-direction: row-reverse; }
       .medalie-msg img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; flex: none; margin-top: 0.2rem; }
       .medalie-bubble {
-        font-size: 0.83rem; line-height: 1.55; padding: 0.6em 0.85em; border-radius: 10px; white-space: pre-wrap;
+        font-size: 0.83rem; line-height: 1.55; padding: 0.6em 0.85em; border-radius: 10px;
       }
       .medalie-msg.bot .medalie-bubble { background: rgba(245,240,232,0.07); color: #f5f0e8; border-bottom-left-radius: 3px; }
-      .medalie-msg.user .medalie-bubble { background: #c9a227; color: #0a0a0f; border-bottom-right-radius: 3px; }
+      .medalie-msg.user .medalie-bubble { background: #c9a227; color: #0a0a0f; border-bottom-right-radius: 3px; white-space: pre-wrap; }
+      .medalie-bubble p { margin: 0 0 0.6em; }
+      .medalie-bubble p:last-child { margin-bottom: 0; }
+      .medalie-bubble ul { margin: 0.2em 0 0.6em; padding-left: 1.15em; }
+      .medalie-bubble ul:last-child { margin-bottom: 0; }
+      .medalie-bubble li { margin-bottom: 0.3em; }
+      .medalie-bubble li:last-child { margin-bottom: 0; }
+      .medalie-bubble strong { color: #e8c866; font-weight: 600; }
+      .medalie-msg.user .medalie-bubble strong { color: #0a0a0f; }
       .medalie-typing { display: flex; gap: 0.3em; padding: 0.7em 0.85em; }
       .medalie-typing span {
         width: 5px; height: 5px; border-radius: 50%; background: rgba(245,240,232,0.5);
@@ -182,7 +214,8 @@
     function appendMessage(role, text) {
       const row = document.createElement('div');
       row.className = 'medalie-msg ' + role;
-      const bubble = `<div class="medalie-bubble">${escapeHtml(text)}</div>`;
+      const body = role === 'bot' ? formatBotText(text) : escapeHtml(text);
+      const bubble = `<div class="medalie-bubble">${body}</div>`;
       row.innerHTML = role === 'bot' ? `<img src="${AVATAR}" alt="">${bubble}` : bubble;
       messagesEl.appendChild(row);
       messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -245,6 +278,36 @@
       sendMessage(input.value);
     });
 
+    // On mobile, opening the software keyboard shrinks the actually-visible
+    // area, but a `position: fixed` panel doesn't reliably track that --
+    // CSS alone (even 100dvh) is inconsistent across browsers for
+    // keyboard-driven resizing specifically (as opposed to browser-toolbar
+    // resizing, which it handles fine). window.visualViewport is the one
+    // API that's designed to report the real visible viewport including the
+    // keyboard, so on mobile we override the panel's position/height
+    // directly from it whenever it changes -- this is what keeps the input
+    // row visible above the keyboard instead of pushed off-screen.
+    function syncMobileViewport() {
+      if (!panel.classList.contains('show')) return;
+      if (window.innerWidth > 640 || !window.visualViewport) {
+        panel.style.top = '';
+        panel.style.bottom = '';
+        panel.style.height = '';
+        return;
+      }
+      const vv = window.visualViewport;
+      const topGap = 12;
+      const bottomGap = 8;
+      panel.style.top = Math.max(vv.offsetTop + topGap, 0) + 'px';
+      panel.style.bottom = 'auto';
+      panel.style.height = Math.max(vv.height - topGap - bottomGap, 240) + 'px';
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', syncMobileViewport);
+      window.visualViewport.addEventListener('scroll', syncMobileViewport);
+    }
+
     function openPanel() {
       panel.classList.add('show');
       fab.classList.add('is-open');
@@ -252,11 +315,15 @@
         greeted = true;
         appendMessage('bot', GREETING);
       }
+      syncMobileViewport();
       setTimeout(() => input.focus(), 300);
     }
     function closePanel() {
       panel.classList.remove('show');
       fab.classList.remove('is-open');
+      panel.style.top = '';
+      panel.style.bottom = '';
+      panel.style.height = '';
     }
 
     fab.addEventListener('click', () => {

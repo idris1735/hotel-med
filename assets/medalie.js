@@ -19,7 +19,7 @@
     style.id = 'medalie-styles';
     style.textContent = `
       .medalie-fab {
-        position: fixed; left: 1.4rem; bottom: 1.4rem; z-index: 9000;
+        position: fixed; left: 1.4rem; bottom: calc(1.4rem + env(safe-area-inset-bottom)); z-index: 9000;
         width: 60px; height: 60px; border-radius: 50%; padding: 0; border: 2px solid #c9a227;
         background: #12121a; cursor: pointer; box-shadow: 0 8px 24px rgba(10,10,15,0.4);
         transition: transform 0.3s, box-shadow 0.3s; overflow: visible;
@@ -41,7 +41,9 @@
       }
       @media (prefers-reduced-motion: reduce) { .medalie-fab-ring { animation: none; display: none; } }
       .medalie-fab.is-open .medalie-fab-ring { display: none; }
-      @media (max-width: 640px) { .medalie-fab { left: 1rem; bottom: 1rem; width: 54px; height: 54px; } }
+      @media (max-width: 640px) {
+        .medalie-fab { left: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom)); width: 54px; height: 54px; }
+      }
 
       .medalie-panel {
         position: fixed; left: 1.4rem; bottom: 6rem; z-index: 9500;
@@ -55,7 +57,17 @@
       .medalie-panel.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
       @media (prefers-reduced-motion: reduce) { .medalie-panel { transition: opacity 0.15s; transform: none; } }
       @media (max-width: 640px) {
-        .medalie-panel { left: 0.6rem; right: 0.6rem; bottom: 5.4rem; width: auto; height: calc(100vh - 7.4rem); }
+        .medalie-panel {
+          left: 0.6rem; right: 0.6rem;
+          bottom: calc(5.4rem + env(safe-area-inset-bottom)); width: auto;
+          /* 100vh is taller than what's actually visible once iOS Safari's
+             dynamic toolbar is showing, which crops the bottom of the panel
+             (input row included) behind the browser chrome. 100dvh tracks
+             the real visible viewport; the plain vh rule above is the
+             fallback for browsers that don't support dvh yet. */
+          height: calc(100vh - 7.4rem - env(safe-area-inset-bottom));
+          height: calc(100dvh - 7.4rem - env(safe-area-inset-bottom));
+        }
       }
 
       .medalie-header {
@@ -70,7 +82,7 @@
       .medalie-header-sub { font-size: 0.65rem; letter-spacing: 0.06em; color: rgba(245,240,232,0.45); margin-top: 0.15rem; }
       .medalie-close {
         background: none; border: none; color: rgba(245,240,232,0.5); font-size: 1.3rem; line-height: 1;
-        cursor: pointer; padding: 0.3em; flex: none;
+        cursor: pointer; padding: 0.55em; flex: none;
       }
       .medalie-close:hover { color: #f5f0e8; }
 
@@ -99,7 +111,7 @@
         display: flex; gap: 0.5rem; padding: 0.8rem; border-top: 1px solid rgba(245,240,232,0.1); flex: none;
       }
       .medalie-input-row input {
-        flex: 1; background: rgba(245,240,232,0.05); border: 1px solid rgba(245,240,232,0.16);
+        flex: 1; min-width: 0; background: rgba(245,240,232,0.05); border: 1px solid rgba(245,240,232,0.16);
         color: #f5f0e8; padding: 0.65em 0.8em; font-family: 'Inter', system-ui, sans-serif;
         font-size: 0.82rem; border-radius: 8px; outline: none; transition: border-color 0.3s;
       }
@@ -109,6 +121,14 @@
         width: 38px; height: 38px; flex: none; border-radius: 8px; border: none; background: #c9a227;
         color: #0a0a0f; font-size: 1rem; cursor: pointer; transition: background 0.3s; display: flex;
         align-items: center; justify-content: center;
+      }
+      /* iOS Safari zooms the whole page in on focus when an input's
+         font-size is under 16px -- jarring on a chat widget where the
+         input gets focused constantly. 16px only on touch/narrow
+         viewports so the desktop type scale is untouched. */
+      @media (max-width: 640px) {
+        .medalie-input-row input { font-size: 16px; }
+        .medalie-send { width: 42px; height: 42px; }
       }
       .medalie-send:hover { background: #f5f0e8; }
       .medalie-send:disabled { opacity: 0.5; cursor: default; }

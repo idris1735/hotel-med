@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Contact Hotel Medallion — Plot 61, Babatunde Anjous Avenue, Lekki Phase 1, Lagos. Reservations, events, and general enquiries.">
   <meta name="theme-color" content="#0a0a0f">
   <title>Contact — Hotel Medallion</title>
@@ -342,6 +342,10 @@
       .contact-form { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+      /* Under 16px, iOS Safari zooms the whole page in when this field is
+         focused -- jarring on a form field guests are likely to type a
+         longer message into. */
+      .contact-field textarea { font-size: 16px; }
     }
   </style>
 </head>

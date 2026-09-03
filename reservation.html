@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Reserve your stay at Hotel Medallion — Plot 61, Babatunde Anjous Avenue, Lekki Phase 1, Lagos. Choose your room and request availability.">
   <meta name="theme-color" content="#0a0a0f">
   <title>Reserve Your Stay — Hotel Medallion</title>
@@ -360,6 +360,10 @@
       .res-form-row.cols-4 { grid-template-columns: 1fr; }
       .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
       .footer-bottom { flex-direction: column; text-align: center; }
+      /* Under 16px, iOS Safari zooms the whole page in when this field is
+         focused -- jarring on a form field guests are likely to type a
+         longer message into. */
+      .res-field textarea { font-size: 16px; }
     }
   </style>
 </head>

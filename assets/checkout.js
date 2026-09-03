@@ -49,6 +49,7 @@
       .checkout-overlay {
         position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center;
         justify-content: center; padding: 2rem; background: rgba(10,10,15,0.72);
+        padding-bottom: calc(2rem + env(safe-area-inset-bottom));
         backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
         opacity: 0; pointer-events: none; transition: opacity 0.4s;
       }
@@ -80,7 +81,7 @@
 
       /* ---------------- QUICK BOOK ---------------- */
       .quickbook-fab {
-        position: fixed; right: 1.4rem; bottom: 1.4rem; z-index: 9000;
+        position: fixed; right: 1.4rem; bottom: calc(1.4rem + env(safe-area-inset-bottom)); z-index: 9000;
         display: inline-flex; align-items: center; gap: 0.5em;
         background: #c9a227; color: #0a0a0f; border: none; border-radius: 999px;
         padding: 0.85em 1.4em; font-family: 'Inter', system-ui, sans-serif;
@@ -91,11 +92,15 @@
       .quickbook-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(10,10,15,0.4); }
       .quickbook-fab svg { width: 15px; height: 15px; flex: none; }
       @media (max-width: 640px) {
-        .quickbook-fab { right: 1rem; bottom: 1rem; padding: 0.8em 1.1em; font-size: 0.68rem; }
+        .quickbook-fab {
+          right: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom));
+          padding: 0.8em 1.1em; font-size: 0.68rem;
+        }
       }
       .quickbook-overlay {
         position: fixed; inset: 0; z-index: 10000; display: flex; align-items: center;
         justify-content: center; padding: 1.5rem; background: rgba(10,10,15,0.72);
+        padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
         backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
         opacity: 0; pointer-events: none; transition: opacity 0.4s;
       }
@@ -125,6 +130,12 @@
         color: #f5f0e8; padding: 0.7em 0.8em; font-family: 'Inter', system-ui, sans-serif;
         font-size: 0.85rem; border-radius: 3px; outline: none; transition: border-color 0.3s;
       }
+      /* Prevents iOS Safari's zoom-on-focus (triggered by any input under
+         16px) -- particularly disruptive here since this form has six
+         fields a guest taps through in sequence. */
+      @media (max-width: 640px) {
+        .quickbook-field input, .quickbook-field select { font-size: 16px; }
+      }
       .quickbook-field input:focus, .quickbook-field select:focus { border-color: #c9a227; }
       .quickbook-field select option { background: #12121a; color: #f5f0e8; }
       .quickbook-submit {
@@ -135,8 +146,9 @@
       .quickbook-submit:hover { background: #f5f0e8; }
       .quickbook-submit:disabled { opacity: 0.6; cursor: default; }
       .quickbook-close-x {
-        position: absolute; top: 1rem; right: 1rem; background: none; border: none;
-        color: rgba(245,240,232,0.5); font-size: 1.2rem; line-height: 1; cursor: pointer; padding: 0.3em;
+        position: absolute; top: 0.8rem; right: 0.8rem; background: none; border: none;
+        color: rgba(245,240,232,0.5); font-size: 1.2rem; line-height: 1; cursor: pointer;
+        padding: 0.5em; /* ~40px tap target */
       }
       .quickbook-close-x:hover { color: #f5f0e8; }
     `;

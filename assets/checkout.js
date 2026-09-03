@@ -318,7 +318,7 @@
   }
 
   // Standalone version of the Paystack-popup step inside handleSubmit below,
-  // extracted so Medalie (assets/medalie.js) can hand off to the exact same
+  // extracted so Vesper (assets/vesper.js) can hand off to the exact same
   // payment flow after her create_booking tool creates a pending row --
   // there is only one place in the whole site that ever opens PaystackPop.
   // `onSettled` (optional) fires after success/cancel/error, for a caller
@@ -452,7 +452,7 @@
     injectQuickBook();
   });
 
-  // Small public surface for assets/medalie.js -- the AI concierge creates
+  // Small public surface for assets/vesper.js -- the AI concierge creates
   // a pending booking via her own tool call, then hands off to this exact
   // same Paystack flow (and confirmation/error UI) rather than having any
   // separate payment code path.

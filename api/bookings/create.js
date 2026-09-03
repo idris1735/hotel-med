@@ -8,7 +8,7 @@
 // frontend learns it, so it never has to be hardcoded into static HTML).
 //
 // The actual validation/insert logic lives in ../_lib/create-booking.js,
-// shared with Medalie's create_booking tool in api/chat.js so both paths
+// shared with Vesper's create_booking tool in api/chat.js so both paths
 // (human form, AI concierge) can never enforce different rules.
 const { createBookingRecord } = require('../_lib/create-booking');
 

@@ -1,4 +1,4 @@
-// POST /api/chat -- Medalie, the AI concierge widget's backend.
+// POST /api/chat -- Vesper, the AI concierge widget's backend.
 //
 // Public and unauthenticated (like every other endpoint on this site), so
 // the guards below aren't about auth -- they're about keeping a single
@@ -6,7 +6,7 @@
 // Real per-IP rate limiting (a DB or Redis-backed counter) is the next
 // step if this ever sees actual abuse; for now this caps the *size* of any
 // one request, which stops the cheapest attack (huge prompts/history).
-const { chatWithMedalie } = require('./_lib/gemini');
+const { chatWithVesper } = require('./_lib/gemini');
 
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_HISTORY_TURNS = 40;
@@ -32,12 +32,12 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const result = await chatWithMedalie({ history, message: message.trim() });
+    const result = await chatWithVesper({ history, message: message.trim() });
     return res.status(200).json(result);
   } catch (err) {
     console.error('chat failed', err);
     return res.status(500).json({
-      error: "Medalie is having trouble connecting right now -- please try again, or call the front desk on 09060006382.",
+      error: "Vesper is having trouble connecting right now. Please try again, or call the front desk on 09060006382.",
     });
   }
 };

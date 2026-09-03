@@ -1,6 +1,6 @@
 // Shared core of "create a pending booking" -- used by both
 // api/bookings/create.js (the HTTP endpoint the booking forms call) and
-// api/chat.js (Medalie's create_booking tool). Pulled out so the AI path
+// api/chat.js (Vesper's create_booking tool). Pulled out so the AI path
 // can't drift from the validation/pricing the human-form path already
 // enforces -- there is exactly one place a booking row gets written.
 const { sql } = require('./db');

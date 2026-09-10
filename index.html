@@ -317,10 +317,6 @@
     }
     .hero-cta-line { width: 56px; height: 1px; background: var(--champagne); transition: width 0.6s var(--ease-cinematic); }
     .hero-cta:hover .hero-cta-line { width: 96px; }
-    .hero-progress { position: absolute; bottom: 3rem; right: 3rem; z-index: 3; display: flex; gap: 0.6rem; align-items: center; }
-    .hero-progress-bar { width: 90px; height: 1px; background: rgba(245,240,232,0.2); position: relative; overflow: hidden; }
-    .hero-progress-fill { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: var(--champagne); }
-    .hero-progress-num { font-size: 0.65rem; letter-spacing: 0.2em; color: var(--ivory-dim); }
     .scroll-indicator {
       position: absolute; bottom: 2.4rem; left: 50%; transform: translateX(-50%);
       width: 1px; height: 56px; background: var(--champagne); opacity: 0.35;
@@ -837,7 +833,6 @@
     }
     @media (max-width: 768px) {
       .hero-content { left: 1.5rem; right: 1.5rem; bottom: 12%; }
-      .hero-progress { right: 1.5rem; bottom: 2.2rem; }
       .hero-cta { padding: 0.9rem 0; } /* taller tap target */
       .scroll-indicator { display: none; } /* collides with progress bar on narrow screens */
       .gallery-item { width: 85vw; height: 46vh; height: 46svh; }
@@ -919,11 +914,6 @@
         <span id="heroCtaText">Discover</span>
         <span class="hero-cta-line"></span>
       </a>
-    </div>
-    <div class="hero-progress">
-      <span class="hero-progress-num" id="heroNum">01</span>
-      <div class="hero-progress-bar"><div class="hero-progress-fill" id="heroFill"></div></div>
-      <span class="hero-progress-num">06</span>
     </div>
     <div class="scroll-indicator"></div>
   </section>
@@ -1007,7 +997,7 @@
           <span class="story-caption">Detail, considered</span>
         </div>
         <div class="story-image story-img-3">
-          <img src="assets/photos/corridor-marble-1200.jpg" srcset="assets/photos/corridor-marble-640.jpg 640w, assets/photos/corridor-marble-1200.jpg 1200w" sizes="(max-width: 900px) 90vw, 34vw" alt="A quiet marble corridor at Hotel Medallion" loading="lazy">
+          <img src="assets/photos/corridor-marble-1200.jpg" srcset="assets/photos/corridor-marble-640.jpg 640w, assets/photos/corridor-marble-1200.jpg 1200w" sizes="(max-width: 900px) 90vw, 34vw" alt="A quiet marble corridor at Hotel Medallion" loading="lazy" style="object-position: center 32%;">
           <span class="story-caption">A place to return to</span>
         </div>
       </div>
@@ -1667,8 +1657,6 @@
 
       /* ---------------- HERO SLIDESHOW ---------------- */
       const shots = document.querySelectorAll('.hero-shot');
-      const heroNum = document.getElementById('heroNum');
-      const heroFill = document.getElementById('heroFill');
       const heroLabelEl = document.getElementById('heroLabel');
       const heroLineEls = document.querySelectorAll('.hero-line');
       const heroCtaEl = document.getElementById('heroCta');
@@ -1707,7 +1695,6 @@
         shots[currentShot].classList.remove('active');
         currentShot = ((index % shots.length) + shots.length) % shots.length;
         shots[currentShot].classList.add('active');
-        heroNum.textContent = String(currentShot + 1).padStart(2, '0');
         transitionHeroText(shots[currentShot]);
       }
 
@@ -1732,8 +1719,6 @@
             elapsed = elapsed % shotDuration;
             goToShot(currentShot + flips);
           }
-
-          heroFill.style.width = ((elapsed / shotDuration) * 100) + '%';
         }, 100);
 
         // Don't burn cycles (or jump slides) while the tab is hidden.
@@ -1757,12 +1742,6 @@
             restart();
           }
         }, { passive: true });
-
-        // Tapping the progress bar advances to the next shot (desktop nicety).
-        document.querySelector('.hero-progress-bar').addEventListener('click', () => {
-          goToShot(currentShot + 1);
-          restart();
-        });
       }
 
       /* ---------------- HERO PARALLAX ---------------- */

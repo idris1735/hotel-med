@@ -1,5 +1,10 @@
 archive/
 node_modules/
+
+# The photographer's delivered originals (76 edited + ~102 raw JPEGs, ~90MB).
+# Kept on disk as the source of truth for `npm run photos`, which writes the
+# graded, resized web variants into assets/photos/ — those are what ship.
+Medallion/
 .env
 .env.local
 .vercel

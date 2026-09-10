@@ -1,0 +1,7 @@
+# Source material and tooling that never needs to reach the deployment.
+# The photographer's originals (~90MB) are the input to `npm run photos`;
+# only the graded, resized output in assets/photos/ ships.
+Medallion/
+scripts/
+archive/
+*.docx

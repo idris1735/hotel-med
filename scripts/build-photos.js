@@ -54,7 +54,7 @@ const PHOTOS = {
   'suite-2bed': ['7R5A1082', HERO_WIDTHS],
   'suite-1bed': ['7R5A1072', HERO_WIDTHS],
   'room-comfort': ['7R5A1103', HERO_WIDTHS],
-  'room-executive': ['7R5A1046', HERO_WIDTHS, COOL],
+  'room-executive': ['7R5A1049', HERO_WIDTHS, COOL],
   'room-executive-double': ['7R5A1099', HERO_WIDTHS],
   'suite-evening': ['7R5A1085', HERO_WIDTHS],
   // Cards, galleries, details
@@ -94,10 +94,18 @@ async function build(name, base, widths, overrides) {
   const written = [];
   for (const w of widths) {
     const dest = path.join(OUT, `${name}-${w}.jpg`);
+    // A SINGLE .linear() call, not two chained ones: sharp does not compose
+    // consecutive .linear() calls (confirmed by testing -- a second call
+    // silently discards the first's array coefficients rather than
+    // multiplying through), so the previous two-call version was applying
+    // only the flat contrast lift and dropping the actual white-balance
+    // correction on every photo, not just this one. Composed by hand:
+    // contrast(wb(x)) = 1.07*(k*x) - 7 = (1.07*k)*x - 7.
+    const contrast = 1.07;
+    const combined = k.map((v) => v * contrast);
     const info = await sharp(file)
       .resize({ width: w, withoutEnlargement: true })
-      .linear(k, [0, 0, 0])
-      .linear(1.07, -7)
+      .linear(combined, [-7, -7, -7])
       .modulate({ saturation: 1.04 })
       .jpeg({ quality: w >= 1900 ? 72 : w >= 1200 ? 77 : 80, mozjpeg: true, progressive: true })
       .toFile(dest);

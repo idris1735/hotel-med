@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Our Story — Hotel Medallion. A boutique residence in Lekki Phase 1, Lagos, built on the observation that Lagos has hotels, but too few residences.">
-  <meta name="theme-color" content="#0a0a0f">
+  <meta name="theme-color" content="#090c14">
   <title>Our Story — Hotel Medallion</title>
 
   <link rel="icon" type="image/png" href="assets/favicon-32.png">
@@ -53,9 +53,9 @@
        and the G.O.L.D. core-values list.
        ============================================================ */
     :root {
-      --midnight: #0a0a0f;
-      --midnight-light: #12121a;
-      --midnight-soft: #191922;
+      --midnight: #090c14;
+      --midnight-light: #0f1420;
+      --midnight-soft: #161c2b;
       --warm-white: #faf8f3;
       --charcoal: #292929;
       --ivory: #faf8f3;
@@ -220,9 +220,9 @@
     .hero { position: relative; height: 88vh; width: 100%; overflow: hidden; background: var(--midnight); }
     .hero-shots { position: absolute; inset: 0; width: 100%; height: 100%; }
     .hero-shot { position: absolute; inset: 0; opacity: 0; transition: opacity 2.4s var(--ease-cinematic); }
-    .hero-shot:nth-child(1) { background: radial-gradient(circle at 72% 24%, rgba(201,162,39,0.16), transparent 52%), linear-gradient(135deg, #0a0a0f 0%, #14212e 55%, #0a0a0f 100%); }
+    .hero-shot:nth-child(1) { background: radial-gradient(circle at 72% 24%, rgba(201,162,39,0.16), transparent 52%), linear-gradient(135deg, #090c14 0%, #14212e 55%, #090c14 100%); }
     .hero-shot.active { opacity: 1; }
-    .hero-shot img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.5) saturate(0.95); }
+    .hero-shot img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.62) saturate(0.95); }
     .hero-overlay {
       position: absolute; inset: 0; z-index: 2;
       background: linear-gradient(to bottom, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.05) 42%, rgba(10,10,15,0.68) 100%);
@@ -326,7 +326,7 @@
     /* ---------------- PROMISE (reuses .moment full-bleed pull-quote) ---------------- */
     .moment { position: relative; height: 70vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .moment-image { position: absolute; inset: 0; }
-    .moment-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.36); }
+    .moment-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.48); }
     .moment-text {
       position: relative; z-index: 2; font-family: var(--font-display);
       font-size: clamp(1.5rem, 3.6vw, 2.6rem); font-style: italic; color: var(--ivory);

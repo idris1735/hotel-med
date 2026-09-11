@@ -45,13 +45,13 @@
       .vesper-fab {
         position: fixed; left: 1.4rem; bottom: calc(1.4rem + env(safe-area-inset-bottom)); z-index: 9000;
         width: 60px; height: 60px; border-radius: 50%; padding: 0; border: 2px solid #c9a227;
-        background: #12121a; cursor: pointer; box-shadow: 0 8px 24px rgba(10,10,15,0.4);
+        background: #0f1420; cursor: pointer; box-shadow: 0 8px 24px rgba(10,10,15,0.4);
         transition: transform 0.3s, box-shadow 0.3s; overflow: visible;
       }
       .vesper-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(10,10,15,0.45); }
       .vesper-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
       .vesper-fab-badge {
-        position: absolute; top: -4px; right: -6px; background: #c9a227; color: #0a0a0f;
+        position: absolute; top: -4px; right: -6px; background: #c9a227; color: #090c14;
         font-family: 'Inter', system-ui, sans-serif; font-size: 0.52rem; font-weight: 700;
         letter-spacing: 0.04em; padding: 0.18em 0.42em; border-radius: 999px; line-height: 1.4;
       }
@@ -72,7 +72,7 @@
       .vesper-panel {
         position: fixed; left: 1.4rem; bottom: 6rem; z-index: 9500;
         width: 368px; max-width: calc(100vw - 2.8rem); height: 520px; max-height: calc(100vh - 8rem);
-        background: #12121a; border: 1px solid rgba(245,240,232,0.14); border-radius: 12px;
+        background: #0f1420; border: 1px solid rgba(245,240,232,0.14); border-radius: 12px;
         box-shadow: 0 20px 60px rgba(10,10,15,0.5); display: flex; flex-direction: column; overflow: hidden;
         font-family: 'Inter', system-ui, sans-serif;
         opacity: 0; transform: translateY(16px) scale(0.98); pointer-events: none;
@@ -120,7 +120,7 @@
         font-size: 0.83rem; line-height: 1.55; padding: 0.6em 0.85em; border-radius: 10px;
       }
       .vesper-msg.bot .vesper-bubble { background: rgba(245,240,232,0.07); color: #f5f0e8; border-bottom-left-radius: 3px; }
-      .vesper-msg.user .vesper-bubble { background: #c9a227; color: #0a0a0f; border-bottom-right-radius: 3px; white-space: pre-wrap; }
+      .vesper-msg.user .vesper-bubble { background: #c9a227; color: #090c14; border-bottom-right-radius: 3px; white-space: pre-wrap; }
       .vesper-bubble p { margin: 0 0 0.6em; }
       .vesper-bubble p:last-child { margin-bottom: 0; }
       .vesper-bubble ul { margin: 0.2em 0 0.6em; padding-left: 1.15em; }
@@ -128,7 +128,7 @@
       .vesper-bubble li { margin-bottom: 0.3em; }
       .vesper-bubble li:last-child { margin-bottom: 0; }
       .vesper-bubble strong { color: #e8c866; font-weight: 600; }
-      .vesper-msg.user .vesper-bubble strong { color: #0a0a0f; }
+      .vesper-msg.user .vesper-bubble strong { color: #090c14; }
       .vesper-typing { display: flex; gap: 0.3em; padding: 0.7em 0.85em; }
       .vesper-typing span {
         width: 5px; height: 5px; border-radius: 50%; background: rgba(245,240,232,0.5);
@@ -151,7 +151,7 @@
       .vesper-input-row input::placeholder { color: rgba(245,240,232,0.35); }
       .vesper-send {
         width: 38px; height: 38px; flex: none; border-radius: 8px; border: none; background: #c9a227;
-        color: #0a0a0f; font-size: 1rem; cursor: pointer; transition: background 0.3s; display: flex;
+        color: #090c14; font-size: 1rem; cursor: pointer; transition: background 0.3s; display: flex;
         align-items: center; justify-content: center;
       }
       /* iOS Safari zooms the whole page in on focus when an input's

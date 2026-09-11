@@ -55,7 +55,7 @@
       }
       .checkout-overlay.show { opacity: 1; pointer-events: auto; }
       .checkout-panel {
-        max-width: 420px; width: 100%; background: #12121a; border: 1px solid rgba(245,240,232,0.12);
+        max-width: 420px; width: 100%; background: #0f1420; border: 1px solid rgba(245,240,232,0.12);
         padding: 3rem 2.4rem; text-align: center; transform: translateY(14px); transition: transform 0.4s;
         font-family: 'Inter', system-ui, sans-serif;
       }
@@ -77,13 +77,13 @@
         color: #c9a227; font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
         cursor: pointer; transition: background 0.3s, color 0.3s;
       }
-      .checkout-close:hover { background: #c9a227; color: #0a0a0f; }
+      .checkout-close:hover { background: #c9a227; color: #090c14; }
 
       /* ---------------- QUICK BOOK ---------------- */
       .quickbook-fab {
         position: fixed; right: 1.4rem; bottom: calc(1.4rem + env(safe-area-inset-bottom)); z-index: 9000;
         display: inline-flex; align-items: center; gap: 0.5em;
-        background: #c9a227; color: #0a0a0f; border: none; border-radius: 999px;
+        background: #c9a227; color: #090c14; border: none; border-radius: 999px;
         padding: 0.85em 1.4em; font-family: 'Inter', system-ui, sans-serif;
         font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
         box-shadow: 0 8px 24px rgba(10,10,15,0.35); cursor: pointer;
@@ -107,7 +107,7 @@
       .quickbook-overlay.show { opacity: 1; pointer-events: auto; }
       .quickbook-panel {
         max-width: 400px; width: 100%; max-height: 90vh; overflow-y: auto;
-        background: #12121a; border: 1px solid rgba(245,240,232,0.12);
+        background: #0f1420; border: 1px solid rgba(245,240,232,0.12);
         padding: 2.4rem 2rem; transform: translateY(14px); transition: transform 0.4s;
         font-family: 'Inter', system-ui, sans-serif;
       }
@@ -137,9 +137,9 @@
         .quickbook-field input, .quickbook-field select { font-size: 16px; }
       }
       .quickbook-field input:focus, .quickbook-field select:focus { border-color: #c9a227; }
-      .quickbook-field select option { background: #12121a; color: #f5f0e8; }
+      .quickbook-field select option { background: #0f1420; color: #f5f0e8; }
       .quickbook-submit {
-        width: 100%; margin-top: 0.6rem; padding: 0.9em; background: #c9a227; color: #0a0a0f;
+        width: 100%; margin-top: 0.6rem; padding: 0.9em; background: #c9a227; color: #090c14;
         border: none; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
         cursor: pointer; transition: background 0.3s;
       }

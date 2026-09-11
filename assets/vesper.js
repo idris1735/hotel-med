@@ -45,7 +45,7 @@
       .vesper-fab {
         position: fixed; left: 1.4rem; bottom: calc(1.4rem + env(safe-area-inset-bottom)); z-index: 9000;
         width: 60px; height: 60px; border-radius: 50%; padding: 0; border: 2px solid #c9a227;
-        background: #0f1420; cursor: pointer; box-shadow: 0 8px 24px rgba(10,10,15,0.4);
+        background: #10233d; cursor: pointer; box-shadow: 0 8px 24px rgba(10,10,15,0.4);
         transition: transform 0.3s, box-shadow 0.3s; overflow: visible;
       }
       .vesper-fab:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(10,10,15,0.45); }
@@ -72,7 +72,7 @@
       .vesper-panel {
         position: fixed; left: 1.4rem; bottom: 6rem; z-index: 9500;
         width: 368px; max-width: calc(100vw - 2.8rem); height: 520px; max-height: calc(100vh - 8rem);
-        background: #0f1420; border: 1px solid rgba(245,240,232,0.14); border-radius: 12px;
+        background: #10233d; border: 1px solid rgba(245,240,232,0.14); border-radius: 12px;
         box-shadow: 0 20px 60px rgba(10,10,15,0.5); display: flex; flex-direction: column; overflow: hidden;
         font-family: 'Inter', system-ui, sans-serif;
         opacity: 0; transform: translateY(16px) scale(0.98); pointer-events: none;

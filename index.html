@@ -186,6 +186,16 @@
       background: rgba(10, 10, 15, 0.82); backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
     }
+    /* The nav bar has no background until .scrolled is added (by design, for
+       a transparent hero) -- but with the mobile menu open, that left it
+       fully see-through at the top of the page, so the menu's own "Rooms"
+       link (vertically centered, tall type) showed directly through the
+       "HOTEL MEDALLION" logo text sitting at z-index 100 above it. Force an
+       opaque nav background whenever the menu is open, regardless of scroll
+       position. */
+    body.menu-locked .nav {
+      background: rgba(10, 10, 15, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
     .nav-logo {
       display: inline-flex; align-items: center; gap: 0.65rem;
       font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
@@ -550,7 +560,12 @@
     .experiences-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.54) saturate(0.85); transition: transform 1.6s var(--ease-cinematic), filter 1.6s; }
     .experiences-item:hover img { transform: scale(1.06); filter: brightness(0.67) saturate(1); }
     .experiences-item-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; }
-    .experiences-item-label { font-size: 0.62rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--champagne); margin-bottom: 1rem; }
+    /* text-shadow rather than a background scrim, since the label sits
+       directly on photos of varying brightness (the "Concierge" card's
+       overcast driveway shot in particular washed the gold text out) --
+       a dark halo keeps it legible against any of the four without
+       needing a per-card override. */
+    .experiences-item-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--champagne); margin-bottom: 1rem; text-shadow: 0 1px 10px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9); }
     .experiences-item-title { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2.2rem); color: var(--ivory); margin-bottom: 0.9rem; }
     .experiences-item-desc { font-size: 0.8rem; color: var(--ivory-dim); font-weight: 300; max-width: 300px; line-height: 1.65; }
 
@@ -630,7 +645,7 @@
     .highlight:hover { transform: translateX(4px); }
     .highlight-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 400; color: var(--midnight); margin-bottom: 4px; }
     .highlight-time { font-size: 0.7rem; font-weight: 300; color: rgba(10,10,15,0.5); letter-spacing: 0.06em; }
-    .location-address { text-align: center; max-width: 520px; margin: 0 auto; }
+    .location-address { text-align: center; max-width: 520px; margin: 0 auto 4rem; }
     .address-rule { width: 40px; height: 1px; background: var(--champagne-dim); margin: 0 auto 1.4rem; }
     .address-text { font-size: 0.92rem; font-weight: 300; color: rgba(10,10,15,0.8); line-height: 1.7; letter-spacing: 0.02em; }
 
@@ -873,7 +888,7 @@
       <li><a href="#rooms">Rooms</a></li>
       <li><a href="#dining">Dining</a></li>
       <li><a href="#wellness">Wellness</a></li>
-      <li><a href="#experiences">Experiences</a></li>
+      <li><a href="#experiences">Gatherings</a></li>
       <li><a href="#location">Location</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="/about">Our Story</a></li>
@@ -887,7 +902,7 @@
   </nav>
   <div class="nav-mobile-menu" id="mobileMenu">
     <a href="#rooms">Rooms</a><a href="#dining">Dining</a><a href="#wellness">Wellness</a>
-    <a href="#experiences">Experiences</a><a href="#location">Location</a>
+    <a href="#experiences">Gatherings</a><a href="#location">Location</a>
     <a href="#gallery">Gallery</a><a href="/about">Our Story</a>
     <a href="/contact">Contact</a><a href="/reservation">Reserve</a>
   </div>
@@ -1004,7 +1019,7 @@
     </div>
   </section>
 
-  <!-- ROOMS — PINNED HORIZONTAL -->
+  <!-- ROOMS -->
   <section class="rooms" id="rooms">
     <div class="rooms-wrapper" id="roomsWrapper">
 
@@ -1027,7 +1042,7 @@
             <div class="room-amenity">Breakfast included · Free laundry service</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price">₦135,000 <small>per night</small> <small>(~$100)</small></p>
+          <p class="room-price" data-ngn="135000" data-usd="100">₦135,000 <small>per night</small> <small>(~$100)</small></p>
           <a href="/room-suite" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1052,7 +1067,7 @@
             <div class="room-amenity">Breakfast included · Free laundry service</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price">₦115,000 <small>per night</small> <small>(~$85)</small></p>
+          <p class="room-price" data-ngn="115000" data-usd="85">₦115,000 <small>per night</small> <small>(~$85)</small></p>
           <a href="/room-mini-suite" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1077,7 +1092,7 @@
             <div class="room-amenity">Breakfast included · Coffee &amp; tea facilities</div>
             <div class="room-amenity">Air conditioning · Flat-screen TV · Free Wi-Fi</div>
           </div>
-          <p class="room-price">₦68,000 <small>per night</small> <small>(~$51)</small></p>
+          <p class="room-price" data-ngn="68000" data-usd="51">₦68,000 <small>per night</small> <small>(~$51)</small></p>
           <a href="/room-comfort" class="room-cta">Reserve this room <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1102,7 +1117,7 @@
             <div class="room-amenity">Breakfast included · High-speed Wi-Fi</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price">₦85,000 <small>per night</small> <small>(~$63)</small></p>
+          <p class="room-price" data-ngn="85000" data-usd="63">₦85,000 <small>per night</small> <small>(~$63)</small></p>
           <a href="/room-executive" class="room-cta">Reserve this room <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1127,7 +1142,7 @@
             <div class="room-amenity">Breakfast included · High-speed Wi-Fi</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price">₦100,000 <small>per night</small> <small>(~$75)</small></p>
+          <p class="room-price" data-ngn="100000" data-usd="75">₦100,000 <small>per night</small> <small>(~$75)</small></p>
           <a href="/room-executive-double" class="room-cta">Reserve this room <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1158,24 +1173,9 @@
         <canvas id="dining-particles"></canvas>
       </div>
       <div class="dining-content">
-        <span class="label label-champagne">Culinary — 24-Hour Restaurant</span>
+        <span class="label label-champagne">Dining — 24-Hour Restaurant</span>
         <h2 class="dining-headline">Every meal is a conversation.</h2>
         <p class="dining-body">Our kitchen draws from the markets of Lagos and the techniques of the world. The chef works with what the morning brings — fresh seafood from the coast, produce from local farms, spices that tell their own stories. Breakfast included, always.</p>
-        <div class="dining-menu">
-          <div class="dining-dish">
-            <span class="dish-name">Grilled Sea Bass</span>
-            <span class="dish-desc">Yam purée, pepper sauce</span>
-          </div>
-          <div class="dining-dish">
-            <span class="dish-name">Slow-Braised Lamb</span>
-            <span class="dish-desc">Plantain fondant, herb oil</span>
-          </div>
-          <div class="dining-dish">
-            <span class="dish-name">Tropical Pavlova</span>
-            <span class="dish-desc">Mango, passionfruit, hibiscus</span>
-          </div>
-        </div>
-        <a href="/contact" class="dining-cta">Reserve a Table</a>
       </div>
     </div>
   </section>
@@ -1186,21 +1186,7 @@
     <div class="wellness-inner">
       <span class="label label-sky">Wellness</span>
       <h2 class="wellness-headline">Stillness is the ultimate luxury.</h2>
-      <p class="wellness-body">The spa at Hotel Medallion is not a place of treatments. It is a place of return. Water, breath, and the skilled hands of therapists guide you back to yourself.</p>
-      <div class="wellness-treatments">
-        <div class="treatment">
-          <span class="treatment-text">Deep Tissue Massage / 90 min / ₦45,000</span>
-          <div class="treatment-underline"></div>
-        </div>
-        <div class="treatment">
-          <span class="treatment-text">Hydrating Facial / 60 min / ₦38,000</span>
-          <div class="treatment-underline"></div>
-        </div>
-        <div class="treatment">
-          <span class="treatment-text">Hydrotherapy Session / 45 min / ₦52,000</span>
-          <div class="treatment-underline"></div>
-        </div>
-      </div>
+      <p class="wellness-body">Coming Soon: THE SPA at HOTEL MEDALLION</p>
       <div class="wellness-image">
         <img src="assets/photos/pool-terrace-1280.jpg" srcset="assets/photos/pool-terrace-768.jpg 768w, assets/photos/pool-terrace-1280.jpg 1280w" sizes="(max-width: 900px) 90vw, 34vw" alt="The outdoor pool at Hotel Medallion">
       </div>
@@ -1256,20 +1242,12 @@
         <span class="label label-muted">Events</span>
         <h2 class="events-headline">Spaces that rise to the moment.</h2>
         <div class="event-item">
-          <div class="event-name">Weddings</div>
-          <div class="event-detail">Up to 120 guests, rooftop terrace</div>
-        </div>
-        <div class="event-item">
           <div class="event-name">Corporate</div>
           <div class="event-detail">Boardroom to ballroom, fully equipped</div>
         </div>
         <div class="event-item">
           <div class="event-name">Private Dining</div>
           <div class="event-detail">Intimate gatherings, curated menus</div>
-        </div>
-        <div class="event-item">
-          <div class="event-name">Conference Room</div>
-          <div class="event-detail">One available · price on request</div>
         </div>
         <div class="event-item">
           <div class="event-name">The Hall</div>
@@ -1288,17 +1266,17 @@
         <div class="map-pin-ring" aria-hidden="true"></div>
       </div>
     </div>
+    <div class="location-address">
+      <div class="address-rule"></div>
+      <p class="address-text">Plot 61, Babatunde Anjous Avenue,<br>Off Admiralty Way, Lekki Phase 1, Lagos, Nigeria.</p>
+      <div class="address-rule" style="margin-top:1.4rem;"></div>
+    </div>
     <div class="location-highlights">
       <div class="highlight"><div class="highlight-name">Elegushi Royal Beach</div><div class="highlight-time">10 min</div></div>
       <div class="highlight"><div class="highlight-name">Nike Art Gallery</div><div class="highlight-time">25 min</div></div>
       <div class="highlight"><div class="highlight-name">Lekki Conservation</div><div class="highlight-time">20 min</div></div>
       <div class="highlight"><div class="highlight-name">Ikoyi Golf Course</div><div class="highlight-time">15 min</div></div>
       <div class="highlight"><div class="highlight-name">MMI Airport</div><div class="highlight-time">29 min</div></div>
-    </div>
-    <div class="location-address">
-      <div class="address-rule"></div>
-      <p class="address-text">Plot 61, Babatunde Anjous Avenue,<br>Off Admiralty Way, Lekki Phase 1, Lagos, Nigeria.</p>
-      <div class="address-rule" style="margin-top:1.4rem;"></div>
     </div>
   </section>
 
@@ -1443,7 +1421,7 @@
         <ul class="footer-links">
           <li><a href="#rooms">Rooms</a></li>
           <li><a href="#dining">Dining</a></li>
-          <li><a href="#experiences">Experiences</a></li>
+          <li><a href="#experiences">Gatherings</a></li>
           <li><a href="#gallery">Gallery</a></li>
         </ul>
       </div>
@@ -1790,92 +1768,32 @@
         });
       }
 
-      /* ---------------- ROOMS — PINNED HORIZONTAL ---------------- */
+      /* ---------------- ROOMS — VERTICAL ----------------
+         Was a pinned horizontal side-scroll on desktop (matchMedia'd against
+         a stacked vertical fallback on mobile/coarse/reduced-motion). The
+         client asked for Rooms to scroll top-to-bottom like the rest of the
+         page on desktop too -- Gallery keeps its own horizontal scroll,
+         untouched. Always-stacked now, no breakpoint branching needed. The
+         .rooms-tabs strip is still in the DOM but permanently hidden by the
+         existing ".rooms-wrapper.stacked ~ .rooms-tabs { display: none; }"
+         rule, since it only made sense alongside the pinned scroll. */
       const roomsWrapper = document.getElementById('roomsWrapper');
       const roomCards = document.querySelectorAll('.room-card');
-      const roomsTabEls = document.querySelectorAll('.rooms-tab');
-      let activeRoomsTween = null;
 
-      function revealRoomContent(card) {
-        const els = card.querySelectorAll('.room-content > *');
-        gsap.set(els, { opacity: 0, y: 28 });
-        gsap.to(els, { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: 'power3.out', delay: 0.15 });
-      }
-
-      // matchMedia (not a one-time width check) so the pinned-horizontal vs.
-      // stacked decision stays correct if the viewport crosses the breakpoint
-      // after load (window resize, DevTools responsive toggle, etc.) — a
-      // plain `if (window.innerWidth <= 1024)` computed once at load would
-      // desync from the CSS media query and half-apply both layouts at once.
-      ScrollTrigger.matchMedia({
-        '(min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference)': function () {
-          roomsWrapper.classList.remove('stacked');
-          let currentRoomIndex = 0;
-          gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { opacity: 0, y: 28 });
-          roomCards.forEach((card, i) => card.classList.toggle('active', i === 0));
-          roomsTabEls.forEach((tab, i) => tab.classList.toggle('active', i === 0));
-          revealRoomContent(roomCards[0]);
-
-          activeRoomsTween = gsap.to(roomsWrapper, {
-            x: () => -(roomsWrapper.scrollWidth - window.innerWidth),
-            ease: 'none',
-            scrollTrigger: {
-              trigger: '.rooms',
-              start: 'top top',
-              end: () => '+=' + (roomsWrapper.scrollWidth - window.innerWidth),
-              pin: true,
-              scrub: 1,
-              anticipatePin: 1,
-              invalidateOnRefresh: true,
-              onUpdate: (self) => {
-                const activeIndex = Math.min(Math.floor(self.progress * roomCards.length), roomCards.length - 1);
-                if (activeIndex !== currentRoomIndex) {
-                  currentRoomIndex = activeIndex;
-                  roomCards.forEach((card, i) => card.classList.toggle('active', i === activeIndex));
-                  roomsTabEls.forEach((tab, i) => tab.classList.toggle('active', i === activeIndex));
-                  revealRoomContent(roomCards[activeIndex]);
-                }
-              }
-            }
+      roomsWrapper.classList.add('stacked');
+      gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
+      if (!reduced) {
+        roomCards.forEach((card) => {
+          const els = card.querySelectorAll('.room-content > *');
+          gsap.set(els, { opacity: 0, y: 26 });
+          ScrollTrigger.create({
+            trigger: card,
+            start: 'top 70%',
+            once: true,
+            onEnter: () => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, ease: 'power3.out' })
           });
-
-          return () => { activeRoomsTween = null; };
-        },
-        '(max-width: 1024px), (pointer: coarse), (prefers-reduced-motion: reduce)': function () {
-          roomsWrapper.classList.add('stacked');
-          gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
-          // Stacked cards still deserve an entrance: fade the content stack up
-          // as each card scrolls into view (skipped under reduced-motion).
-          if (!reduced) {
-            roomCards.forEach((card) => {
-              const els = card.querySelectorAll('.room-content > *');
-              gsap.set(els, { opacity: 0, y: 26 });
-              ScrollTrigger.create({
-                trigger: card,
-                start: 'top 70%',
-                once: true,
-                onEnter: () => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, ease: 'power3.out' })
-              });
-            });
-          }
-          return () => {
-            roomsWrapper.classList.remove('stacked');
-            gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
-          };
-        }
-      });
-
-      roomsTabEls.forEach((tab) => {
-        tab.addEventListener('click', () => {
-          if (!activeRoomsTween) return;
-          const idx = Number(tab.dataset.index);
-          const st = activeRoomsTween.scrollTrigger;
-          const targetProgress = (idx + 0.5) / roomCards.length;
-          const targetScroll = st.start + targetProgress * (st.end - st.start);
-          if (lenis) lenis.scrollTo(targetScroll, { duration: 1.3 });
-          else window.scrollTo({ top: targetScroll, behavior: 'smooth' });
         });
-      });
+      }
 
       /* ---------------- DINING PARTICLES ---------------- */
       const diningCanvas = document.getElementById('dining-particles');
@@ -2260,6 +2178,25 @@
 
       /* ---------------- REFRESH PINNED ROOMS ---------------- */
       window.addEventListener('load', () => ScrollTrigger.refresh());
+
+      /* ---------------- CROSS-PAGE ANCHOR CORRECTION ----------------
+         A mobile nav link from another page (e.g. "/#rooms") relies on the
+         browser's own anchor-jump on load, which fires before images,
+         fonts, and GSAP's pinned-section setup have finished shifting the
+         page's layout -- landing short of (or past) the real section.
+         Once everything has actually settled, re-run the same
+         scrollToTarget() used for in-page nav clicks to correct it. */
+      if (location.hash) {
+        const hashTarget = document.querySelector(location.hash);
+        if (hashTarget) {
+          window.addEventListener('load', () => {
+            ScrollTrigger.refresh();
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              scrollToTarget(hashTarget);
+            }));
+          });
+        }
+      }
     })();
   </script>
 
@@ -2269,5 +2206,6 @@
   <script src="https://js.paystack.co/v2/inline.js"></script>
   <script src="assets/checkout.js"></script>
   <script src="assets/vesper.js"></script>
+  <script src="assets/currency.js"></script>
 </body>
 </html>

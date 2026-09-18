@@ -162,6 +162,9 @@
       background: rgba(10, 10, 15, 0.82); backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px); padding: 1.1rem 3rem;
     }
+    body.menu-locked .nav {
+      background: rgba(10, 10, 15, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    }
     .nav-logo {
       display: inline-flex; align-items: center; gap: 0.65rem;
       font-family: var(--font-display); font-size: 1.05rem; letter-spacing: 0.22em;
@@ -405,7 +408,7 @@
       <li><a href="/#rooms">Rooms</a></li>
       <li><a href="/#dining">Dining</a></li>
       <li><a href="/#wellness">Wellness</a></li>
-      <li><a href="/#experiences">Experiences</a></li>
+      <li><a href="/#experiences">Gatherings</a></li>
       <li><a href="/#location">Location</a></li>
       <li><a href="/#gallery">Gallery</a></li>
       <li><a href="#reserve" class="nav-reserve">Reserve</a></li>
@@ -414,7 +417,7 @@
   </nav>
   <div class="nav-mobile-menu" id="mobileMenu">
     <a href="/#rooms">Rooms</a><a href="/#dining">Dining</a><a href="/#wellness">Wellness</a>
-    <a href="/#experiences">Experiences</a><a href="/#location">Location</a>
+    <a href="/#experiences">Gatherings</a><a href="/#location">Location</a>
     <a href="/#gallery">Gallery</a><a href="#reserve">Reserve</a>
   </div>
 
@@ -497,7 +500,7 @@
         <div class="room-amenity">Coffee &amp; tea making facilities</div>
         <div class="room-amenity">Free Wi-Fi</div>
       </div>
-      <p class="room-price" data-reveal>₦115,000 <small>per night</small></p>
+      <p class="room-price" data-reveal data-ngn="115000" data-usd="85">₦115,000 <small>per night</small> <small>(~$85)</small></p>
       <p style="font-size:0.72rem; letter-spacing:0.04em; color:var(--ivory-dim); font-weight:300; margin-top:0.6rem;" data-reveal>≈ $85 USD per night — pay in either currency at checkout</p>
     </div>
   </section>
@@ -643,7 +646,7 @@
         <ul class="footer-links">
           <li><a href="/#rooms">Rooms</a></li>
           <li><a href="/#dining">Dining</a></li>
-          <li><a href="/#experiences">Experiences</a></li>
+          <li><a href="/#experiences">Gatherings</a></li>
           <li><a href="/#gallery">Gallery</a></li>
         </ul>
       </div>
@@ -841,5 +844,6 @@
   <script src="https://js.paystack.co/v2/inline.js"></script>
   <script src="assets/checkout.js"></script>
   <script src="assets/vesper.js"></script>
+  <script src="assets/currency.js"></script>
 </body>
 </html>

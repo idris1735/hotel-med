@@ -35,9 +35,9 @@ All rooms include breakfast, air conditioning, and free Wi-Fi. Higher rooms add 
 
 DINING: 24-hour restaurant. Kitchen draws on Lagos markets -- grilled sea bass, slow-braised lamb, tropical pavlova. Breakfast included with every stay. Table reservations via the Contact page or front desk.
 
-WELLNESS / SPA: Deep Tissue Massage (90 min, ₦45,000), Hydrating Facial (60 min, ₦38,000), Hydrotherapy Session (45 min, ₦52,000). Also on site: 24-hour laundry, room service, free parking, BBQ & garden facilities.
+WELLNESS / SPA: the spa is coming soon and not yet open -- do not quote treatment names or prices for it, they aren't real yet. If asked, say the spa is coming soon and isn't taking bookings. Also on site: an outdoor pool and terrace, 24-hour laundry, room service, free parking.
 
-EVENTS: Weddings (up to 120 guests, rooftop terrace), corporate events (boardroom to ballroom), private dining, one conference room and one event hall (price on request -- direct these to info@hotelmedallion.com or 09060006382).
+EVENTS: Corporate events (boardroom to ballroom), private dining, and one event hall (price on request -- direct these to info@hotelmedallion.com or 09060006382).
 
 LOCATION: Elegushi Royal Beach 10 min, Nike Art Gallery 25 min. Minutes from Ikoyi and Victoria Island. Airport transfer and car hire can be arranged by concierge.
 

@@ -39,7 +39,14 @@
         background: rgba(10,10,15,0.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         border: 1px solid #c9a227; border-radius: 999px; padding: 0.5em 0.6em 0.5em 0.9em;
         font-family: 'Inter', system-ui, sans-serif; box-shadow: 0 6px 20px rgba(10,10,15,0.35);
+        transition: opacity 0.3s, visibility 0.3s;
       }
+      /* The fullscreen mobile nav menu vertically centers its link list, and
+         with 9 links that list runs high enough to collide with this pill
+         (confirmed by a real screenshot: "Rooms" rendered half-hidden behind
+         the currency toggle). Hide it while that menu is open rather than
+         try to out-position a list whose height varies by page. */
+      body.menu-locked .currency-toggle { opacity: 0; visibility: hidden; pointer-events: none; }
       .currency-toggle-icon { font-size: 0.85rem; line-height: 1; color: #c9a227; }
       .currency-toggle select {
         appearance: none; -webkit-appearance: none; background: none; border: none;
@@ -60,6 +67,15 @@
         background: rgba(201,162,39,0.08); border: 1px solid rgba(201,162,39,0.35);
         border-radius: 999px; padding: 0.6em 1.1em; width: fit-content;
       }
+      /* Confirms to the guest that picking a currency actually changed the
+         price on screen -- a quick gold flash, not just a silent DOM update
+         that's easy to miss or mistake for nothing having happened. */
+      @keyframes price-flash-anim {
+        0% { color: #c9a227; }
+        100% { color: inherit; }
+      }
+      .price-flash { animation: price-flash-anim 0.7s ease-out; }
+      @media (prefers-reduced-motion: reduce) { .price-flash { animation: none; } }
       .currency-bar-icon { color: #c9a227; font-size: 0.9rem; }
       .currency-bar label {
         font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase;
@@ -97,9 +113,15 @@
   }
 
   // Applies `currency` to every priced element on the page using `rates`
-  // (USD-based: rates[code] is "1 USD = rates[code] units of code"). Falls
-  // back to each element's own real NGN price untouched if rates aren't
-  // available yet, rather than showing nothing.
+  // (USD-based: rates[code] is "1 USD = rates[code] units of code").
+  //
+  // Real bug this fixes: picking GBP/EUR before the async rates fetch had
+  // resolved used to silently fall back to re-showing the exact same NGN
+  // price that was already on screen -- nothing visibly changed, which is
+  // exactly what "feels numb, is that even a currency converter" describes.
+  // Now that case shows an explicit "Converting..." state instead, so
+  // switching currency always visibly does something the instant you touch
+  // it, even before the real number is ready.
   function applyCurrency(currency, rates) {
     document.querySelectorAll('.room-price[data-usd]').forEach((el) => {
       const usd = Number(el.dataset.usd);
@@ -120,13 +142,17 @@
         mainText = formatAmount(converted, currency);
         subText = `${formatAmount(ngn, 'NGN')} / ~${formatAmount(usd, 'USD')} at checkout`;
       } else {
-        // Rates not loaded (still fetching, or the upstream call failed) --
-        // show the real NGN price rather than a broken or stale figure.
-        mainText = formatAmount(ngn, 'NGN');
-        subText = `~${formatAmount(usd, 'USD')}`;
+        mainText = 'Converting…';
+        subText = `from ${formatAmount(ngn, 'NGN')}`;
       }
 
       el.innerHTML = `${mainText} <small>${suffixLabel}</small> <small>(${subText})</small>`;
+      // A brief flash makes the update undeniable -- confirms to the guest
+      // that choosing a currency actually did something, not just a UI
+      // element that might or might not be wired up.
+      el.classList.remove('price-flash');
+      void el.offsetWidth; // restart the CSS animation on repeat clicks
+      el.classList.add('price-flash');
     });
   }
 
@@ -140,6 +166,14 @@
       return null;
     }
   }
+
+  // Kicked off immediately at script-load time, not inside init() on
+  // DOMContentLoaded -- a plain network call has no DOM dependency, so
+  // there's no reason to make it wait. By the time a guest actually finds
+  // and clicks the currency control, this has very likely already resolved,
+  // which is what makes the "Converting..." fallback state rare in practice
+  // rather than something most people ever see.
+  const ratesPromise = fetchRates();
 
   function init() {
     injectStyles();
@@ -211,7 +245,7 @@
     // wait on a network round-trip to see any price at all.
     applyCurrency(currentCurrency, null);
 
-    fetchRates().then((r) => {
+    ratesPromise.then((r) => {
       rates = r;
       if (rates) applyCurrency(currentCurrency, rates);
     });

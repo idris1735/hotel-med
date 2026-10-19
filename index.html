@@ -1768,32 +1768,89 @@
         });
       }
 
-      /* ---------------- ROOMS — VERTICAL ----------------
-         Was a pinned horizontal side-scroll on desktop (matchMedia'd against
-         a stacked vertical fallback on mobile/coarse/reduced-motion). The
-         client asked for Rooms to scroll top-to-bottom like the rest of the
-         page on desktop too -- Gallery keeps its own horizontal scroll,
-         untouched. Always-stacked now, no breakpoint branching needed. The
-         .rooms-tabs strip is still in the DOM but permanently hidden by the
-         existing ".rooms-wrapper.stacked ~ .rooms-tabs { display: none; }"
-         rule, since it only made sense alongside the pinned scroll. */
+      /* ---------------- ROOMS — PINNED HORIZONTAL ----------------
+         Keep the original cinematic desktop treatment: vertical wheel input
+         drives the room cards horizontally while the section stays pinned.
+         Touch devices and reduced-motion users retain the simple stacked
+         layout so the section remains comfortable and accessible. */
       const roomsWrapper = document.getElementById('roomsWrapper');
       const roomCards = document.querySelectorAll('.room-card');
+      const roomsTabEls = document.querySelectorAll('.rooms-tab');
+      let activeRoomsTween = null;
 
-      roomsWrapper.classList.add('stacked');
-      gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
-      if (!reduced) {
-        roomCards.forEach((card) => {
-          const els = card.querySelectorAll('.room-content > *');
-          gsap.set(els, { opacity: 0, y: 26 });
-          ScrollTrigger.create({
-            trigger: card,
-            start: 'top 70%',
-            once: true,
-            onEnter: () => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, ease: 'power3.out' })
-          });
-        });
+      function revealRoomContent(card) {
+        const els = card.querySelectorAll('.room-content > *');
+        gsap.set(els, { opacity: 0, y: 28 });
+        gsap.to(els, { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: 'power3.out', delay: 0.15 });
       }
+
+      ScrollTrigger.matchMedia({
+        '(min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference)': function () {
+          roomsWrapper.classList.remove('stacked');
+          let currentRoomIndex = 0;
+          gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { opacity: 0, y: 28 });
+          roomCards.forEach((card, i) => card.classList.toggle('active', i === 0));
+          roomsTabEls.forEach((tab, i) => tab.classList.toggle('active', i === 0));
+          revealRoomContent(roomCards[0]);
+
+          activeRoomsTween = gsap.to(roomsWrapper, {
+            x: () => -(roomsWrapper.scrollWidth - window.innerWidth),
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.rooms',
+              start: 'top top',
+              end: () => '+=' + (roomsWrapper.scrollWidth - window.innerWidth),
+              pin: true,
+              scrub: 1,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                const activeIndex = Math.min(Math.floor(self.progress * roomCards.length), roomCards.length - 1);
+                if (activeIndex !== currentRoomIndex) {
+                  currentRoomIndex = activeIndex;
+                  roomCards.forEach((card, i) => card.classList.toggle('active', i === activeIndex));
+                  roomsTabEls.forEach((tab, i) => tab.classList.toggle('active', i === activeIndex));
+                  revealRoomContent(roomCards[activeIndex]);
+                }
+              }
+            }
+          });
+
+          return () => { activeRoomsTween = null; };
+        },
+        '(max-width: 1024px), (pointer: coarse), (prefers-reduced-motion: reduce)': function () {
+          roomsWrapper.classList.add('stacked');
+          gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
+          if (!reduced) {
+            roomCards.forEach((card) => {
+              const els = card.querySelectorAll('.room-content > *');
+              gsap.set(els, { opacity: 0, y: 26 });
+              ScrollTrigger.create({
+                trigger: card,
+                start: 'top 70%',
+                once: true,
+                onEnter: () => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, ease: 'power3.out' })
+              });
+            });
+          }
+          return () => {
+            roomsWrapper.classList.remove('stacked');
+            gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
+          };
+        }
+      });
+
+      roomsTabEls.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          if (!activeRoomsTween) return;
+          const idx = Number(tab.dataset.index);
+          const st = activeRoomsTween.scrollTrigger;
+          const targetProgress = (idx + 0.5) / roomCards.length;
+          const targetScroll = st.start + targetProgress * (st.end - st.start);
+          if (lenis) lenis.scrollTo(targetScroll, { duration: 1.3 });
+          else window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        });
+      });
 
       /* ---------------- DINING PARTICLES ---------------- */
       const diningCanvas = document.getElementById('dining-particles');

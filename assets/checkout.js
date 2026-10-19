@@ -268,14 +268,28 @@
     overlay.classList.add('show');
   }
 
-  function bookingPortalUrl(form) {
+  function isoDateFromToday(days) {
+    const date = new Date();
+    date.setHours(12, 0, 0, 0);
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10);
+  }
+
+  function isoDateAfter(value, days) {
+    const date = new Date(`${value}T12:00:00`);
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10);
+  }
+
+  function bookingPortalUrl(form, preferredRoom) {
     const url = new URL(LIVE_BOOKING_URL);
-    if (!form) return url.toString();
+    const arrival = fieldValue(form, ['arrival', 'bookingArrival', 'qbArrival']) || isoDateFromToday(1);
     const values = {
-      arrival: fieldValue(form, ['arrival', 'bookingArrival', 'qbArrival']),
-      departure: fieldValue(form, ['departure', 'bookingDeparture', 'qbDeparture']),
-      adults: fieldValue(form, ['adults', 'guests', 'qbGuests']),
-      children: fieldValue(form, ['children']),
+      arrival,
+      departure: fieldValue(form, ['departure', 'bookingDeparture', 'qbDeparture']) || isoDateAfter(arrival, 1),
+      adults: fieldValue(form, ['adults', 'guests', 'qbGuests']) || '2',
+      children: fieldValue(form, ['children']) || '0',
+      room: preferredRoom || fieldValue(form, ['roomType']),
     };
     Object.entries(values).forEach(([key, value]) => {
       if (value) url.searchParams.set(key, value);
@@ -294,6 +308,7 @@
   }
 
   function fieldValue(form, ids) {
+    if (!form) return '';
     for (const id of ids) {
       const el = form.querySelector('#' + id);
       if (el) return el.value;
@@ -329,9 +344,19 @@
     });
   }
 
+  function initDirectBookingLinks() {
+    document.querySelectorAll('[data-live-booking], [data-book-room]').forEach((link) => {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.assign(bookingPortalUrl(null, link.dataset.bookRoom || ''));
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     initForm('bookingForm');
     initForm('reservationForm');
+    initDirectBookingLinks();
     injectQuickBook();
   });
 

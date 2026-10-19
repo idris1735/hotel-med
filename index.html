@@ -462,6 +462,13 @@
     .room-cta:hover::before { width: 100%; }
     .room-cta .arrow { transition: transform 0.4s var(--ease-cinematic); }
     .room-cta:hover .arrow { transform: translateX(8px); }
+    .room-actions { display: flex; flex-direction: column; align-items: center; gap: 0.85rem; }
+    .room-details-link {
+      color: var(--ivory-dim); font-size: 0.68rem; letter-spacing: 0.13em;
+      text-decoration: underline; text-decoration-color: rgba(245,240,232,0.25);
+      text-underline-offset: 0.35rem; text-transform: uppercase;
+    }
+    .room-details-link:hover { color: var(--ivory); text-decoration-color: var(--champagne); }
     .room-light-leak {
       position: absolute; right: 0; top: 0; bottom: 0; width: 110px;
       background: linear-gradient(to left, rgba(110,198,232,0.14), transparent);
@@ -893,7 +900,7 @@
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="/about">Our Story</a></li>
       <li><a href="/contact">Contact</a></li>
-      <li><a href="/reservation" class="nav-reserve">Reserve</a></li>
+      <li><a href="/reservation" class="nav-reserve" data-live-booking>Reserve</a></li>
     </ul>
     <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
       <span class="burger-line"></span>
@@ -904,7 +911,7 @@
     <a href="#rooms">Rooms</a><a href="#dining">Dining</a><a href="#wellness">Wellness</a>
     <a href="#experiences">Gatherings</a><a href="#location">Location</a>
     <a href="#gallery">Gallery</a><a href="/about">Our Story</a>
-    <a href="/contact">Contact</a><a href="/reservation">Reserve</a>
+    <a href="/contact">Contact</a><a href="/reservation" data-live-booking>Reserve</a>
   </div>
 
   <!-- HERO -->
@@ -1043,7 +1050,10 @@
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
           <p class="room-price">Live rate &amp; availability</p>
-          <a href="/room-suite" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
+          <div class="room-actions">
+            <a href="https://app.hotelmedallion.com/book/medallion?room=2%20Bedroom%20Deluxe%20Suite" class="room-cta" data-book-room="2 Bedroom Deluxe Suite">Check availability <span class="arrow">→</span></a>
+            <a href="/room-suite" class="room-details-link">View suite details</a>
+          </div>
         </div>
         <div class="room-light-leak"></div>
       </div>
@@ -1068,7 +1078,10 @@
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
           <p class="room-price">Live rate &amp; availability</p>
-          <a href="/room-mini-suite" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
+          <div class="room-actions">
+            <a href="https://app.hotelmedallion.com/book/medallion?room=1%20Bedroom%20Deluxe%20Suite" class="room-cta" data-book-room="1 Bedroom Deluxe Suite">Check availability <span class="arrow">→</span></a>
+            <a href="/room-mini-suite" class="room-details-link">View suite details</a>
+          </div>
         </div>
         <div class="room-light-leak"></div>
       </div>
@@ -1093,7 +1106,10 @@
             <div class="room-amenity">Air conditioning · Flat-screen TV · Free Wi-Fi</div>
           </div>
           <p class="room-price">Live rate &amp; availability</p>
-          <a href="/room-comfort" class="room-cta">Reserve this room <span class="arrow">→</span></a>
+          <div class="room-actions">
+            <a href="https://app.hotelmedallion.com/book/medallion?room=Medallion%20Deluxe%20Comfort" class="room-cta" data-book-room="Medallion Deluxe Comfort">Check availability <span class="arrow">→</span></a>
+            <a href="/room-comfort" class="room-details-link">View room details</a>
+          </div>
         </div>
         <div class="room-light-leak"></div>
       </div>
@@ -1118,7 +1134,10 @@
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
           <p class="room-price">Live rate &amp; availability</p>
-          <a href="/room-executive" class="room-cta">Reserve this room <span class="arrow">→</span></a>
+          <div class="room-actions">
+            <a href="https://app.hotelmedallion.com/book/medallion?room=Medallion%20Deluxe%20Executive" class="room-cta" data-book-room="Medallion Deluxe Executive">Check availability <span class="arrow">→</span></a>
+            <a href="/room-executive" class="room-details-link">View room details</a>
+          </div>
         </div>
         <div class="room-light-leak"></div>
       </div>
@@ -1143,7 +1162,10 @@
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
           <p class="room-price">Live rate &amp; availability</p>
-          <a href="/room-executive-double" class="room-cta">Reserve this room <span class="arrow">→</span></a>
+          <div class="room-actions">
+            <a href="https://app.hotelmedallion.com/book/medallion?room=Double%20Bed%20Deluxe%20Executive" class="room-cta" data-book-room="Double Bed Deluxe Executive">Check availability <span class="arrow">→</span></a>
+            <a href="/room-executive-double" class="room-details-link">View room details</a>
+          </div>
         </div>
         <div class="room-light-leak"></div>
       </div>
@@ -1431,7 +1453,7 @@
           <li><a href="/about">Our Story</a></li>
           <li><a href="#location">Location</a></li>
           <li><a href="/contact">Contact</a></li>
-          <li><a href="/reservation">Reservations</a></li>
+          <li><a href="/reservation" data-live-booking>Reservations</a></li>
         </ul>
       </div>
       <div>

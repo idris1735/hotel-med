@@ -1,18 +1,9 @@
-// Shared checkout logic for every booking form on the site (homepage's
-// inline widget, the dedicated reservation page, and each room page's own
-// form). One module so the Paystack flow only has to be written once and
-// stays identical everywhere. Field ids vary slightly page to page — this
-// reads whichever ones exist rather than assuming one fixed layout.
+// Shared handoff for every booking form on the marketing site. Hotel OS is
+// the only source of live availability, prices and reservation records.
 (function () {
   'use strict';
 
-  const ROOM_SLUG_BY_NAME = {
-    '2 Bedroom Deluxe Suite': 'suite-2bed',
-    '1 Bedroom Deluxe Suite': 'suite-1bed',
-    'Medallion Deluxe Comfort': 'comfort',
-    'Medallion Deluxe Executive': 'executive',
-    'Double Bed Deluxe Executive': 'executive-double',
-  };
+  const LIVE_BOOKING_URL = 'https://app.hotelmedallion.com/book/medallion';
 
   // guestEmail/guestName/specialRequests are user-typed, round-trip through
   // our own DB, and get interpolated into innerHTML below — escape anything
@@ -155,8 +146,6 @@
     document.head.appendChild(style);
   }
 
-  const QUICKBOOK_ROOM_NAMES = Object.keys(ROOM_SLUG_BY_NAME);
-
   function injectQuickBook() {
     injectStyles();
 
@@ -175,13 +164,6 @@
     `;
     document.body.appendChild(fab);
 
-    // Unlike showConfirmation/showError, nothing user-typed is interpolated
-    // into this innerHTML -- QUICKBOOK_ROOM_NAMES is our own hardcoded
-    // constant and todayIso is system-generated. Form values the guest
-    // types are set natively by the browser into the inputs afterward,
-    // never re-serialized back into HTML here. If a future edit adds any
-    // interpolated value sourced from user input, route it through
-    // escapeHtml() first, same as the confirmation panel does.
     const overlay = document.createElement('div');
     overlay.className = 'quickbook-overlay';
     overlay.id = 'quickbookOverlay';
@@ -190,14 +172,8 @@
       <div class="quickbook-panel">
         <button type="button" class="quickbook-close-x" aria-label="Close">&times;</button>
         <h3>Quick Booking</h3>
-        <p class="sub">Room, dates, and your details — that's it.</p>
+        <p class="sub">Choose your dates. Live rooms and approved rates open next.</p>
         <form id="quickBookForm">
-          <div class="quickbook-field">
-            <label for="qbRoomType">Room</label>
-            <select id="qbRoomType">
-              ${QUICKBOOK_ROOM_NAMES.map((n) => `<option>${n}</option>`).join('')}
-            </select>
-          </div>
           <div class="quickbook-row">
             <div class="quickbook-field">
               <label for="qbArrival">Arrival</label>
@@ -212,36 +188,11 @@
             <label for="qbGuests">Guests</label>
             <input type="number" id="qbGuests" min="1" max="10" value="2" required>
           </div>
-          <div class="quickbook-field">
-            <label for="qbFullName">Full name</label>
-            <input type="text" id="qbFullName" autocomplete="name" required>
-          </div>
-          <div class="quickbook-row">
-            <div class="quickbook-field">
-              <label for="qbEmail">Email</label>
-              <input type="email" id="qbEmail" autocomplete="email" required>
-            </div>
-            <div class="quickbook-field">
-              <label for="qbPhone">Phone</label>
-              <input type="tel" id="qbPhone" autocomplete="tel" required>
-            </div>
-          </div>
-          <button type="submit" class="quickbook-submit">Reserve &amp; Pay</button>
+          <button type="submit" class="quickbook-submit">Check live availability</button>
         </form>
       </div>
     `;
     document.body.appendChild(overlay);
-
-    // If this page already has its own room form with a room pre-selected
-    // (every room-*.html page does), default the quick-book form to match
-    // rather than always starting at the first option in the list.
-    const pageRoomSelect = document.querySelector('#roomType');
-    if (pageRoomSelect && pageRoomSelect.value) {
-      const qbRoomSelect = overlay.querySelector('#qbRoomType');
-      if (qbRoomSelect && QUICKBOOK_ROOM_NAMES.includes(pageRoomSelect.value)) {
-        qbRoomSelect.value = pageRoomSelect.value;
-      }
-    }
 
     function showQuickBook() { overlay.classList.add('show'); }
     function hideQuickBook() { overlay.classList.remove('show'); }
@@ -317,56 +268,29 @@
     overlay.classList.add('show');
   }
 
-  // Standalone version of the Paystack-popup step inside handleSubmit below,
-  // extracted so Vesper (assets/vesper.js) can hand off to the exact same
-  // payment flow after her create_booking tool creates a pending row --
-  // there is only one place in the whole site that ever opens PaystackPop.
-  // `onSettled` (optional) fires after success/cancel/error, for a caller
-  // like the chat widget that needs to re-enable its own UI.
-  function openPaystackForBooking(bookingData, guestEmail, onSettled, onPaid) {
-    const settle = typeof onSettled === 'function' ? onSettled : () => {};
-    const paid = typeof onPaid === 'function' ? onPaid : () => {};
-    if (!bookingData || !bookingData.publicKey) {
-      showError(
-        'Online payment isn’t connected yet — please email info@hotelmedallion.com or call 09060006382 to complete your booking.'
-      );
-      settle();
-      return;
-    }
-    if (typeof PaystackPop === 'undefined') {
-      showError('Payment could not load. Please check your connection and try again.');
-      settle();
-      return;
-    }
-    const popup = new PaystackPop();
-    popup.newTransaction({
-      key: bookingData.publicKey,
-      email: guestEmail,
-      amount: bookingData.amountSubunit,
-      currency: bookingData.currency,
-      ref: bookingData.reference,
-      onSuccess: async () => {
-        try {
-          const verifyResp = await fetch(`/api/paystack/verify?reference=${encodeURIComponent(bookingData.reference)}`);
-          const verifyData = await verifyResp.json();
-          if (verifyResp.ok && verifyData.status === 'paid') {
-            showConfirmation(verifyData, guestEmail);
-            paid();
-          } else {
-            showError(`Payment received but not yet confirmed — we’ll email you shortly. Reference: ${bookingData.reference}`);
-          }
-        } catch (err) {
-          showError(`Payment received — confirmation is pending. Reference: ${bookingData.reference}`);
-        } finally {
-          settle();
-        }
-      },
-      onCancel: settle,
-      onError: (error) => {
-        showError((error && error.message) || 'Payment failed to process. Please try again.');
-        settle();
-      },
+  function bookingPortalUrl(form) {
+    const url = new URL(LIVE_BOOKING_URL);
+    if (!form) return url.toString();
+    const values = {
+      arrival: fieldValue(form, ['arrival', 'bookingArrival', 'qbArrival']),
+      departure: fieldValue(form, ['departure', 'bookingDeparture', 'qbDeparture']),
+      adults: fieldValue(form, ['adults', 'guests', 'qbGuests']),
+      children: fieldValue(form, ['children']),
+    };
+    Object.entries(values).forEach(([key, value]) => {
+      if (value) url.searchParams.set(key, value);
     });
+    return url.toString();
+  }
+
+  // Kept as the public handoff used by Vesper. The official website no
+  // longer creates bookings or opens a payment provider. Hotel OS owns live
+  // availability, prices, reservation requests and any future payment step.
+  function openPaystackForBooking(bookingData, guestEmail, onSettled, onPaid) {
+    const destination = bookingData && bookingData.bookingUrl
+      ? bookingData.bookingUrl
+      : LIVE_BOOKING_URL;
+    window.location.assign(destination);
   }
 
   function fieldValue(form, ids) {
@@ -377,74 +301,28 @@
     return '';
   }
 
-  async function handleSubmit(form) {
+  function handleSubmit(form) {
     const submitBtn = form.querySelector('button[type="submit"]');
-    const originalText = submitBtn ? submitBtn.textContent : '';
     if (submitBtn) {
       submitBtn.disabled = true;
-      submitBtn.textContent = 'Processing…';
+      submitBtn.textContent = 'Opening live availability…';
     }
-    const reset = () => {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-      }
-    };
 
-    try {
-      // 'qb*' ids belong to the floating quick-book form injected by this
-      // same script (see injectQuickBook) -- unique ids so it never
-      // collides with whatever booking form already exists on the page.
-      const roomTypeName = fieldValue(form, ['roomType', 'qbRoomType']);
-      const roomType = ROOM_SLUG_BY_NAME[roomTypeName];
-      // No currency field on a page defaults to NGN client-side too, so the
-      // display matches what /api/bookings/create will also default to.
-      const currency = fieldValue(form, ['currency']) || 'NGN';
-      const checkIn = fieldValue(form, ['arrival', 'bookingArrival', 'qbArrival']);
-      const checkOut = fieldValue(form, ['departure', 'bookingDeparture', 'qbDeparture']);
-      const adults = fieldValue(form, ['adults', 'guests', 'qbGuests']) || '1';
-      const children = fieldValue(form, ['children']) || '0';
-      const guestName = fieldValue(form, ['fullName', 'qbFullName']);
-      const guestEmail = fieldValue(form, ['email', 'qbEmail']);
-      const guestPhone = fieldValue(form, ['phone', 'qbPhone']);
-      const specialRequests = fieldValue(form, ['requests']);
-
-      if (!roomType) throw new Error('Please choose a room type.');
-      if (!checkIn || !checkOut) throw new Error('Please choose your arrival and departure dates.');
-      if (!guestName || !guestEmail) throw new Error('Please enter your name and email.');
-
-      const createResp = await fetch('/api/bookings/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          roomType, currency, checkIn, checkOut, adults, children,
-          guestName, guestEmail, guestPhone, specialRequests,
-          // Set by assets/referral.js from a "?ref=" link, if this guest
-          // arrived on one within the last 30 days. Server-side validates
-          // it against an actually-approved affiliate before it attaches
-          // to anything -- see createBookingRecord.
-          affiliateCode: window.MedallionReferral ? window.MedallionReferral.getCode() : null,
-        }),
-      });
-      const createData = await createResp.json();
-      if (!createResp.ok) throw new Error(createData.error || 'Could not start your booking.');
-
-      // Close the quick-book modal here specifically, not on every error --
-      // validation failures above (missing name/email, booking-creation
-      // failure) fire before this point and should leave the form open so
-      // the guest can fix the problem without losing what they typed. Once
-      // we've actually handed off to Paystack, the modal's job is done.
-      hideQuickBookOverlay();
-      openPaystackForBooking(createData, guestEmail, reset, () => form.reset());
-    } catch (err) {
-      showError(err.message || 'Something went wrong — please try again.');
-      reset();
-    }
+    hideQuickBookOverlay();
+    window.location.assign(bookingPortalUrl(form));
   }
 
   function initForm(formId) {
     const form = document.getElementById(formId);
     if (!form) return;
+    form.noValidate = true;
+    const keep = new Set(['arrival', 'bookingArrival', 'departure', 'bookingDeparture', 'adults', 'guests', 'children']);
+    form.querySelectorAll('input, select, textarea').forEach((control) => {
+      if (keep.has(control.id)) return;
+      control.disabled = true;
+      const field = control.closest('.booking-field, .res-field');
+      if (field) field.hidden = true;
+    });
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       handleSubmit(form);
@@ -457,9 +335,7 @@
     injectQuickBook();
   });
 
-  // Small public surface for assets/vesper.js -- the AI concierge creates
-  // a pending booking via her own tool call, then hands off to this exact
-  // same Paystack flow (and confirmation/error UI) rather than having any
-  // separate payment code path.
+  // Small public surface for assets/vesper.js. The historical function name
+  // is retained for compatibility, but it now opens the Hotel OS portal.
   window.MedallionCheckout = { openPaystackForBooking, showConfirmation, showError, escapeHtml, formatAmount, formatDate };
 })();

@@ -1,15 +1,7 @@
 // POST /api/bookings/create
 //
-// Called by the booking form BEFORE the Paystack popup opens. Validates the
-// request, computes the real price server-side (never trusts a client-sent
-// amount), writes a 'pending' booking row, and hands back everything the
-// frontend needs to open PaystackPop: the reference, the amount in kobo,
-// and the Paystack PUBLIC key (safe to expose — this is the one place the
-// frontend learns it, so it never has to be hardcoded into static HTML).
-//
-// The actual validation/insert logic lives in ../_lib/create-booking.js,
-// shared with Vesper's create_booking tool in api/chat.js so both paths
-// (human form, AI concierge) can never enforce different rules.
+// Compatibility endpoint for older cached pages. It never creates a record;
+// callers are handed to the live Hotel OS booking engine instead.
 const { createBookingRecord } = require('../_lib/create-booking');
 
 module.exports = async (req, res) => {

@@ -442,7 +442,7 @@
           <div class="room-select-body">
             <div class="room-select-top">
               <span class="room-select-name">2 Bedroom Deluxe Suite</span>
-              <span class="room-select-price">₦135,000 <small>/ night (~$100)</small></span>
+              <span class="room-select-price">Check live rate</span>
             </div>
             <p class="room-select-desc">Two full bedrooms under one reservation — king bed, private balcony overlooking Lekki. One of only three.</p>
             <a href="/room-suite" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
@@ -457,7 +457,7 @@
           <div class="room-select-body">
             <div class="room-select-top">
               <span class="room-select-name">1 Bedroom Deluxe Suite</span>
-              <span class="room-select-price">₦115,000 <small>/ night (~$85)</small></span>
+              <span class="room-select-price">Check live rate</span>
             </div>
             <p class="room-select-desc">A private bedroom and separate sitting area — suite-level finish, scaled to two. Our sole 1-Bedroom Suite.</p>
             <a href="/room-mini-suite" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
@@ -472,7 +472,7 @@
           <div class="room-select-body">
             <div class="room-select-top">
               <span class="room-select-name">Medallion Deluxe Comfort</span>
-              <span class="room-select-price">₦68,000 <small>/ night (~$51)</small></span>
+              <span class="room-select-price">Check live rate</span>
             </div>
             <p class="room-select-desc">Generous space without excess — queen bed, work desk, private bath and shower.</p>
             <a href="/room-comfort" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
@@ -487,7 +487,7 @@
           <div class="room-select-body">
             <div class="room-select-top">
               <span class="room-select-name">Medallion Deluxe Executive</span>
-              <span class="room-select-price">₦85,000 <small>/ night (~$63)</small></span>
+              <span class="room-select-price">Check live rate</span>
             </div>
             <p class="room-select-desc">For the business traveller — expanded workspace, high-speed connectivity.</p>
             <a href="/room-executive" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
@@ -502,7 +502,7 @@
           <div class="room-select-body">
             <div class="room-select-top">
               <span class="room-select-name">Double Bed Deluxe Executive</span>
-              <span class="room-select-price">₦100,000 <small>/ night (~$75)</small></span>
+              <span class="room-select-price">Check live rate</span>
             </div>
             <p class="room-select-desc">Executive workspace paired with a double bed for two. Only two of these exist.</p>
             <a href="/room-executive-double" class="room-select-link" onclick="event.stopPropagation()">View full details <span class="arrow">→</span></a>
@@ -574,10 +574,10 @@
           <label for="requests">Special requests <span style="text-transform:none; letter-spacing:0;">(optional)</span></label>
           <textarea id="requests" placeholder="Airport transfer, early check-in, dietary notes…"></textarea>
         </div>
-        <button type="submit" class="res-submit">Reserve &amp; Pay</button>
+        <button type="submit" class="res-submit">Check live availability</button>
       </form>
       <p class="res-note">
-        Secure payment via Paystack — your reservation is confirmed the moment payment clears.<br>
+        Live rooms and approved rates are shown in the Hotel Medallion booking portal.<br>
         For immediate assistance — <a href="mailto:info@hotelmedallion.com">info@hotelmedallion.com</a> · 09060006382 · 09085820000
       </p>
     </div>
@@ -837,10 +837,6 @@
     })();
   </script>
 
-  <!-- Paystack cannot be pinned with SRI: they intentionally serve this
-       unversioned so security patches roll out without every merchant
-       re-deploying -- the same convention Stripe.js uses for its CDN. -->
-  <script src="https://js.paystack.co/v2/inline.js"></script>
   <script src="assets/referral.js"></script>
   <script src="assets/checkout.js"></script>
   <script src="assets/vesper.js"></script>

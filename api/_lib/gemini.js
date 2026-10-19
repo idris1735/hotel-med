@@ -127,14 +127,14 @@ function calculatePrice({ roomType, checkIn, checkOut, currency }) {
   };
 }
 
-async function executeFunctionCall(call) {
+async function executeFunctionCall(call, affiliateCode) {
   const args = call.args || {};
   if (call.name === 'calculate_price') {
     return calculatePrice(args);
   }
   if (call.name === 'create_booking') {
     const roomSlug = ROOM_SLUG_BY_NAME[args.roomType];
-    const result = await createBookingRecord({ ...args, roomType: roomSlug });
+    const result = await createBookingRecord({ ...args, roomType: roomSlug, affiliateCode });
     if (!result.ok) return { error: result.error };
     return { success: true, ...result.data };
   }
@@ -143,8 +143,11 @@ async function executeFunctionCall(call) {
 
 // history: array of Gemini `Content` objects ({role, parts}) the client
 // already has from prior turns -- kept client-side rather than in a server
-// session store, so there's nothing to expire or clean up.
-async function chatWithVesper({ history, message }) {
+// session store, so there's nothing to expire or clean up. affiliateCode
+// comes from the guest's referral cookie (see assets/referral.js) so a
+// booking made through Vesper, not just the form, still attributes
+// correctly -- validated server-side the same way either path does.
+async function chatWithVesper({ history, message, affiliateCode }) {
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error('GEMINI_API_KEY is not set');
@@ -221,7 +224,7 @@ async function chatWithVesper({ history, message }) {
 
     const responseParts = [];
     for (const call of functionCalls) {
-      const result = await executeFunctionCall(call);
+      const result = await executeFunctionCall(call, affiliateCode);
       if (call.name === 'calculate_price' && result && result.roomType) {
         if (pricedRoomTypes.has(result.roomType)) {
           result.reminderForYou =

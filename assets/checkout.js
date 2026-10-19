@@ -419,6 +419,11 @@
         body: JSON.stringify({
           roomType, currency, checkIn, checkOut, adults, children,
           guestName, guestEmail, guestPhone, specialRequests,
+          // Set by assets/referral.js from a "?ref=" link, if this guest
+          // arrived on one within the last 30 days. Server-side validates
+          // it against an actually-approved affiliate before it attaches
+          // to anything -- see createBookingRecord.
+          affiliateCode: window.MedallionReferral ? window.MedallionReferral.getCode() : null,
         }),
       });
       const createData = await createResp.json();

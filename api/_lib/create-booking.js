@@ -12,6 +12,7 @@ const {
   nightsBetween,
 } = require('./rooms');
 const { generateReference } = require('./reference');
+const { findApprovedAffiliateByCode } = require('./affiliates');
 
 const EMAIL_RE = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']+$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -30,6 +31,7 @@ async function createBookingRecord({
   guestEmail,
   guestPhone,
   specialRequests,
+  affiliateCode,
 }) {
   if (!isValidRoomType(roomType)) {
     return { ok: false, error: 'Invalid or missing roomType' };
@@ -69,15 +71,27 @@ async function createBookingRecord({
   const amountSubunit = amountMajor * 100;
   const reference = generateReference();
 
+  // Looked up and validated here, not trusted as-is from the client: only
+  // an *approved* affiliate's real code ever attaches to a booking. A
+  // stale cookie, a typo, or someone hand-crafting the field just quietly
+  // results in no attribution rather than a bogus commission.
+  let resolvedAffiliateCode = null;
+  if (affiliateCode && typeof affiliateCode === 'string') {
+    const affiliate = await findApprovedAffiliateByCode(affiliateCode.trim());
+    if (affiliate) resolvedAffiliateCode = affiliate.referral_code;
+  }
+
   try {
     await sql`
       INSERT INTO bookings (
         reference, room_type, check_in, check_out, adults, children,
-        guest_name, guest_email, guest_phone, special_requests, currency, amount_subunit, status
+        guest_name, guest_email, guest_phone, special_requests, currency, amount_subunit, status,
+        affiliate_code
       ) VALUES (
         ${reference}, ${roomType}, ${checkIn}, ${checkOut}, ${adultsNum}, ${childrenNum},
         ${guestName.trim()}, ${guestEmail.trim()}, ${guestPhone || null}, ${specialRequests || null},
-        ${resolvedCurrency}, ${amountSubunit}, 'pending'
+        ${resolvedCurrency}, ${amountSubunit}, 'pending',
+        ${resolvedAffiliateCode}
       )
     `;
   } catch (err) {

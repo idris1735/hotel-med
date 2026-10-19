@@ -267,7 +267,11 @@
         const resp = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message: text.trim(), history }),
+          body: JSON.stringify({
+            message: text.trim(),
+            history,
+            affiliateCode: window.MedallionReferral ? window.MedallionReferral.getCode() : null,
+          }),
         });
         const data = await resp.json();
         hideTyping();

@@ -60,9 +60,8 @@ async function sendBookingConfirmationEmail(booking) {
   const roomName = room ? room.name : booking.room_type;
   const fromAddress = process.env.RESEND_FROM_EMAIL || 'Hotel Medallion <onboarding@resend.dev>';
   // Needs to be an absolute URL -- email clients can't resolve a relative
-  // "assets/logo-icon.png" the way a browser on the live site can. Update
-  // this once a real domain replaces the Vercel one.
-  const siteUrl = process.env.SITE_URL || 'https://hotel-med.vercel.app';
+  // "assets/logo-icon.png" the way a browser on the live site can.
+  const siteUrl = process.env.SITE_URL || 'https://hotelmedallion.com';
   const logoUrl = `${siteUrl}/assets/logo-icon.png`;
 
   const nights = nightsBetween(booking.check_in, booking.check_out);
@@ -125,6 +124,26 @@ async function sendBookingConfirmationEmail(booking) {
     'Hotel Medallion — Plot 61, Babatunde Anjous Avenue, off Admiralty Way, Lekki Phase 1, Lagos',
   ].filter((line) => line !== null).join('\n');
 
+  await sendEmail({
+    to: booking.guest_email,
+    subject: `Reservation Confirmed — ${roomName}`,
+    html,
+    text,
+  });
+}
+
+// Generic send, factored out now that there are two real call sites (guest
+// booking confirmations, and the affiliate-program emails below) rather
+// than one -- not split out speculatively ahead of an actual second use.
+// Same swallow-all-errors contract as before: a Resend outage must never
+// break whatever flow triggered the email.
+async function sendEmail({ to, subject, html, text, replyTo }) {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn('RESEND_API_KEY not set — skipping email:', subject);
+    return;
+  }
+  const fromAddress = process.env.RESEND_FROM_EMAIL || 'Hotel Medallion <onboarding@resend.dev>';
   try {
     const resp = await fetch('https://api.resend.com/emails', {
       method: 'POST',
@@ -134,20 +153,20 @@ async function sendBookingConfirmationEmail(booking) {
       },
       body: JSON.stringify({
         from: fromAddress,
-        to: booking.guest_email,
-        reply_to: 'info@hotelmedallion.com',
-        subject: `Reservation Confirmed — ${roomName}`,
+        to,
+        reply_to: replyTo || 'info@hotelmedallion.com',
+        subject,
         html,
         text,
       }),
     });
     if (!resp.ok) {
       const body = await resp.text().catch(() => '');
-      console.error(`Resend send failed (${resp.status}) for ${booking.reference}:`, body);
+      console.error(`Resend send failed (${resp.status}) for "${subject}":`, body);
     }
   } catch (err) {
-    console.error(`Resend send threw for ${booking.reference}:`, err.message);
+    console.error(`Resend send threw for "${subject}":`, err.message);
   }
 }
 
-module.exports = { sendBookingConfirmationEmail };
+module.exports = { sendBookingConfirmationEmail, sendEmail };

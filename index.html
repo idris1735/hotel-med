@@ -14,12 +14,12 @@
   <meta property="og:site_name" content="Hotel Medallion">
   <meta property="og:title" content="Hotel Medallion — A Quiet Kind of Luxury">
   <meta property="og:description" content="A contemporary boutique residence in Lekki Phase 1, Lagos — 25 rooms, minutes from Ikoyi and Victoria Island.">
-  <meta property="og:image" content="https://hotel-med.vercel.app/assets/photos/exterior-street-1280.jpg">
-  <meta property="og:url" content="https://hotel-med.vercel.app/">
+  <meta property="og:image" content="https://hotelmedallion.com/assets/photos/exterior-street-1280.jpg">
+  <meta property="og:url" content="https://hotelmedallion.com/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Hotel Medallion — A Quiet Kind of Luxury">
   <meta name="twitter:description" content="A contemporary boutique residence in Lekki Phase 1, Lagos.">
-  <meta name="twitter:image" content="https://hotel-med.vercel.app/assets/photos/exterior-street-1280.jpg">
+  <meta name="twitter:image" content="https://hotelmedallion.com/assets/photos/exterior-street-1280.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +43,7 @@
     },
     "telephone": "+2349060006382",
     "email": "info@hotelmedallion.com",
-    "url": "https://hotel-med.vercel.app/",
+    "url": "https://hotelmedallion.com/",
     "sameAs": [
       "https://www.instagram.com/hotelmedallionlux/",
       "https://www.tiktok.com/@medallionboutiquehotel"
@@ -408,14 +408,20 @@
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(to right, transparent 60%, rgba(10,10,15,0.55) 100%);
     }
-    /* Texts sit dead-center of the content column: flex centering handles
-       both axes and text-align centers every line. The bottom padding keeps
-       the stack clear of the large pointer arrow docked at the column's
-       bottom edge. */
+    /* Text column starts right below the top padding instead of centering
+       vertically -- centering left a big dead gap above the room name on
+       taller cards, flagged directly from a live screenshot. By the time
+       Rooms is in view the nav already has its scrolled-in solid
+       background (.nav.scrolled, set once the hero is passed), so this
+       padding only needs to clear that opaque bar, not leave extra buffer
+       below it -- the first cut (6rem) still left visible dead space per a
+       second screenshot, so this is intentionally tight. The bottom
+       padding still keeps the stack clear of the pointer arrow docked at
+       the column's bottom edge. */
     .room-content {
       display: flex; flex-direction: column; align-items: center;
-      text-align: center; justify-content: center;
-      padding: 6rem 4rem 7.5rem 0; position: relative;
+      text-align: center; justify-content: flex-start;
+      padding: 2rem 4rem 7.5rem 0; position: relative;
     }
     .room-indicator {
       position: absolute; bottom: 2.2rem; left: 0; right: 0;
@@ -683,6 +689,29 @@
 
     /* ---------------- BOOKING ---------------- */
     .booking { background: var(--midnight-light); position: relative; overflow: hidden; padding: 11rem 3rem; }
+
+    /* ---------------- PARTNER CTA ---------------- */
+    .partner-cta { background: var(--ivory); color: var(--midnight); padding: 7rem 3rem; text-align: center; }
+    .partner-cta-inner { max-width: 640px; margin: 0 auto; }
+    .partner-cta-headline {
+      font-family: var(--font-display); font-weight: 400; font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+      line-height: 1.2; color: var(--midnight); margin: 0 0 1.1rem;
+    }
+    .partner-cta-text { font-size: 0.92rem; font-weight: 300; color: rgba(10,10,15,0.64); line-height: 1.75; max-width: 460px; margin: 0 auto 2.2rem; }
+    .partner-cta-button {
+      display: inline-flex; align-items: center; gap: 0.6em; padding: 15px 38px;
+      border: 1px solid var(--champagne-dim); font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--champagne-dim); text-decoration: none; background: transparent; position: relative; overflow: hidden;
+      transition: color 0.5s;
+    }
+    .partner-cta-button::before { content: ''; position: absolute; inset: 0; width: 0; background: var(--champagne-dim); transition: width 0.5s var(--ease-cinematic); z-index: -1; }
+    .partner-cta-button:hover { color: var(--ivory); }
+    .partner-cta-button:hover::before { width: 100%; }
+    .partner-cta-button .arrow { transition: transform 0.4s var(--ease-cinematic); }
+    .partner-cta-button:hover .arrow { transform: translateX(6px); }
+    @media (max-width: 768px) {
+      .partner-cta { padding: 5rem 2rem; }
+    }
     #booking-threads { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
     .converge-line { stroke-dasharray: 1500; stroke-dashoffset: 1500; }
     .converge-line.drawn { stroke-dashoffset: 0; transition: stroke-dashoffset 2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
@@ -893,6 +922,7 @@
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="/about">Our Story</a></li>
       <li><a href="/contact">Contact</a></li>
+      <li><a href="/partner">Partner</a></li>
       <li><a href="/reservation" class="nav-reserve">Reserve</a></li>
     </ul>
     <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="mobileMenu">
@@ -904,7 +934,7 @@
     <a href="#rooms">Rooms</a><a href="#dining">Dining</a><a href="#wellness">Wellness</a>
     <a href="#experiences">Gatherings</a><a href="#location">Location</a>
     <a href="#gallery">Gallery</a><a href="/about">Our Story</a>
-    <a href="/contact">Contact</a><a href="/reservation">Reserve</a>
+    <a href="/contact">Contact</a><a href="/partner">Partner</a><a href="/reservation">Reserve</a>
   </div>
 
   <!-- HERO -->
@@ -1401,6 +1431,16 @@
     </div>
   </section>
 
+  <!-- PARTNER CTA -->
+  <section class="partner-cta" id="partner-cta">
+    <div class="partner-cta-inner" data-reveal>
+      <span class="label label-champagne">Affiliate Program</span>
+      <h2 class="partner-cta-headline">Send us your guests. Earn on every stay.</h2>
+      <p class="partner-cta-text">Partners earn 10% commission on every completed, fully-paid stay they refer — no fees, no minimum audience, just a genuine way to send guests our way.</p>
+      <a href="/partner" class="partner-cta-button">Become a Partner <span class="arrow">→</span></a>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer class="footer" id="footer">
     <div class="footer-mark"><img src="assets/logo-icon.png" alt="Hotel Medallion" width="108" height="108"></div>
@@ -1591,7 +1631,7 @@
           el.addEventListener('mouseenter', () => cursor.classList.add('hover-image'));
           el.addEventListener('mouseleave', () => cursor.classList.remove('hover-image'));
         });
-        document.querySelectorAll('.nav-reserve, .booking-submit, .hero-cta, .room-cta, .dining-cta, .events-cta').forEach((el) => {
+        document.querySelectorAll('.nav-reserve, .booking-submit, .hero-cta, .room-cta, .dining-cta, .events-cta, .partner-cta-button').forEach((el) => {
           el.addEventListener('mouseenter', () => cursor.classList.add('hover-reserve'));
           el.addEventListener('mouseleave', () => cursor.classList.remove('hover-reserve'));
         });
@@ -1602,7 +1642,13 @@
       const loaderWordWrap = document.getElementById('loaderWordWrap');
       const loaderLine = document.getElementById('loaderLine');
 
+      // Guards against finishLoader() running twice -- see the safety-net
+      // setTimeout below, which can fire alongside the GSAP timeline's own
+      // completion rather than instead of it.
+      let loaderFinished = false;
       function finishLoader() {
+        if (loaderFinished) return;
+        loaderFinished = true;
         loader.classList.add('done');
         heroReveal();
         startHeroSlideshow();
@@ -1631,6 +1677,34 @@
           .to(loaderLine, { opacity: 0, duration: 0.35 }, '+=0.9')
           .to(loaderWordWrap, { opacity: 0, y: -18, duration: 0.55, ease: 'power3.in' }, '-=0.1')
           .add(finishLoader, '-=0.15');
+
+        // Safety net: the loader timeline (and every entrance animation
+        // after it) only advances via GSAP's requestAnimationFrame ticker,
+        // which browsers pause or heavily throttle for a backgrounded/
+        // hidden tab -- e.g. a link opened in a background tab, or the
+        // user switching apps right as the page loads. With
+        // gsap.ticker.lagSmoothing(0) set (needed for Lenis), GSAP does not
+        // catch up on its own once rAF resumes -- the timeline just stays
+        // stalled forever, leaving the loader stuck on screen and the hero
+        // headline/CTA permanently invisible (confirmed: this happens even
+        // though the click handlers underneath are still fully working --
+        // the user just can't see anything to click). A plain setTimeout
+        // still fires in a backgrounded tab (throttled, but not blocked),
+        // so this guarantees the page always finishes revealing itself.
+        setTimeout(finishLoader, 4000);
+
+        // finishLoader() unsticking the loader isn't enough on its own --
+        // heroReveal()'s fade-in is itself a GSAP tween, which *also* needs
+        // the same rAF ticker to actually progress from opacity:0 to 1.
+        // If the ticker is still stalled when the timeout above fires, the
+        // loader disappears but the headline/CTA stay invisible underneath
+        // it (confirmed directly, not theoretical). gsap.set() applies a
+        // style immediately without the ticker, so this guarantees real
+        // visible content no matter what -- a harmless no-op if the normal
+        // tween already reached the same end state on its own.
+        setTimeout(() => {
+          gsap.set(['#heroLabel', '.hero-line', '#heroCta'], { opacity: 1, y: 0 });
+        }, 4800);
       }
 
       /* ---------------- HERO SLIDESHOW ---------------- */
@@ -1768,32 +1842,98 @@
         });
       }
 
-      /* ---------------- ROOMS — VERTICAL ----------------
-         Was a pinned horizontal side-scroll on desktop (matchMedia'd against
-         a stacked vertical fallback on mobile/coarse/reduced-motion). The
-         client asked for Rooms to scroll top-to-bottom like the rest of the
-         page on desktop too -- Gallery keeps its own horizontal scroll,
-         untouched. Always-stacked now, no breakpoint branching needed. The
-         .rooms-tabs strip is still in the DOM but permanently hidden by the
-         existing ".rooms-wrapper.stacked ~ .rooms-tabs { display: none; }"
-         rule, since it only made sense alongside the pinned scroll. */
+      /* ---------------- ROOMS — PINNED HORIZONTAL ----------------
+         Pinned horizontal side-scroll on desktop (image on one side,
+         details on the other, parallax-scrubbed as you scroll) with a
+         stacked vertical fallback on mobile/coarse/reduced-motion. A later
+         rewrite replaced this with an always-vertical layout based on a
+         misread of client feedback -- restored to the original pinned
+         behavior per explicit direction. */
       const roomsWrapper = document.getElementById('roomsWrapper');
       const roomCards = document.querySelectorAll('.room-card');
+      const roomsTabEls = document.querySelectorAll('.rooms-tab');
+      let activeRoomsTween = null;
 
-      roomsWrapper.classList.add('stacked');
-      gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
-      if (!reduced) {
-        roomCards.forEach((card) => {
-          const els = card.querySelectorAll('.room-content > *');
-          gsap.set(els, { opacity: 0, y: 26 });
-          ScrollTrigger.create({
-            trigger: card,
-            start: 'top 70%',
-            once: true,
-            onEnter: () => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, ease: 'power3.out' })
-          });
-        });
+      function revealRoomContent(card) {
+        const els = card.querySelectorAll('.room-content > *');
+        gsap.set(els, { opacity: 0, y: 28 });
+        gsap.to(els, { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: 'power3.out', delay: 0.15 });
       }
+
+      // matchMedia (not a one-time width check) so the pinned-horizontal vs.
+      // stacked decision stays correct if the viewport crosses the breakpoint
+      // after load (window resize, DevTools responsive toggle, etc.) — a
+      // plain `if (window.innerWidth <= 1024)` computed once at load would
+      // desync from the CSS media query and half-apply both layouts at once.
+      ScrollTrigger.matchMedia({
+        '(min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference)': function () {
+          roomsWrapper.classList.remove('stacked');
+          let currentRoomIndex = 0;
+          gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { opacity: 0, y: 28 });
+          roomCards.forEach((card, i) => card.classList.toggle('active', i === 0));
+          roomsTabEls.forEach((tab, i) => tab.classList.toggle('active', i === 0));
+          revealRoomContent(roomCards[0]);
+
+          activeRoomsTween = gsap.to(roomsWrapper, {
+            x: () => -(roomsWrapper.scrollWidth - window.innerWidth),
+            ease: 'none',
+            scrollTrigger: {
+              trigger: '.rooms',
+              start: 'top top',
+              end: () => '+=' + (roomsWrapper.scrollWidth - window.innerWidth),
+              pin: true,
+              scrub: 1,
+              anticipatePin: 1,
+              invalidateOnRefresh: true,
+              onUpdate: (self) => {
+                const activeIndex = Math.min(Math.floor(self.progress * roomCards.length), roomCards.length - 1);
+                if (activeIndex !== currentRoomIndex) {
+                  currentRoomIndex = activeIndex;
+                  roomCards.forEach((card, i) => card.classList.toggle('active', i === activeIndex));
+                  roomsTabEls.forEach((tab, i) => tab.classList.toggle('active', i === activeIndex));
+                  revealRoomContent(roomCards[activeIndex]);
+                }
+              }
+            }
+          });
+
+          return () => { activeRoomsTween = null; };
+        },
+        '(max-width: 1024px), (pointer: coarse), (prefers-reduced-motion: reduce)': function () {
+          roomsWrapper.classList.add('stacked');
+          gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
+          // Stacked cards still deserve an entrance: fade the content stack up
+          // as each card scrolls into view (skipped under reduced-motion).
+          if (!reduced) {
+            roomCards.forEach((card) => {
+              const els = card.querySelectorAll('.room-content > *');
+              gsap.set(els, { opacity: 0, y: 26 });
+              ScrollTrigger.create({
+                trigger: card,
+                start: 'top 70%',
+                once: true,
+                onEnter: () => gsap.to(els, { opacity: 1, y: 0, duration: 0.9, stagger: 0.07, ease: 'power3.out' })
+              });
+            });
+          }
+          return () => {
+            roomsWrapper.classList.remove('stacked');
+            gsap.set(roomsWrapper.querySelectorAll('.room-content > *'), { clearProps: 'opacity,transform' });
+          };
+        }
+      });
+
+      roomsTabEls.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          if (!activeRoomsTween) return;
+          const idx = Number(tab.dataset.index);
+          const st = activeRoomsTween.scrollTrigger;
+          const targetProgress = (idx + 0.5) / roomCards.length;
+          const targetScroll = st.start + targetProgress * (st.end - st.start);
+          if (lenis) lenis.scrollTo(targetScroll, { duration: 1.3 });
+          else window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+        });
+      });
 
       /* ---------------- DINING PARTICLES ---------------- */
       const diningCanvas = document.getElementById('dining-particles');
@@ -2071,7 +2211,7 @@
 
       /* ---------------- MAGNETIC CTAS (fine pointers only) ---------------- */
       if (!reduced && !coarse) {
-        document.querySelectorAll('.nav-reserve, .booking-submit, .hero-cta, .room-cta, .dining-cta, .events-cta').forEach((el) => {
+        document.querySelectorAll('.nav-reserve, .booking-submit, .hero-cta, .room-cta, .dining-cta, .events-cta, .partner-cta-button').forEach((el) => {
           el.classList.add('magnetic');
           const strength = 0.28;
           el.addEventListener('mousemove', (e) => {
@@ -2099,6 +2239,12 @@
         const candidates = (img.getAttribute('srcset') || '').split(',')
           .map((s) => s.trim().split(' ')).filter((p) => p.length === 2);
         const largest = candidates.sort((a, b) => parseInt(b[1]) - parseInt(a[1]))[0];
+        // lightboxImg starts the page with src="" (no photo picked yet), which
+        // the broken-image-fallback loop above sees as a failed load at page
+        // load and permanently marks .img-broken (display:none) -- since this
+        // element is reused for every photo rather than freshly created, that
+        // stale class otherwise hides every real photo ever loaded into it.
+        lightboxImg.classList.remove('img-broken');
         lightboxImg.src = largest ? largest[0] : img.src;
         lightboxImg.alt = img.alt;
         lightboxCaption.textContent = (item.querySelector('.gallery-caption') || {}).textContent || '';
@@ -2204,6 +2350,7 @@
        unversioned so security patches roll out without every merchant
        re-deploying -- the same convention Stripe.js uses for its CDN. -->
   <script src="https://js.paystack.co/v2/inline.js"></script>
+  <script src="assets/referral.js"></script>
   <script src="assets/checkout.js"></script>
   <script src="assets/vesper.js"></script>
   <script src="assets/currency.js"></script>

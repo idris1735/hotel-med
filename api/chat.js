@@ -20,6 +20,10 @@ module.exports = async (req, res) => {
   const body = req.body || {};
   const message = body.message;
   const history = Array.isArray(body.history) ? body.history : [];
+  // Same referral cookie assets/checkout.js sends on a form booking -- so a
+  // guest who arrives on a referral link and completes their booking via
+  // Vesper instead of the form still gets correctly attributed.
+  const affiliateCode = typeof body.affiliateCode === 'string' ? body.affiliateCode : null;
 
   if (!message || typeof message !== 'string' || !message.trim()) {
     return res.status(400).json({ error: 'message is required' });
@@ -32,7 +36,7 @@ module.exports = async (req, res) => {
   }
 
   try {
-    const result = await chatWithVesper({ history, message: message.trim() });
+    const result = await chatWithVesper({ history, message: message.trim(), affiliateCode });
     return res.status(200).json(result);
   } catch (err) {
     console.error('chat failed', err);

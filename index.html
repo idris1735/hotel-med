@@ -1042,7 +1042,7 @@
             <div class="room-amenity">Breakfast included · Free laundry service</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price" data-ngn="135000" data-usd="100">₦135,000 <small>per night</small> <small>(~$100)</small></p>
+          <p class="room-price">Live rate &amp; availability</p>
           <a href="/room-suite" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1067,7 +1067,7 @@
             <div class="room-amenity">Breakfast included · Free laundry service</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price" data-ngn="115000" data-usd="85">₦115,000 <small>per night</small> <small>(~$85)</small></p>
+          <p class="room-price">Live rate &amp; availability</p>
           <a href="/room-mini-suite" class="room-cta">Reserve this suite <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1092,7 +1092,7 @@
             <div class="room-amenity">Breakfast included · Coffee &amp; tea facilities</div>
             <div class="room-amenity">Air conditioning · Flat-screen TV · Free Wi-Fi</div>
           </div>
-          <p class="room-price" data-ngn="68000" data-usd="51">₦68,000 <small>per night</small> <small>(~$51)</small></p>
+          <p class="room-price">Live rate &amp; availability</p>
           <a href="/room-comfort" class="room-cta">Reserve this room <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1117,7 +1117,7 @@
             <div class="room-amenity">Breakfast included · High-speed Wi-Fi</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price" data-ngn="85000" data-usd="63">₦85,000 <small>per night</small> <small>(~$63)</small></p>
+          <p class="room-price">Live rate &amp; availability</p>
           <a href="/room-executive" class="room-cta">Reserve this room <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1142,7 +1142,7 @@
             <div class="room-amenity">Breakfast included · High-speed Wi-Fi</div>
             <div class="room-amenity">Air conditioning · Mini bar · Satellite TV</div>
           </div>
-          <p class="room-price" data-ngn="100000" data-usd="75">₦100,000 <small>per night</small> <small>(~$75)</small></p>
+          <p class="room-price">Live rate &amp; availability</p>
           <a href="/room-executive-double" class="room-cta">Reserve this room <span class="arrow">→</span></a>
         </div>
         <div class="room-light-leak"></div>
@@ -1389,11 +1389,11 @@
           <input type="tel" id="phone" autocomplete="tel" required>
         </div>
         <div class="booking-field" style="grid-column:1/-1; text-align:center;">
-          <button type="submit" class="booking-submit">Reserve &amp; Pay</button>
+          <button type="submit" class="booking-submit">Check live availability</button>
         </div>
       </form>
       <p class="booking-note">
-        Secure payment via Paystack — your reservation is confirmed the moment payment clears.<br>
+        Live rooms and approved rates are shown in the Hotel Medallion booking portal.<br>
         For immediate assistance —<br>
         <a href="mailto:info@hotelmedallion.com">info@hotelmedallion.com</a><br>
         09060006382 · 09085820000
@@ -2200,10 +2200,6 @@
     })();
   </script>
 
-  <!-- Paystack cannot be pinned with SRI: they intentionally serve this
-       unversioned so security patches roll out without every merchant
-       re-deploying -- the same convention Stripe.js uses for its CDN. -->
-  <script src="https://js.paystack.co/v2/inline.js"></script>
   <script src="assets/checkout.js"></script>
   <script src="assets/vesper.js"></script>
   <script src="assets/currency.js"></script>

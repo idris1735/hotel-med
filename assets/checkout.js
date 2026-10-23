@@ -331,7 +331,7 @@
     const form = document.getElementById(formId);
     if (!form) return;
     form.noValidate = true;
-    const keep = new Set(['arrival', 'bookingArrival', 'departure', 'bookingDeparture', 'adults', 'guests', 'children']);
+    const keep = new Set(['arrival', 'bookingArrival', 'qbArrival', 'departure', 'bookingDeparture', 'qbDeparture', 'adults', 'guests', 'qbGuests', 'children']);
     form.querySelectorAll('input, select, textarea').forEach((control) => {
       if (keep.has(control.id)) return;
       control.disabled = true;

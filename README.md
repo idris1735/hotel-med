@@ -2,6 +2,20 @@
 
 A boutique-hotel website for Hotel Medallion — Lekki Phase 1, Lagos. Static HTML/CSS/JS, no build step.
 
+## Partner programme
+
+`/partners` is the public introduction to the invitation-only affiliate programme.
+It uses the existing website palette, fonts, original logo and hotel photography.
+The homepage includes an introduction and all page footers link to Partners.
+Enquiries go to `reservation@hotelmedallion.com`; the page does not create accounts
+or expose private invitation URLs. Management approves and invites partners from
+Hotel OS. A partner's agreed rate is shown privately, rather than hardcoded in
+public marketing copy. The website's shared checkout preserves referral codes
+through its existing Hotel OS booking handoff.
+
+Run the partner and booking-handoff regression checks with
+`node --test scripts/test-partners-page.mjs scripts/test-booking-handoff.mjs`.
+
 **Tagline:** "A Quiet Kind of Luxury."
 
 ## Pages

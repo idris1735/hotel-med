@@ -867,6 +867,12 @@
       .arrival-stats { flex-wrap: wrap; }
       .testimonials-quote-mark { left: 4%; top: 2.5rem; font-size: 140px; }
     }
+    .partners-intro { display: grid; grid-template-columns: 1.15fr 1fr; gap: 5%; align-items: center; padding: 90px 7%; background: var(--midnight-light); border-top: 1px solid rgba(201,162,39,.2); }
+    .partners-intro h2 { font-family: var(--font-display); font-size: clamp(2.6rem,4.5vw,4.5rem); font-weight: 400; line-height: 1.1; color: var(--ivory); }
+    .partners-intro .label { color: var(--champagne); }
+    .partners-intro p { font-size: .85rem; line-height: 1.95; color: var(--ivory-dim); max-width: 430px; }
+    .partners-intro a { display: inline-block; margin-top: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--champagne); font-size: .65rem; letter-spacing: .18em; text-transform: uppercase; text-decoration: none; color: var(--champagne); }
+    @media(max-width: 700px) { .partners-intro { grid-template-columns: 1fr; gap: 28px; padding: 64px 7%; } }
   </style>
 </head>
 <body>
@@ -1424,6 +1430,11 @@
   </section>
 
   <!-- FOOTER -->
+  <section class="partners-intro" id="partners" aria-labelledby="partners-title">
+    <div><span class="label">Medallion Partners</span><h2 id="partners-title">A good stay<br>is worth sharing.</h2></div>
+    <div><p>Introduce your clients, friends and community to Hotel Medallion. Our invitation-only partner programme rewards the eligible stays you bring to our residence.</p><a href="/partners">Discover the partnership ↗</a></div>
+  </section>
+
   <footer class="footer" id="footer">
     <div class="footer-mark"><img src="assets/logo-icon.png" alt="Hotel Medallion" width="108" height="108"></div>
     <div class="footer-grid">
@@ -1450,6 +1461,7 @@
       <div>
         <div class="footer-col-title">Information</div>
         <ul class="footer-links">
+          <li><a href="/partners">Partners</a></li>
           <li><a href="/about">Our Story</a></li>
           <li><a href="#location">Location</a></li>
           <li><a href="/contact">Contact</a></li>

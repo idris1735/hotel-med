@@ -5,3 +5,6 @@ Medallion/
 scripts/
 archive/
 *.docx
+work/
+.env*
+.claude/

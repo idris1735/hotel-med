@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 
-function fixture() {
+function fixture(href = 'https://hotelmedallion.com/', stored = new Map()) {
   const ids = new Map(), hooks = new Map(), destinations = [];
   const control = (id, value) => ({ id, value, disabled: false, closest: () => null });
   const form = (id, values) => {
@@ -22,10 +22,11 @@ function fixture() {
   const document={getElementById:id=>ids.get(id),createElement:()=>generic(),
     head:{appendChild:el=>ids.set(el.id,el)},body:{appendChild:el=>ids.set(el.id,el)},
     querySelectorAll:()=>[roomLink],addEventListener:(name,fn)=>hooks.set(name,fn)};
+  const window={location:{href,assign:url=>destinations.push(url)},sessionStorage:{getItem:key=>stored.get(key),setItem:(key,value)=>stored.set(key,value)}};
   vm.runInNewContext(fs.readFileSync(new URL('../assets/checkout.js',import.meta.url),'utf8'),
-    {document,window:{location:{assign:url=>destinations.push(url)}},URL,Date,Set});
+    {document,window,URL,Date,Set,JSON});
   hooks.get('DOMContentLoaded')();
-  return {main,quick,hooks,destinations};
+  return {main,quick,hooks,destinations,window};
 }
 
 test('Quick Booking leaves its arrival, departure and guest controls enabled',()=>{
@@ -52,4 +53,33 @@ test('A room card carries its preferred category instead of creating another boo
   const destination=new URL(destinations[0]);
   assert.equal(destination.origin,'https://app.hotelmedallion.com');
   assert.equal(destination.searchParams.get('room'),'Double Bed Deluxe Executive');
+});
+
+test('Affiliate code survives the website room/date handoff',()=>{
+  const {quick,destinations}=fixture('https://hotelmedallion.com/?ref=emeka');
+  quick.handlers.get('submit')({preventDefault(){}});
+  assert.equal(new URL(destinations[0]).searchParams.get('ref'),'EMEKA');
+});
+test('Referral survives a same-session move to a room page',()=>{
+  const stored=new Map(); fixture('https://hotelmedallion.com/?ref=EMEKA',stored);
+  const {quick,destinations}=fixture('https://hotelmedallion.com/room-comfort.html',stored);
+  quick.handlers.get('submit')({preventDefault(){}});
+  assert.equal(new URL(destinations[0]).searchParams.get('ref'),'EMEKA');
+});
+test('Malformed referral input is never forwarded',()=>{
+  const {quick,destinations}=fixture('https://hotelmedallion.com/?ref=%3Cscript%3E');
+  quick.handlers.get('submit')({preventDefault(){}});
+  assert.equal(new URL(destinations[0]).searchParams.has('ref'),false);
+});
+test('Chat booking handoff preserves the same referral code',()=>{
+  const {window,destinations}=fixture('https://hotelmedallion.com/?ref=EMEKA');
+  window.MedallionCheckout.openPaystackForBooking({bookingUrl:'https://app.hotelmedallion.com/book/medallion?adults=2'});
+  assert.equal(new URL(destinations[0]).searchParams.get('ref'),'EMEKA');
+  assert.equal(new URL(destinations[0]).searchParams.get('adults'),'2');
+});
+test('Expired same-tab attribution is not forwarded',()=>{
+  const stored=new Map([['medallion.referral.v1',JSON.stringify({code:'EMEKA',at:Date.now()-86400001})]]);
+  const {quick,destinations}=fixture('https://hotelmedallion.com/',stored);
+  quick.handlers.get('submit')({preventDefault(){}});
+  assert.equal(new URL(destinations[0]).searchParams.has('ref'),false);
 });

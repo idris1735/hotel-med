@@ -4,6 +4,21 @@
   'use strict';
 
   const LIVE_BOOKING_URL = 'https://app.hotelmedallion.com/book/medallion';
+  const REFERRAL_KEY = 'medallion.referral.v1';
+  function referralCode() {
+    const current = new URL(window.location.href || 'https://hotelmedallion.com/').searchParams.get('ref');
+    const code = current && current.trim().toUpperCase();
+    try {
+      if (code && /^[A-Z0-9_-]{3,24}$/.test(code)) {
+        window.sessionStorage.setItem(REFERRAL_KEY, JSON.stringify({ code, at: Date.now() })); return code;
+      }
+      const saved = JSON.parse(window.sessionStorage.getItem(REFERRAL_KEY) || 'null');
+      if (saved && /^[A-Z0-9_-]{3,24}$/.test(saved.code) && Date.now() - saved.at < 86400000) return saved.code;
+    } catch (_) { /* Private browsing may disable storage; direct links still work. */ }
+    return code && /^[A-Z0-9_-]{3,24}$/.test(code) ? code : '';
+  }
+  // Capture on arrival, before a guest navigates from the home page to a room.
+  referralCode();
 
   // guestEmail/guestName/specialRequests are user-typed, round-trip through
   // our own DB, and get interpolated into innerHTML below — escape anything
@@ -290,6 +305,7 @@
       adults: fieldValue(form, ['adults', 'guests', 'qbGuests']) || '2',
       children: fieldValue(form, ['children']) || '0',
       room: preferredRoom || fieldValue(form, ['roomType']),
+      ref: referralCode(),
     };
     Object.entries(values).forEach(([key, value]) => {
       if (value) url.searchParams.set(key, value);
@@ -304,7 +320,10 @@
     const destination = bookingData && bookingData.bookingUrl
       ? bookingData.bookingUrl
       : LIVE_BOOKING_URL;
-    window.location.assign(destination);
+    const tracked = new URL(destination);
+    const referral = referralCode();
+    if (tracked.origin === 'https://app.hotelmedallion.com' && referral) tracked.searchParams.set('ref', referral);
+    window.location.assign(tracked.toString());
   }
 
   function fieldValue(form, ids) {

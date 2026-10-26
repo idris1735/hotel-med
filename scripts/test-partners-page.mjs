@@ -13,9 +13,10 @@ test('Partner introduction reuses the existing marketing palette and typefaces',
 });
 test('Public information does not expose private invitations or promise automatic approval',()=>{
   assert.match(page,/invitation-only/); assert.match(page,/management approval/);
-  assert.match(page,/Enquiries do not create an affiliate account/);
+  assert.match(page,/An application does not create a partner account/);
   assert.doesNotMatch(page,/https:\/\/app\.hotelmedallion\.com\/partners\//);
-  assert.doesNotMatch(page,/<form\b/i);
+  assert.match(page,/<form id="partner-application"/);
+  assert.doesNotMatch(page,/name="(?:account_number|bank_name)"/);
 });
 
 test('Existing partners have a separate password sign-in handoff',()=>{
@@ -27,7 +28,7 @@ test('Existing partners have a separate password sign-in handoff',()=>{
 test('Commission explanation excludes taxes, deposits, cancellations and refunds',()=>{
   for (const phrase of ['before tax','after the guest completes','Cancelled','refunded','no-show','deposits','food','agreed percentage']) assert.ok(page.includes(phrase),phrase);
   assert.doesNotMatch(page,/15%/); // The agreement is editable; do not publish a fixed promise.
-  assert.match(page,/mailto:reservation@hotelmedallion\.com\?subject=Medallion%20Partner%20Programme/);
+  assert.match(page,/mailto:info@hotelmedallion\.com\?subject=Medallion%20Partner%20Programme/);
 });
 test('Homepage and every public-page footer make the introduction discoverable',()=>{
   const files=['index.html','about.html','contact.html','reservation.html','room-comfort.html','room-executive.html','room-executive-double.html','room-mini-suite.html','room-suite.html'];

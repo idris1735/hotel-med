@@ -19,8 +19,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&family=Parisienne&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/partners.css">
-  <script src="assets/partners.js" defer></script>
+  <link rel="stylesheet" href="assets/partners.css?v=20261026-applications">
+  <script src="assets/partners.js?v=20261026-applications" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -44,7 +44,7 @@
         <p class="hero-intro">You make the introduction.<br>We make them feel at home.</p>
         <p class="body-copy">Recommend Hotel Medallion to your clients, friends and community. As an approved partner, earn commission on the eligible stays you bring to our residence in Lekki.</p>
         <a class="gold-button" href="#join">Become a partner <span aria-hidden="true">↗</span></a>
-        <p class="small-note">By invitation. Built on a personal connection.</p>
+        <p class="small-note">Apply below. Every partnership is personally reviewed.</p>
       </div>
       <figure class="hero-image">
         <img src="assets/photos/entrance-glass-1280.jpg" srcset="assets/photos/entrance-glass-768.jpg 768w, assets/photos/entrance-glass-1280.jpg 1280w, assets/photos/entrance-glass-1920.jpg 1920w" sizes="(max-width: 800px) 100vw, 49vw" width="1280" height="1920" alt="The warm marble entrance hall at Hotel Medallion" fetchpriority="high">
@@ -73,11 +73,20 @@
     <section class="partner-join section-wrap" id="join" aria-labelledby="join-title">
       <p class="eyebrow">Let's make the introduction</p>
       <h2 id="join-title">Know someone who<br>would feel <em>at home?</em></h2>
-      <p>Tell us a little about yourself and the guests you would like to introduce.<br>Our team will discuss the partnership with you.</p>
-      <a class="gold-button" href="mailto:reservation@hotelmedallion.com?subject=Medallion%20Partner%20Programme">Talk to our team <span aria-hidden="true">↗</span></a>
-      <a class="email-link" href="mailto:reservation@hotelmedallion.com">reservation@hotelmedallion.com</a>
+      <p>Tell us about yourself and the guests you would like to introduce. Our team will review your application and contact you by email.</p>
+      <form id="partner-application" class="partner-application-form">
+        <div class="application-grid"><label>Full name<input name="full_name" required minlength="2" maxlength="120" autocomplete="name" placeholder="Your full name, as on your bank account"></label><label>Email<input name="email" type="email" required maxlength="254" autocomplete="email"></label><label>Phone<input name="phone" type="tel" required minlength="7" maxlength="40" autocomplete="tel"></label><label>Business / organisation (optional)<input name="organization" maxlength="160" autocomplete="organization"></label><label>City<input name="city" required minlength="2" maxlength="120" autocomplete="address-level2"></label><label>Country<input name="country" required minlength="2" maxlength="100" autocomplete="country-name" value="Nigeria"></label></div>
+        <label>Website or social profile (optional)<input name="profile_url" type="url" maxlength="300" placeholder="https://"></label>
+        <label>How would you introduce guests?<textarea name="introduction" required minlength="10" maxlength="2000" rows="4" placeholder="Tell us about your work, audience or the guests you would refer."></textarea></label>
+        <label class="application-trap" aria-hidden="true">Leave this empty<input name="website_check" tabindex="-1" autocomplete="off"></label>
+        <label class="application-consent"><input name="consent" type="checkbox" required><span>I agree that Hotel Medallion may use these details to review my application and contact me about the partner programme.</span></label>
+        <p class="small-note">Your details are kept for the partnership review. Do not include bank details here. Approved partners add their payout account privately after signing in.</p>
+        <button class="gold-button" type="submit">Send application <span aria-hidden="true">↗</span></button>
+        <p id="application-result" role="status" tabindex="-1" hidden></p>
+      </form>
+      <div id="contact"><a class="email-link" href="mailto:info@hotelmedallion.com?subject=Medallion%20Partner%20Programme">info@hotelmedallion.com</a><button class="copy-partner-email" type="button">Copy email address</button><p class="email-copy-result" role="status"></p></div>
       <a class="email-link" href="/partners/login">Already a partner? Sign in →</a>
-      <p class="small-note">Enquiries do not create an affiliate account. Approval and a private invitation are required.</p>
+      <p class="small-note">An application does not create a partner account. Approval and a personal invitation are required.</p>
     </section>
   </main>
   <footer class="footer">

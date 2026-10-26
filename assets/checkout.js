@@ -162,6 +162,7 @@
   }
 
   function injectQuickBook() {
+    if (document.querySelector('.quickbook-fab')) return;
     injectStyles();
 
     const fab = document.createElement('button');
@@ -217,7 +218,10 @@
     function showQuickBook() { overlay.classList.add('show'); }
     function hideQuickBook() { overlay.classList.remove('show'); }
 
-    fab.addEventListener('click', showQuickBook);
+    fab.addEventListener('click', () => {
+      if (window.MedallionBooking) { hideQuickBook(); window.MedallionBooking.open(); }
+      else showQuickBook();
+    });
     overlay.querySelector('.quickbook-close-x').addEventListener('click', hideQuickBook);
     overlay.addEventListener('click', (e) => { if (e.target === overlay) hideQuickBook(); });
 
@@ -343,6 +347,7 @@
   function handleSubmit(form) {
     if (window.MedallionBooking) {
       const url = new URL(bookingPortalUrl(form));
+      hideQuickBookOverlay();
       window.MedallionBooking.open(Object.fromEntries(url.searchParams));
       return;
     }

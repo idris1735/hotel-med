@@ -21,7 +21,7 @@ function fixture(href = 'https://hotelmedallion.com/', stored = new Map()) {
   const roomLink={dataset:{bookRoom:'Double Bed Deluxe Executive'},addEventListener:(name,fn)=>hooks.set('room:'+name,fn)};
   const document={getElementById:id=>ids.get(id),createElement:()=>generic(),
     head:{appendChild:el=>ids.set(el.id,el)},body:{appendChild:el=>ids.set(el.id,el)},
-    querySelectorAll:()=>[roomLink],addEventListener:(name,fn)=>hooks.set(name,fn)};
+    querySelector:()=>null,querySelectorAll:()=>[roomLink],addEventListener:(name,fn)=>hooks.set(name,fn)};
   const window={location:{href,assign:url=>destinations.push(url)},sessionStorage:{getItem:key=>stored.get(key),setItem:(key,value)=>stored.set(key,value)}};
   vm.runInNewContext(fs.readFileSync(new URL('../assets/checkout.js',import.meta.url),'utf8'),
     {document,window,URL,Date,Set,JSON});

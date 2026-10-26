@@ -1568,6 +1568,8 @@
         document.body.classList.remove('menu-locked');
         if (lenis) lenis.start();
       }
+      document.addEventListener('medallion-booking-opened', () => { closeMobileMenu(); if (lenis) lenis.stop(); });
+      document.addEventListener('medallion-booking-closed', () => { if (lenis) lenis.start(); });
       mobileToggle.addEventListener('click', () => {
         const open = mobileMenu.classList.toggle('open');
         mobileToggle.classList.toggle('open', open);
@@ -2291,8 +2293,8 @@
     })();
   </script>
 
-  <script src="assets/checkout.js"></script>
-  <script src="assets/booking-live.js"></script>
+  <script src="assets/checkout.js?v=20261026-booking-fix"></script>
+  <script src="assets/booking-live.js?v=20261026-booking-fix"></script>
   <script src="assets/vesper.js"></script>
   <script src="assets/currency.js"></script>
 </body>

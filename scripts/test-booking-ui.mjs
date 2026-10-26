@@ -12,8 +12,11 @@ async function setup(overrides={}){
   if(b.action==='reserve')return Response.json({booking_id:room.id,reference:'WEB-UI-TEST',receipt:'signed-test-receipt',online_payment:true,email_state:'queued'});
   return Response.json({error:'Test checkout intentionally stopped.'},{status:503});
  };
- for(const file of ['assets/booking-live.js','assets/checkout.js','assets/vesper.js','assets/currency.js'])dom.window.eval(source(file));
- dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));await wait();return{dom,window:dom.window,document:dom.window.document,calls};
+ const files=overrides.lateBooking?['assets/checkout.js','assets/vesper.js','assets/currency.js']:['assets/booking-live.js','assets/checkout.js','assets/vesper.js','assets/currency.js'];
+ for(const file of files)dom.window.eval(source(file));
+ dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
+ if(overrides.lateBooking)dom.window.eval(source('assets/booking-live.js'));
+ await wait();return{dom,window:dom.window,document:dom.window.document,calls};
 }
 function fill(document){const f=document.querySelector('.live-booking-panel form');for(const [name,value]of Object.entries({full_name:'UI Test Guest',phone:'08012345678',email:'ui-test@example.com'}))f.elements[name].value=value;f.elements.confirmed.checked=true;return f;}
 test('Quick Booking opens the website form and retains affiliate attribution through reserve and checkout',async()=>{
@@ -37,4 +40,32 @@ test('live app prices populate matching website room cards without inventing sui
 });
 test('room detail pages use their room heading when matching a live rate',async()=>{
  const t=await setup({page:'room-comfort.html'});try{assert.match(t.document.querySelector('.room-price').textContent,/70,000/);}finally{t.dom.window.close();}
+});
+
+test('late-loaded live booking replaces Quick Booking instead of stacking two booking panels',async()=>{
+ const t=await setup({lateBooking:true});try{
+  assert.ok(t.document.querySelector('#quickbookOverlay'));
+  t.document.querySelector('.quickbook-fab').click();await wait();
+  assert.equal(t.document.querySelectorAll('.live-booking-overlay').length,1);
+  assert.equal(t.document.querySelectorAll('.quickbook-overlay.show,.checkout-overlay.show').length,0);
+  assert.equal(t.document.body.classList.contains('medallion-booking-active'),true);
+ }finally{t.dom.window.close();}
+});
+
+test('legacy form handoff closes its panel and the live modal restores page access on close',async()=>{
+ const t=await setup({lateBooking:true});try{
+  const old=t.document.querySelector('#quickbookOverlay');old.classList.add('show');
+  t.document.querySelector('#qbArrival').value='2026-11-01';t.document.querySelector('#qbDeparture').value='2026-11-03';
+  t.document.querySelector('#quickBookForm').dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();
+  assert.equal(old.classList.contains('show'),false);
+  assert.ok(t.document.querySelector('.live-booking-panel[data-lenis-prevent]'));
+  assert.equal(t.document.querySelector('#nav').inert,true);
+  assert.equal(t.document.querySelector('.live-booking-overlay').inert,undefined);
+  let closed=0;t.document.addEventListener('medallion-booking-closed',()=>closed++);
+  t.document.querySelector('.live-booking-close').click();
+  assert.equal(t.document.querySelector('.live-booking-overlay'),null);
+  assert.equal(t.document.body.classList.contains('medallion-booking-active'),false);
+  assert.notEqual(t.document.querySelector('#nav').inert,true);
+  assert.equal(t.document.body.style.overflow,'');assert.equal(closed,1);
+ }finally{t.dom.window.close();}
 });

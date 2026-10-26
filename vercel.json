@@ -5,6 +5,11 @@
   "cleanUrls": true,
   "redirects": [
     {
+      "source": "/partners/login",
+      "destination": "https://app.hotelmedallion.com/partners/login",
+      "permanent": false
+    },
+    {
       "source": "/reservation",
       "destination": "https://app.hotelmedallion.com/book/medallion",
       "permanent": false

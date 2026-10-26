@@ -179,6 +179,11 @@
     `;
     document.body.appendChild(fab);
 
+    if (window.MedallionBooking) {
+      fab.addEventListener('click', () => window.MedallionBooking.open());
+      return;
+    }
+
     const overlay = document.createElement('div');
     overlay.className = 'quickbook-overlay';
     overlay.id = 'quickbookOverlay';
@@ -336,6 +341,11 @@
   }
 
   function handleSubmit(form) {
+    if (window.MedallionBooking) {
+      const url = new URL(bookingPortalUrl(form));
+      window.MedallionBooking.open(Object.fromEntries(url.searchParams));
+      return;
+    }
     const submitBtn = form.querySelector('button[type="submit"]');
     if (submitBtn) {
       submitBtn.disabled = true;
@@ -367,6 +377,7 @@
     document.querySelectorAll('[data-live-booking], [data-book-room]').forEach((link) => {
       link.addEventListener('click', (event) => {
         event.preventDefault();
+        if (window.MedallionBooking) { window.MedallionBooking.open({ room: link.dataset.bookRoom || '' }); return; }
         window.location.assign(bookingPortalUrl(null, link.dataset.bookRoom || ''));
       });
     });
@@ -381,5 +392,5 @@
 
   // Small public surface for assets/vesper.js. The historical function name
   // is retained for compatibility, but it now opens the Hotel OS portal.
-  window.MedallionCheckout = { openPaystackForBooking, showConfirmation, showError, escapeHtml, formatAmount, formatDate };
+  window.MedallionCheckout = { openPaystackForBooking, showConfirmation, showError, escapeHtml, formatAmount, formatDate, referralCode };
 })();

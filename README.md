@@ -1,94 +1,45 @@
-# Hotel Medallion
+# Hotel Medallion website
 
-A boutique-hotel website for Hotel Medallion — Lekki Phase 1, Lagos. Static HTML/CSS/JS, no build step.
+The public website for Hotel Medallion, Lekki, Lagos. Static HTML/CSS/JavaScript with Vercel server functions. The existing navy/gold theme, original assets and room animations remain in place.
 
-## Partner programme
+## One live booking system
 
-`/partners` is the public introduction to the invitation-only affiliate programme.
-It uses the existing website palette, fonts, original logo and hotel photography.
-The homepage includes an introduction and all page footers link to Partners.
-Enquiries go to `reservation@hotelmedallion.com`; the page does not create accounts
-or expose private invitation URLs. Management approves and invites partners from
-Hotel OS. A partner's agreed rate is shown privately, rather than hardcoded in
-public marketing copy. The website's shared checkout preserves referral codes
-through its existing Hotel OS booking handoff.
+Hotel OS owns room categories, rates, availability, reservations, deposits and verified payment status in Supabase project `loxvlxtnqoeixmwyyihh`. The website does not create a second reservation database.
 
-Run the partner and booking-handoff regression checks with
-`node --test scripts/test-partners-page.mjs scripts/test-booking-handoff.mjs`.
+Room cards, room detail pages, Quick Booking and Vesper use the same live public APIs. A base-rate change in the staff app reaches the website on refresh/focus and its 60-second refresh cycle. Explicit website rate-plan overrides take priority for matching dates. Converted currencies are estimates; checkout is in NGN. Rooms without configured online inventory show a contact message instead of an invented price.
 
-**Tagline:** "A Quiet Kind of Luxury."
+Choose dates → check availability → choose a live room type → enter name, phone and email → review the total and confirm → reservation appears in Hotel OS → secure GlobalPay deposit checkout. The website keeps this in one branded modal until payment. Reception confirms the physical room assignment. Server inventory holds and the normal booking lifecycle still apply.
 
-## Pages
+The guest's displayed total is checked again inside the reservation transaction. If the app rate changed, no booking/hold is left behind; the guest sees the new quote before submitting again. Existing reservations keep their agreed price. Client IDs are UUID v7 and retained on network retry.
 
-| File | Page |
-|---|---|
-| `index.html` | Homepage — hero, rooms, dining, wellness, experiences, location, gallery, booking |
-| `room-suite.html` | 2 Bedroom Deluxe Suite detail + reservation |
-| `room-mini-suite.html` | 1 Bedroom Deluxe Suite detail + reservation |
-| `room-comfort.html` | Medallion Deluxe Comfort detail + reservation |
-| `room-executive.html` | Medallion Deluxe Executive detail + reservation |
-| `room-executive-double.html` | Double Bed Deluxe Executive detail + reservation |
-| `about.html` | Our Story — mission, vision, brand values |
-| `contact.html` | Contact form + location map |
-| `reservation.html` | Full room-selection + booking flow |
+## Vesper
 
-## Room catalog
+Vesper reads current room types and date-specific availability through restricted public tools. It opens the same booking review form and can explain hotel amenities, booking/payment steps, partner invitations and guest services. It cannot assign rooms, access private guest records, issue keys, approve refunds or declare a payment successful.
 
-Source of truth is `api/_lib/rooms.js` — 5 room types, 43 total rooms (client-confirmed figure), priced independently in both NGN and USD (not derived from a live exchange rate, so a USD payer's price never drifts with the market):
+A first name is remembered only when a guest ticks the option in booking. **Forget name** removes it. A remembered name is not verified identity and grants no access to an existing booking. Contact information is collected in the booking form, not requested in chat.
 
-| Room | Qty | NGN/night | USD/night |
-|---|---|---|---|
-| 2 Bedroom Deluxe Suite | 3 | ₦135,000 | $100 |
-| 1 Bedroom Deluxe Suite | 1 | ₦115,000 | $85 |
-| Medallion Deluxe Comfort | 21 | ₦68,000 | $51 |
-| Medallion Deluxe Executive | 16 | ₦85,000 | $63 |
-| Double Bed Deluxe Executive | 2 | ₦100,000 | $75 |
+Chat history is bounded and stripped to user/model text; client-supplied tool results, function calls, files and system messages are discarded. Model calls have timeouts and per-IP-hash/global budgets stored in Supabase, rather than relying on serverless memory. The browser never gets AI keys, service-role credentials or the website gateway secret. Checkout access is signed and payment URLs are limited to the actual GlobalPay domains.
 
-Conference Room and Hall (1 each) are event spaces, not lodging — intentionally kept out of the per-night booking system since their pricing is still TBD. They're listed on the homepage's Events section as "price on request," routed through the existing Contact form.
+## Partners
 
-**No availability/inventory enforcement exists yet.** `quantity` above is display-only — nothing currently stops a room type from being booked past its physical count on overlapping dates. That's a known gap, not an oversight.
+`/partners` explains the invitation-only programme. `/partners/login` opens the separate website-themed partner sign-in. Management approves partners and emails access; partners choose their own password. They see only their own referrals, commission and recorded payouts. The default commission is 15% and management can edit it; public marketing does not promise a fixed rate. Guest referral codes remain attached through the website/modal booking flow.
 
-## Stack
+Enquiries: **reservation@hotelmedallion.com**. The website does not create a mailbox or automatically approve partners.
 
-- Vanilla HTML/CSS/JS — no framework, no build step
-- [GSAP](https://gsap.com/) + ScrollTrigger for scroll-driven animation
-- [Lenis](https://lenis.darkroom.engineering/) for smooth scroll
-- [Three.js](https://threejs.org/) for the wellness section's WebGL ripple shader (homepage only)
-- Fonts: Cormorant Garamond, Inter, Parisienne (Google Fonts)
+## Configuration and release
 
-All third-party scripts are loaded from CDN with Subresource Integrity (SRI) hashes, except Paystack's `inline.js` — Paystack serves that intentionally unversioned (same convention as Stripe.js), which is incompatible with SRI pinning.
+- Existing Vercel project: **hotel-med**, scope **idris-projects-eb8461ae**.
+- Website public connection: `HOTELOS_SUPABASE_URL`, `HOTELOS_SUPABASE_ANON_KEY`.
+- Private server-to-server budget/receipt key: `WEBSITE_GATEWAY_SECRET`, also installed on the Hotel OS Supabase project for `website-guard`.
+- Existing server-only AI key: `GEMINI_API_KEY`.
+- Booking email and GlobalPay credentials remain in Hotel OS; the website invokes its restricted booking provider. Never copy the Supabase service-role key into this website.
+- Apply the matching PMS catalogue/quote-check and request-budget migrations, deploy `website-guard`, then publish the matching website. Partner password access also needs its account migration and `affiliate-access` function.
+- Preserve the current branded webhook at `https://api.hotelmedallion.com/webhooks/globalpay`.
 
-## Payments (Paystack)
+Run checks with `node --test scripts/test-live-booking.mjs scripts/test-booking-handoff.mjs scripts/test-partners-page.mjs`. Database lifecycle, rate-change rollback and access tests live in the Hotel OS repository. Browser tests must stop before submitting a real reservation/payment unless specifically authorised.
 
-Every booking form on the site (homepage widget, `reservation.html`, and each `room-*.html`) shares one checkout flow: `assets/checkout.js` + a small set of Vercel serverless functions in `/api`. Guests choose NGN or USD per booking — see the currency note below.
+The old `schema.sql`, room-price helpers and Paystack verification/webhook files are retained solely for historical compatibility. They do not set new Hotel OS booking prices. Do not re-enable legacy booking creation or remove historical settlement handling without reviewing old transactions first.
 
-**Flow:** form submit → `POST /api/bookings/create` (server computes the real price from `api/_lib/rooms.js` in whichever currency was chosen, writes a `pending` row, returns a reference + amount + the Paystack public key) → Paystack's Inline popup opens with that server-issued amount/reference/currency → on success, `GET /api/paystack/verify` re-checks directly against Paystack (amount AND currency both, not just amount) before showing a confirmation → `POST /api/paystack/webhook` is the source of truth for "did this actually get paid" (HMAC-signature-verified), independent of anything the client reports.
+## Pages and design
 
-**Currency note:** the code supports charging in USD, but whether it actually works depends on whether *your* Paystack account has USD settlement enabled — that's an account-level setting in the Paystack dashboard, not something this codebase can configure. Test a USD transaction in Paystack's sandbox before relying on it. NGN is the safe default either way.
-
-**Setup:**
-1. Deploy this repo to Vercel. Note: Vercel's free Hobby plan is restricted to personal, non-commercial use — a hotel taking real payments needs **Vercel Pro ($20/mo)**, which also removes Hobby's webhook-trigger restriction (the Paystack webhook needs that). Hobby is fine for building/testing.
-2. Create a [Supabase](https://supabase.com) project (free tier is enough for a long time). In Project Settings → Database → Connection string, copy the **Transaction pooler** string (not "Direct connection" — required for serverless, see the comment in `api/_lib/db.js`).
-3. Run `schema.sql` once against that database — Supabase dashboard → SQL Editor → paste it in → Run.
-4. In Vercel: Project Settings → Environment Variables → add `DATABASE_URL` (the pooler string from step 2, with your real DB password in it) plus `PAYSTACK_SECRET_KEY` and `PAYSTACK_PUBLIC_KEY` from your Paystack dashboard (Settings → API Keys & Webhooks). Start with the `sk_test_...` / `pk_test_...` pair.
-5. In the Paystack dashboard, register `https://<your-domain>/api/paystack/webhook` as the webhook URL.
-6. Redeploy so the new env vars take effect.
-
-Room pricing lives in exactly one place server-side: `api/_lib/rooms.js`. The prices shown in the HTML are for display only — if you change a price, update both, or they'll drift.
-
-**Local dev:** copy `.env.example` to `.env.local`, fill in test keys, `npm i -g vercel`, then `vercel dev`.
-
-## Running the static site only (no payments)
-
-No build step — serve the directory with any static file server, e.g.:
-
-```
-npx serve .
-```
-
-or open `index.html` directly in a browser. Booking forms will show an error until the `/api` functions are deployed with real Paystack keys.
-
-## Notes
-
-- `assets/map-lekki.png` is a custom-commissioned engraved-style map illustration (not a live map embed).
-- The client's own backend brief (`Hotel_Medallion_Website_Backend_Brief.docx`, not committed here) describes a longer-term plan where a PMS/channel-manager product ("Biodux") owns inventory and syncs with Booking.com/Expedia, with a private affiliate program and admin dashboard on top. None of that exists yet — what's built here is a self-contained direct-booking-and-payment MVP, intentionally scoped to work standalone regardless of how (or whether) that larger integration happens later.
+Homepage, five room detail pages, About, Contact, reservation compatibility redirect and Partners. Existing GSAP/ScrollTrigger, Lenis and Three.js presentation remains unchanged. Gallery photographs and branding are the hotel's supplied assets. No build step is required for the static site; API functions require their configured Vercel runtime. A plain static server can show the layout but cannot run live booking or chat.

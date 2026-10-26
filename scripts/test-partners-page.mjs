@@ -17,6 +17,13 @@ test('Public information does not expose private invitations or promise automati
   assert.doesNotMatch(page,/https:\/\/app\.hotelmedallion\.com\/partners\//);
   assert.doesNotMatch(page,/<form\b/i);
 });
+
+test('Existing partners have a separate password sign-in handoff',()=>{
+  assert.match(page,/href="\/partners\/login"/);
+  assert.match(page,/choose your password/);
+  const config=JSON.parse(read('vercel.json'));
+  assert.ok(config.redirects.some(r=>r.source==='/partners/login' && r.destination==='https://app.hotelmedallion.com/partners/login'));
+});
 test('Commission explanation excludes taxes, deposits, cancellations and refunds',()=>{
   for (const phrase of ['before tax','after the guest completes','Cancelled','refunded','no-show','deposits','food','agreed percentage']) assert.ok(page.includes(phrase),phrase);
   assert.doesNotMatch(page,/15%/); // The agreement is editable; do not publish a fixed promise.

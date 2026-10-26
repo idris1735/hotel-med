@@ -123,9 +123,9 @@
   // switching currency always visibly does something the instant you touch
   // it, even before the real number is ready.
   function applyCurrency(currency, rates) {
-    document.querySelectorAll('.room-price[data-usd]').forEach((el) => {
-      const usd = Number(el.dataset.usd);
+    document.querySelectorAll('.room-price[data-ngn]').forEach((el) => {
       const ngn = Number(el.dataset.ngn);
+      const usd = rates?.NGN > 0 ? ngn / rates.NGN : null;
       const perNight = el.querySelector('small:first-of-type');
       const suffixLabel = perNight ? perNight.textContent : 'per night';
 
@@ -133,17 +133,17 @@
       let subText = '';
       if (currency === 'NGN') {
         mainText = formatAmount(ngn, 'NGN');
-        subText = `~${formatAmount(usd, 'USD')}`;
-      } else if (currency === 'USD') {
+        subText = 'paid in NGN';
+      } else if (currency === 'USD' && usd !== null) {
         mainText = formatAmount(usd, 'USD');
-        subText = `~${formatAmount(ngn, 'NGN')}`;
-      } else if (rates && rates[currency]) {
+        subText = `estimate · ${formatAmount(ngn, 'NGN')} at checkout`;
+      } else if (usd !== null && rates && rates[currency]) {
         const converted = usd * rates[currency];
         mainText = formatAmount(converted, currency);
-        subText = `${formatAmount(ngn, 'NGN')} / ~${formatAmount(usd, 'USD')} at checkout`;
+        subText = `estimate · ${formatAmount(ngn, 'NGN')} at checkout`;
       } else {
-        mainText = 'Converting…';
-        subText = `from ${formatAmount(ngn, 'NGN')}`;
+        mainText = formatAmount(ngn, 'NGN');
+        subText = 'conversion unavailable · pay in NGN';
       }
 
       el.innerHTML = `${mainText} <small>${suffixLabel}</small> <small>(${subText})</small>`;
@@ -237,7 +237,7 @@
 
       const note = document.createElement('div');
       note.className = 'currency-note';
-      note.textContent = 'Converted prices are estimates from live exchange rates. You always pay the exact ₦ or $ amount shown at checkout.';
+      note.textContent = 'Converted prices are estimates. Your live booking and deposit are charged in NGN; GlobalPay shows any processing charge before payment.';
       bar.after(note);
     }
 
@@ -249,6 +249,7 @@
       rates = r;
       if (rates) applyCurrency(currentCurrency, rates);
     });
+    document.addEventListener('medallion-rates-updated', () => applyCurrency(currentCurrency, rates));
   }
 
   document.addEventListener('DOMContentLoaded', init);

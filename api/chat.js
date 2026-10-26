@@ -1,12 +1,9 @@
 // POST /api/chat -- Vesper, the AI concierge widget's backend.
 //
-// Public and unauthenticated (like every other endpoint on this site), so
-// the guards below aren't about auth -- they're about keeping a single
-// abusive visitor from running up the Gemini bill on the hotel's key.
-// Real per-IP rate limiting (a DB or Redis-backed counter) is the next
-// step if this ever sees actual abuse; for now this caps the *size* of any
-// one request, which stops the cheapest attack (huge prompts/history).
+// Public hotel help only. Persistent per-IP-hash and global request budgets,
+// origin checks and bounded untrusted history protect the AI endpoint.
 const { chatWithVesper } = require('./_lib/gemini');
+const {guard,sameOrigin}=require('./_lib/hotel-os');
 
 const MAX_MESSAGE_LENGTH = 2000;
 const MAX_HISTORY_TURNS = 40;
@@ -18,6 +15,9 @@ module.exports = async (req, res) => {
   }
 
   const body = req.body || {};
+  res.setHeader('Cache-Control','no-store');
+  if(!sameOrigin(req))return res.status(403).json({error:'Please use the Hotel Medallion website.'});
+  if(JSON.stringify(body).length>30000)return res.status(413).json({error:'Conversation is too long. Please start a new chat.'});
   const message = body.message;
   const history = Array.isArray(body.history) ? body.history : [];
 
@@ -32,11 +32,12 @@ module.exports = async (req, res) => {
   }
 
   try {
+    await guard(req,'chat');
     const result = await chatWithVesper({ history, message: message.trim() });
     return res.status(200).json(result);
   } catch (err) {
-    console.error('chat failed', err);
-    return res.status(500).json({
+    console.error('Vesper request failed', {status:err.status||503});
+    return res.status(err.status||503).json({
       error: "Vesper is having trouble connecting right now. Please try again, or call the front desk on 09060006382.",
     });
   }

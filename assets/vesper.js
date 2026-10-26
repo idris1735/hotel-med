@@ -42,6 +42,9 @@
     const style = document.createElement('style');
     style.id = 'vesper-styles';
     style.textContent = `
+      .vesper-booking-button { background:#c9a227;color:#0a1728;border:0;padding:14px 18px;margin:8px 14px 18px;min-height:44px;cursor:pointer;font:600 12px Inter,system-ui,sans-serif; }
+      .vesper-forget {background:none;border:0;color:#e6e1d4;font-size:10px;cursor:pointer;min-height:40px;max-width:65px;}
+      .vesper-forget[hidden] {display:none;}
       .vesper-fab {
         position: fixed; left: 1.4rem; bottom: calc(1.4rem + env(safe-area-inset-bottom)); z-index: 9000;
         width: 60px; height: 60px; border-radius: 50%; padding: 0; border: 2px solid #c9a227;
@@ -178,20 +181,6 @@
     return d.toLocaleDateString('en-NG', { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
-  // A few warm, on-brand variants so a guest who books more than once (or a
-  // demo run multiple times) doesn't see the exact same line twice -- this
-  // fires instantly on the client the moment payment is confirmed, rather
-  // than waiting on another Gemini round-trip for a message that needs to
-  // feel immediate.
-  function successMessage({ firstName, roomName, checkIn, checkOut, reference }) {
-    const dates = checkIn && checkOut ? `${formatDate(checkIn)} to ${formatDate(checkOut)}` : 'your dates';
-    const variants = [
-      `🎉 That's a wrap, ${firstName}! Your ${roomName} is locked in for ${dates}. Reference ${reference}, and a confirmation email is already on its way. I'll go make sure the pillows are properly fluffed.`,
-      `🥂 Booked and confirmed. ${roomName}, ${dates}, reference ${reference}. Confirmation email is on its way to you now. Can't promise anything about Lekki traffic, but the room's sorted.`,
-      `Payment received, ${firstName}. You're officially in for ${dates} in the ${roomName}, reference ${reference}. Confirmation email should land shortly, so go ahead and start looking forward to it.`,
-    ];
-    return variants[Math.floor(Math.random() * variants.length)];
-  }
 
   function injectVesper() {
     injectStyles();
@@ -214,6 +203,7 @@
           <div class="vesper-header-name">Vesper</div>
           <div class="vesper-header-sub">AI CONCIERGE · HOTEL MEDALLION</div>
         </div>
+        <button type="button" class="vesper-forget" hidden>Forget name</button>
         <button type="button" class="vesper-close" aria-label="Close chat">&times;</button>
       </div>
       <div class="vesper-messages" id="vesperMessages"></div>
@@ -276,38 +266,12 @@
         } else {
           history = data.history || history;
           appendMessage('bot', data.reply);
-          if (data.action && data.action.type === 'open_checkout' && window.MedallionCheckout) {
-            const { booking, guestEmail, guestName, checkIn, checkOut } = data.action;
-            const firstName = (guestName || '').trim().split(/\s+/)[0] || 'there';
-            let paidOk = false;
-            // Small delay so the guest reads Vesper's confirmation line
-            // before the Paystack popup takes over the screen.
-            setTimeout(() => {
-              window.MedallionCheckout.openPaystackForBooking(
-                booking,
-                guestEmail,
-                // onSettled -- fires after success, cancel, AND error alike,
-                // so it can't tell those apart on its own. Only speak up here
-                // when payment did NOT end up confirmed (paidOk still false)
-                // -- the confirmed case is already covered by onPaid below,
-                // and would otherwise get two messages for one outcome.
-                () => {
-                  if (!paidOk) {
-                    appendMessage('bot', "No stress if that didn't go through. I've still got the room held for a little while, so say the word whenever you're ready to try again, or let me know if something's not working and I'll help sort it out.");
-                  }
-                },
-                () => {
-                  paidOk = true;
-                  appendMessage('bot', successMessage({
-                    firstName,
-                    roomName: (booking && booking.roomName) || 'room',
-                    checkIn,
-                    checkOut,
-                    reference: booking && booking.reference,
-                  }));
-                }
-              );
-            }, 700);
+          if (data.action?.type === 'open_booking' && window.MedallionBooking) {
+            const button = document.createElement('button');
+            button.type = 'button'; button.textContent = 'Review rooms & book';
+            button.className = 'vesper-booking-button';
+            button.addEventListener('click', () => { closePanel(); window.MedallionBooking.open(data.action.details || {}); });
+            messagesEl.appendChild(button); messagesEl.scrollTop = messagesEl.scrollHeight;
           }
         }
       } catch (err) {
@@ -359,13 +323,15 @@
       fab.classList.add('is-open');
       if (!greeted) {
         greeted = true;
-        appendMessage('bot', GREETING);
+        const name=window.MedallionBooking?.rememberedName();
+        const greeting=name ? `Welcome back, ${name}. Looking for a room, checking dates, or need a hand with your stay?` : GREETING;
+        appendMessage('bot', greeting);
         // Seed it into the history sent to Gemini too, not just the visible
         // bubble -- otherwise her first real reply has no way of knowing an
         // introduction already happened and re-introduces herself on top of
         // it (the exact "Hi, I'm Vesper... / Hello! I'm Vesper..." double
         // greeting a guest actually hit).
-        history = [{ role: 'model', parts: [{ text: GREETING }] }];
+        history = [{ role: 'model', parts: [{ text: greeting }] }];
       }
       syncMobileViewport();
       setTimeout(() => input.focus(), 300);
@@ -383,6 +349,13 @@
       else openPanel();
     });
     panel.querySelector('.vesper-close').addEventListener('click', closePanel);
+    const forgetButton=panel.querySelector('.vesper-forget');
+    const refreshProfile=()=>{forgetButton.hidden=!window.MedallionBooking?.rememberedName();};
+    refreshProfile();
+    forgetButton.addEventListener('click',()=>{window.MedallionBooking?.forget();appendMessage('bot','Your remembered name has been removed from this device.');});
+    document.addEventListener('medallion-profile-changed',refreshProfile);
+    document.addEventListener('medallion-booking-opened',closePanel);
+    document.addEventListener('medallion-booking-created',event=>{const text=`Reservation request ${event.detail.reference} has been created. Payment is confirmed only after the secure payment system verifies it.`;appendMessage('bot',text);history.push({role:'model',parts:[{text}]});});
   }
 
   document.addEventListener('DOMContentLoaded', injectVesper);

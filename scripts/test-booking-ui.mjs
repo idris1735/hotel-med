@@ -25,6 +25,14 @@ test('Quick Booking opens the website form and retains affiliate attribution thr
  assert.match(t.document.querySelector('#liveBookingBody').textContent,/WEB-UI-TEST/);assert.match(t.document.querySelector('[role=alert]').textContent,/intentionally stopped/);assert.ok(t.document.querySelector('#liveBookingPay'));assert.ok(!t.document.querySelector('#liveBookingBody').textContent.includes('paid.'));
  }finally{t.dom.window.close();}
 });
+
+test('a failed live-form load shows a retry on the website instead of redirecting to the app booking page',async()=>{
+ const t=await setup();try{delete t.window.MedallionBooking;const before=t.window.location.href;
+ t.document.querySelector('#bookingForm').dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();
+ assert.equal(t.window.location.href,before);assert.match(t.document.querySelector('#checkoutPanel').textContent,/reload this page/);
+ assert.equal(t.calls.filter(c=>c.body?.action==='reserve').length,0);
+ }finally{t.dom.window.close();}
+});
 test('the first-name option is opt-in and Forget name removes only that remembered name',async()=>{
  const t=await setup();try{t.document.querySelector('.quickbook-fab').click();await wait();const f=fill(t.document);assert.equal(t.window.localStorage.getItem('medallion.remembered-name'),null);f.elements.remember.checked=true;f.dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();await wait();assert.equal(t.window.localStorage.getItem('medallion.remembered-name'),'UI');assert.equal(t.document.querySelector('.vesper-forget').hidden,false);t.document.querySelector('.vesper-forget').click();assert.equal(t.window.localStorage.getItem('medallion.remembered-name'),null);}finally{t.dom.window.close();}
 });

@@ -57,6 +57,12 @@ test('a changed deposit is returned for review before opening a payment link',as
  const res=response();await handler(req({action:'checkout',receipt:hotel.signReceipt(id),payment_id:id,expected_deposit:1000000}),res);
  assert.equal(res.statusCode,409);assert.equal(res.body.deposit,2000000);assert.equal(res.body.authorization_url,undefined);
 });
+
+test('website checkout refuses a second app booking form as its payment destination',async()=>{
+ globalThis.fetch=async(url)=>String(url).endsWith('website-guard')?json({allowed:true}):json({amount:1000000,authorization_url:'https://app.hotelmedallion.com/book/medallion'});
+ const res=response();await handler(req({action:'checkout',receipt:hotel.signReceipt(id),payment_id:id,expected_deposit:1000000}),res);
+ assert.equal(res.statusCode,400);assert.equal(res.body.authorization_url,undefined);assert.match(res.body.error,/could not be verified/);
+});
 test('an already verified deposit does not open a second checkout',async()=>{
  globalThis.fetch=async(url)=>String(url).endsWith('website-guard')?json({allowed:true}):json({status:'paid',reference:'MHO-PAID-TEST'});
  const res=response();await handler(req({action:'checkout',receipt:hotel.signReceipt(id),payment_id:id,expected_deposit:1000000}),res);

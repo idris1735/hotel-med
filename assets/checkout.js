@@ -322,9 +322,16 @@
     return url.toString();
   }
 
-  // Kept as the public handoff used by Vesper. The official website no
-  // longer creates bookings or opens a payment provider. Hotel OS owns live
-  // availability, prices, reservation requests and any future payment step.
+  function openWebsiteBooking(destination) {
+    hideQuickBookOverlay();
+    if (window.MedallionBooking) {
+      window.MedallionBooking.open(Object.fromEntries(new URL(destination).searchParams));
+    } else {
+      showError('The booking form could not load. Please reload this page and try again. Your booking has not been submitted.');
+    }
+  }
+
+  // Legacy Vesper callers open the same in-page form, never a second booking page.
   function openPaystackForBooking(bookingData, guestEmail, onSettled, onPaid) {
     const destination = bookingData && bookingData.bookingUrl
       ? bookingData.bookingUrl
@@ -332,7 +339,7 @@
     const tracked = new URL(destination);
     const referral = referralCode();
     if (tracked.origin === 'https://app.hotelmedallion.com' && referral) tracked.searchParams.set('ref', referral);
-    window.location.assign(tracked.toString());
+    openWebsiteBooking(tracked.toString());
   }
 
   function fieldValue(form, ids) {
@@ -345,20 +352,7 @@
   }
 
   function handleSubmit(form) {
-    if (window.MedallionBooking) {
-      const url = new URL(bookingPortalUrl(form));
-      hideQuickBookOverlay();
-      window.MedallionBooking.open(Object.fromEntries(url.searchParams));
-      return;
-    }
-    const submitBtn = form.querySelector('button[type="submit"]');
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Opening live availability…';
-    }
-
-    hideQuickBookOverlay();
-    window.location.assign(bookingPortalUrl(form));
+    openWebsiteBooking(bookingPortalUrl(form));
   }
 
   function initForm(formId) {
@@ -382,8 +376,7 @@
     document.querySelectorAll('[data-live-booking], [data-book-room]').forEach((link) => {
       link.addEventListener('click', (event) => {
         event.preventDefault();
-        if (window.MedallionBooking) { window.MedallionBooking.open({ room: link.dataset.bookRoom || '' }); return; }
-        window.location.assign(bookingPortalUrl(null, link.dataset.bookRoom || ''));
+        openWebsiteBooking(bookingPortalUrl(null, link.dataset.bookRoom || ''));
       });
     });
   }
@@ -396,6 +389,6 @@
   });
 
   // Small public surface for assets/vesper.js. The historical function name
-  // is retained for compatibility, but it now opens the Hotel OS portal.
+  // is retained for compatibility; it opens the website's booking form.
   window.MedallionCheckout = { openPaystackForBooking, showConfirmation, showError, escapeHtml, formatAmount, formatDate, referralCode };
 })();

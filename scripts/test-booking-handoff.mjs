@@ -22,10 +22,11 @@ function fixture(href = 'https://hotelmedallion.com/', stored = new Map()) {
   const document={getElementById:id=>ids.get(id),createElement:()=>generic(),
     head:{appendChild:el=>ids.set(el.id,el)},body:{appendChild:el=>ids.set(el.id,el)},
     querySelector:()=>null,querySelectorAll:()=>[roomLink],addEventListener:(name,fn)=>hooks.set(name,fn)};
-  const window={location:{href,assign:url=>destinations.push(url)},sessionStorage:{getItem:key=>stored.get(key),setItem:(key,value)=>stored.set(key,value)}};
+  const window={location:{href,assign:()=>{throw new Error('Website booking must not navigate to another form');}},sessionStorage:{getItem:key=>stored.get(key),setItem:(key,value)=>stored.set(key,value)}};
   vm.runInNewContext(fs.readFileSync(new URL('../assets/checkout.js',import.meta.url),'utf8'),
     {document,window,URL,Date,Set,JSON});
   hooks.get('DOMContentLoaded')();
+  window.MedallionBooking={open:details=>{const url=new URL('https://hotelmedallion.com/');Object.entries(details).forEach(([key,value])=>url.searchParams.set(key,value));destinations.push(url.toString());}};
   return {main,quick,hooks,destinations,window};
 }
 
@@ -37,8 +38,8 @@ test('Quick Booking carries the selected dates and guests into the single hotel 
   const {quick,destinations}=fixture();
   quick.handlers.get('submit')({preventDefault(){}});
   const destination=new URL(destinations[0]);
-  assert.equal(destination.origin,'https://app.hotelmedallion.com');
-  assert.equal(destination.pathname,'/book/medallion');
+  assert.equal(destination.origin,'https://hotelmedallion.com');
+  assert.equal(destination.pathname,'/');
   assert.equal(destination.searchParams.get('arrival'),'2026-10-24');
   assert.equal(destination.searchParams.get('departure'),'2026-10-25');
   assert.equal(destination.searchParams.get('adults'),'2');
@@ -51,7 +52,7 @@ test('A room card carries its preferred category instead of creating another boo
   const {hooks,destinations}=fixture();
   hooks.get('room:click')({preventDefault(){}});
   const destination=new URL(destinations[0]);
-  assert.equal(destination.origin,'https://app.hotelmedallion.com');
+  assert.equal(destination.origin,'https://hotelmedallion.com');
   assert.equal(destination.searchParams.get('room'),'Double Bed Deluxe Executive');
 });
 

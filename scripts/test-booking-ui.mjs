@@ -79,12 +79,10 @@ test('Vesper forwards the actual room ID, dates, adults and children without cre
 test('a late-loaded booking script does not stack the old Quick Booking panel', async () => {
   const t = await setup({ lateBooking: true }); try { t.document.querySelector('.quickbook-fab').click(); assertDestination(t); } finally { t.dom.window.close(); }
 });
-test('legacy Quick Booking submits its dates directly and closes its old panel', async () => {
-  const t = await setup({ lateBooking: true }); try {
-    t.document.querySelector('#quickbookOverlay').classList.add('show');
-    t.document.querySelector('#qbArrival').value = '2026-11-01'; t.document.querySelector('#qbDeparture').value = '2026-11-03';
-    t.document.querySelector('#quickBookForm').dispatchEvent(new t.dom.window.Event('submit', { bubbles: true, cancelable: true }));
-    assert.equal(assertDestination(t).searchParams.get('arrival'), '2026-11-01');
+test('Book Now goes straight to the app even without the live-price script', async () => {
+  const t = await setup({ withoutBooking: true }); try {
+    t.document.querySelector('.quickbook-fab').click(); assertDestination(t);
+    assert.equal(t.document.querySelector('.quickbook-overlay'), null);
   } finally { t.dom.window.close(); }
 });
 test('booking still opens when the live-price script is unavailable', async () => {

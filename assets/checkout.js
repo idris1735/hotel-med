@@ -180,52 +180,7 @@
     `;
     document.body.appendChild(fab);
 
-    if (window.MedallionBooking) {
-      fab.addEventListener('click', () => window.MedallionBooking.open());
-      return;
-    }
-
-    const overlay = document.createElement('div');
-    overlay.className = 'quickbook-overlay';
-    overlay.id = 'quickbookOverlay';
-    const todayIso = new Date().toISOString().slice(0, 10);
-    overlay.innerHTML = `
-      <div class="quickbook-panel">
-        <button type="button" class="quickbook-close-x" aria-label="Close">&times;</button>
-        <h3>Quick Booking</h3>
-        <p class="sub">Choose your dates. Live rooms and approved rates open next.</p>
-        <form id="quickBookForm">
-          <div class="quickbook-row">
-            <div class="quickbook-field">
-              <label for="qbArrival">Arrival</label>
-              <input type="date" id="qbArrival" min="${todayIso}" required>
-            </div>
-            <div class="quickbook-field">
-              <label for="qbDeparture">Departure</label>
-              <input type="date" id="qbDeparture" min="${todayIso}" required>
-            </div>
-          </div>
-          <div class="quickbook-field">
-            <label for="qbGuests">Guests</label>
-            <input type="number" id="qbGuests" min="1" max="10" value="2" required>
-          </div>
-          <button type="submit" class="quickbook-submit">Check live availability</button>
-        </form>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-
-    function showQuickBook() { overlay.classList.add('show'); }
-    function hideQuickBook() { overlay.classList.remove('show'); }
-
-    fab.addEventListener('click', () => {
-      if (window.MedallionBooking) { hideQuickBook(); window.MedallionBooking.open(); }
-      else showQuickBook();
-    });
-    overlay.querySelector('.quickbook-close-x').addEventListener('click', hideQuickBook);
-    overlay.addEventListener('click', (e) => { if (e.target === overlay) hideQuickBook(); });
-
-    initForm('quickBookForm');
+    fab.addEventListener('click', () => openWebsiteBooking(bookingPortalUrl(null)));
   }
 
   function buildOverlay() {
@@ -391,6 +346,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     initForm('bookingForm');
     initForm('reservationForm');
+    initForm('quickBookForm');
     initDirectBookingLinks();
     injectQuickBook();
   });

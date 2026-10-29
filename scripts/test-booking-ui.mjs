@@ -1,89 +1,129 @@
-import {test} from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import {JSDOM} from 'jsdom';
-const source=name=>fs.readFileSync(new URL('../'+name,import.meta.url),'utf8');
-const room={id:'019a0000-0000-7000-8000-000000000001',name:'Deluxe Comfort',max_adults:2,available:2,nightly_rate:7000000,total:14000000,deposit:1000000};
-const wait=()=>new Promise(resolve=>setTimeout(resolve,10));
-async function setup(overrides={}){
- const dom=new JSDOM(source(overrides.page||'index.html'),{url:'https://hotelmedallion.com/?ref=EMEKA',runScripts:'outside-only',pretendToBeVisual:true});await wait();const calls=[];
- dom.window.fetch=async(url,options)=>{const b=options?.body?JSON.parse(options.body):null;calls.push({url,body:b});if(overrides.request){const r=await overrides.request(url,b);if(r)return r;}
-  if(url==='/api/rates')return Response.json({rates:{NGN:1500,USD:1,GBP:.75,EUR:.9}});
-  if(url==='/api/chat')return Response.json({reply:'Review your dates and room below.',history:[],action:{type:'open_booking',details:{arrival:'2026-11-01',departure:'2026-11-03',adults:2,room:room.id}}});
-  if(!b)return Response.json({room_types:[room]});
-  if(b.action==='availability')return Response.json({room_types:[room],nights:2,providers:{online_payment:true,confirmation_email:true}});
-  if(b.action==='reserve')return Response.json({booking_id:room.id,reference:'WEB-UI-TEST',receipt:'signed-test-receipt',online_payment:true,email_state:'queued'});
-  return Response.json({error:'Test checkout intentionally stopped.'},{status:503});
- };
- const files=overrides.lateBooking?['assets/checkout.js','assets/vesper.js','assets/currency.js']:['assets/booking-live.js','assets/checkout.js','assets/vesper.js','assets/currency.js'];
- for(const file of files)dom.window.eval(source(file));
- dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
- if(overrides.lateBooking)dom.window.eval(source('assets/booking-live.js'));
- await wait();return{dom,window:dom.window,document:dom.window.document,calls};
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+import { JSDOM } from 'jsdom';
+const source = name => fs.readFileSync(new URL('../' + name, import.meta.url), 'utf8');
+const room = { id: '019a0000-0000-7000-8000-000000000001', name: 'Deluxe Comfort', nightly_rate: 7000000 };
+const wait = () => new Promise(resolve => setTimeout(resolve, 20));
+
+async function setup(options = {}) {
+  const dom = new JSDOM(source(options.page || 'index.html'), { url: 'https://hotelmedallion.com/?ref=EMEKA', runScripts: 'outside-only', pretendToBeVisual: true });
+  await wait();
+  const calls = [], destinations = [];
+  const location = { href: dom.window.location.href, assign: url => destinations.push(new URL(url)) };
+  // Intercept navigation at the browser boundary while executing the real scripts unchanged.
+  const window = new Proxy(dom.window, { get(target, key) { return key === 'location' ? location : Reflect.get(target, key); } });
+  const fetch = async (url, request) => {
+    const body = request?.body ? JSON.parse(request.body) : null; calls.push({ url, body });
+    if (options.request) { const response = await options.request(url, body); if (response) return response; }
+    if (url === '/api/rates') return Response.json({ rates: { NGN: 1500, USD: 1, GBP: .75, EUR: .9 } });
+    if (url === '/api/chat') return Response.json({ reply: 'Review your room and dates.', history: [], action: { type: 'open_booking', details: {
+      arrival: '2026-11-01', departure: '2026-11-03', adults: 2, children: 1, room: room.id,
+    } } });
+    if (url === '/api/hotel-booking' && !body) return Response.json({ room_types: [room] });
+    throw new Error('This handoff must not create bookings or payments');
+  };
+  const context = vm.createContext({ window, document: dom.window.document, fetch, URL, Intl, Date, console,
+    localStorage: dom.window.localStorage, CustomEvent: dom.window.CustomEvent,
+    setTimeout: dom.window.setTimeout.bind(dom.window), setInterval: dom.window.setInterval.bind(dom.window) });
+  const load = name => vm.runInContext(source(name), context, { filename: name });
+  if (!options.lateBooking && !options.withoutBooking) load('assets/booking-live.js');
+  for (const name of ['assets/checkout.js', 'assets/vesper.js', 'assets/currency.js']) load(name);
+  dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
+  if (options.lateBooking) load('assets/booking-live.js');
+  await wait();
+  return { dom, window, document: dom.window.document, calls, destinations };
 }
-function fill(document){const f=document.querySelector('.live-booking-panel form');for(const [name,value]of Object.entries({full_name:'UI Test Guest',phone:'08012345678',email:'ui-test@example.com'}))f.elements[name].value=value;f.elements.confirmed.checked=true;return f;}
-test('Quick Booking opens the website form and retains affiliate attribution through reserve and checkout',async()=>{
- const t=await setup();try{t.document.querySelector('.quickbook-fab').click();await wait();const form=fill(t.document);assert.equal(t.document.querySelector('#liveBookingDetails').hidden,false);assert.match(t.document.querySelector('#liveBookingSummary').textContent,/140,000/);
- form.dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();await wait();const saved=t.calls.find(c=>c.body?.action==='reserve').body;assert.equal(saved.affiliate_code,'EMEKA');assert.equal(saved.expected_total,14000000);assert.equal(saved.ids.booking_id[14],'7');assert.equal(saved.confirmed,true);
- assert.match(t.document.querySelector('#liveBookingBody').textContent,/WEB-UI-TEST/);assert.match(t.document.querySelector('[role=alert]').textContent,/intentionally stopped/);assert.ok(t.document.querySelector('#liveBookingPay'));assert.ok(!t.document.querySelector('#liveBookingBody').textContent.includes('paid.'));
- }finally{t.dom.window.close();}
-});
+function assertDestination(t) {
+  assert.equal(t.destinations.length, 1);
+  const url = t.destinations[0];
+  assert.equal(url.origin, 'https://app.hotelmedallion.com');
+  assert.equal(url.pathname, '/book/medallion');
+  assert.equal(url.searchParams.get('ref'), 'EMEKA');
+  assert.equal(t.calls.filter(call => call.body && call.url === '/api/hotel-booking').length, 0);
+  assert.equal(t.document.querySelectorAll('.live-booking-overlay,.quickbook-overlay.show,.checkout-overlay.show').length, 0);
+  return url;
+}
 
-test('a failed live-form load shows a retry on the website instead of redirecting to the app booking page',async()=>{
- const t=await setup();try{delete t.window.MedallionBooking;const before=t.window.location.href;
- t.document.querySelector('#bookingForm').dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();
- assert.equal(t.window.location.href,before);assert.match(t.document.querySelector('#checkoutPanel').textContent,/reload this page/);
- assert.equal(t.calls.filter(c=>c.body?.action==='reserve').length,0);
- }finally{t.dom.window.close();}
+test('Book Now goes directly to the app without an intermediate modal or reservation', async () => {
+  const t = await setup(); try { t.document.querySelector('.quickbook-fab').click(); assertDestination(t); } finally { t.dom.window.close(); }
 });
-test('the first-name option is opt-in and Forget name removes only that remembered name',async()=>{
- const t=await setup();try{t.document.querySelector('.quickbook-fab').click();await wait();const f=fill(t.document);assert.equal(t.window.localStorage.getItem('medallion.remembered-name'),null);f.elements.remember.checked=true;f.dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();await wait();assert.equal(t.window.localStorage.getItem('medallion.remembered-name'),'UI');assert.equal(t.document.querySelector('.vesper-forget').hidden,false);t.document.querySelector('.vesper-forget').click();assert.equal(t.window.localStorage.getItem('medallion.remembered-name'),null);}finally{t.dom.window.close();}
+test('main booking form carries dates, guest count and the selected room', async () => {
+  const t = await setup(); try {
+    for (const [id, value] of Object.entries({ bookingArrival: '2026-11-01', departure: '2026-11-03', guests: '3' })) t.document.getElementById(id).value = value;
+    const select = t.document.getElementById('roomType'); select.value = select.options[1].value;
+    t.document.getElementById('bookingForm').dispatchEvent(new t.dom.window.Event('submit', { bubbles: true, cancelable: true }));
+    const url = assertDestination(t);
+    assert.equal(url.searchParams.get('arrival'), '2026-11-01'); assert.equal(url.searchParams.get('departure'), '2026-11-03');
+    assert.equal(url.searchParams.get('adults'), '3'); assert.equal(url.searchParams.get('room'), select.value);
+  } finally { t.dom.window.close(); }
 });
-test('Vesper opens the same booking review form with its selected dates without submitting a booking',async()=>{
- const t=await setup();try{t.document.querySelector('.vesper-fab').click();t.document.querySelector('#vesperInput').value='Book Comfort for two nights';t.document.querySelector('#vesperForm').dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();t.document.querySelector('.vesper-booking-button').click();await wait();assert.equal(t.document.querySelector('[name=arrival]').value,'2026-11-01');assert.equal(t.document.querySelector('[name=departure]').value,'2026-11-03');assert.equal(t.document.querySelector('[name=room]').value,room.id);assert.equal(t.calls.filter(c=>c.body?.action==='reserve').length,0);assert.equal(t.document.querySelector('.vesper-panel').classList.contains('show'),false);}finally{t.dom.window.close();}
+test('room cards carry the chosen category directly into app booking', async () => {
+  const t = await setup(); try {
+    t.document.querySelector('[data-book-room="Medallion Deluxe Comfort"]').click();
+    assert.equal(assertDestination(t).searchParams.get('room'), 'Medallion Deluxe Comfort');
+  } finally { t.dom.window.close(); }
 });
-test('a price change refreshes the quote and requires a new confirmation',async()=>{
- let searches=0;const t=await setup({request:async(url,b)=>{if(b?.action==='reserve')return Response.json({error:'Room price has changed. Check the updated price before reserving.'},{status:400});if(b?.action==='availability'){searches++;return Response.json({room_types:[{...room,total:searches>1?17000000:14000000,nightly_rate:searches>1?8500000:7000000}],nights:2,providers:{online_payment:true}});}}});
- try{t.document.querySelector('.quickbook-fab').click();await wait();const f=fill(t.document);f.dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();await wait();assert.match(t.document.querySelector('#liveBookingSummary').textContent,/170,000/);assert.equal(t.document.querySelector('[name=confirmed]').checked,false);assert.match(t.document.querySelector('[role=alert]').textContent,/price changed/);assert.equal(t.calls.filter(c=>c.body?.action==='checkout').length,0);}finally{t.dom.window.close();}
+test('Vesper forwards the actual room ID, dates, adults and children without creating a booking', async () => {
+  const t = await setup(); try {
+    t.document.querySelector('.vesper-fab').click(); t.document.querySelector('#vesperInput').value = 'Book Comfort for two nights';
+    t.document.querySelector('#vesperForm').dispatchEvent(new t.dom.window.Event('submit', { bubbles: true, cancelable: true }));
+    await wait(); t.document.querySelector('.vesper-booking-button').click();
+    const url = assertDestination(t);
+    assert.equal(url.searchParams.get('room'), room.id); assert.equal(url.searchParams.get('arrival'), '2026-11-01');
+    assert.equal(url.searchParams.get('departure'), '2026-11-03'); assert.equal(url.searchParams.get('adults'), '2');
+    assert.equal(url.searchParams.get('children'), '1'); assert.equal(t.document.querySelector('.vesper-panel').classList.contains('show'), false);
+  } finally { t.dom.window.close(); }
 });
-test('live app prices populate matching website room cards without inventing suite rates',async()=>{
- const t=await setup();try{const cards=[...t.document.querySelectorAll('.room-card')];const comfort=cards.find(c=>c.querySelector('.room-name').textContent.includes('Comfort'));assert.match(comfort.querySelector('.room-price').textContent,/70,000/);const suite=cards.find(c=>c.querySelector('.room-name').textContent.includes('2 Bedroom'));assert.match(suite.querySelector('.room-price').textContent,/Contact us/);}finally{t.dom.window.close();}
+test('a late-loaded booking script does not stack the old Quick Booking panel', async () => {
+  const t = await setup({ lateBooking: true }); try { t.document.querySelector('.quickbook-fab').click(); assertDestination(t); } finally { t.dom.window.close(); }
 });
-test('room detail pages use their room heading when matching a live rate',async()=>{
- const t=await setup({page:'room-comfort.html'});try{assert.match(t.document.querySelector('.room-price').textContent,/70,000/);}finally{t.dom.window.close();}
+test('legacy Quick Booking submits its dates directly and closes its old panel', async () => {
+  const t = await setup({ lateBooking: true }); try {
+    t.document.querySelector('#quickbookOverlay').classList.add('show');
+    t.document.querySelector('#qbArrival').value = '2026-11-01'; t.document.querySelector('#qbDeparture').value = '2026-11-03';
+    t.document.querySelector('#quickBookForm').dispatchEvent(new t.dom.window.Event('submit', { bubbles: true, cancelable: true }));
+    assert.equal(assertDestination(t).searchParams.get('arrival'), '2026-11-01');
+  } finally { t.dom.window.close(); }
 });
-
-test('late-loaded live booking replaces Quick Booking instead of stacking two booking panels',async()=>{
- const t=await setup({lateBooking:true});try{
-  assert.ok(t.document.querySelector('#quickbookOverlay'));
-  t.document.querySelector('.quickbook-fab').click();await wait();
-  assert.equal(t.document.querySelectorAll('.live-booking-overlay').length,1);
-  assert.equal(t.document.querySelectorAll('.quickbook-overlay.show,.checkout-overlay.show').length,0);
-  assert.equal(t.document.body.classList.contains('medallion-booking-active'),true);
- }finally{t.dom.window.close();}
+test('booking still opens when the live-price script is unavailable', async () => {
+  const t = await setup({ withoutBooking: true }); try {
+    t.document.querySelector('#bookingForm').dispatchEvent(new t.dom.window.Event('submit', { bubbles: true, cancelable: true })); assertDestination(t);
+  } finally { t.dom.window.close(); }
 });
-
-test('legacy form handoff closes its panel and the live modal restores page access on close',async()=>{
- const t=await setup({lateBooking:true});try{
-  const old=t.document.querySelector('#quickbookOverlay');old.classList.add('show');
-  t.document.querySelector('#qbArrival').value='2026-11-01';t.document.querySelector('#qbDeparture').value='2026-11-03';
-  t.document.querySelector('#quickBookForm').dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();
-  assert.equal(old.classList.contains('show'),false);
-  assert.ok(t.document.querySelector('.live-booking-panel[data-lenis-prevent]'));
-  assert.equal(t.document.querySelector('#nav').inert,true);
-  assert.equal(t.document.querySelector('.live-booking-overlay').inert,undefined);
-  let closed=0;t.document.addEventListener('medallion-booking-closed',()=>closed++);
-  t.document.querySelector('.live-booking-close').click();
-  assert.equal(t.document.querySelector('.live-booking-overlay'),null);
-  assert.equal(t.document.body.classList.contains('medallion-booking-active'),false);
-  assert.notEqual(t.document.querySelector('#nav').inert,true);
-  assert.equal(t.document.body.style.overflow,'');assert.equal(closed,1);
- }finally{t.dom.window.close();}
+test('fallback navigation keeps the trusted hotel destination for a legacy chat link', async () => {
+  const t = await setup({ withoutBooking: true }); try {
+    t.window.MedallionCheckout.openPaystackForBooking({ bookingUrl: 'https://example.invalid/fake?arrival=2026-11-01&departure=2026-11-03&room=Comfort' });
+    assert.equal(t.destinations[0].origin, 'https://app.hotelmedallion.com');
+    assert.equal(t.destinations[0].searchParams.get('room'), 'Comfort');
+  } finally { t.dom.window.close(); }
 });
-
-
-test('live discounted room quote shows savings and submits its exact server total',async()=>{
- const t=await setup({request:async(url,b)=>b?.action==='availability'?Response.json({room_types:[{...room,nightly_rate:6300000,total:12600000,room_discount:{discount_bp:1000,saving:1400000,requires_approval:false}}],nights:2,providers:{online_payment:true}}):null});
- try{t.document.querySelector('.quickbook-fab').click();await wait();const f=fill(t.document);assert.match(t.document.querySelector('#liveBookingSummary').textContent,/10% room discount/);assert.match(t.document.querySelector('#liveBookingSummary').textContent,/126,000/);f.dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();await wait();assert.equal(t.calls.find(c=>c.body?.action==='reserve').body.expected_total,12600000);}finally{t.dom.window.close();}
+test('zero children survives the redirect and contact details are not added to its URL', async () => {
+  const t = await setup(); try {
+    t.window.MedallionBooking.open({ room: room.id, adults: 2, children: 0, email: 'private@example.com', full_name: 'Private Guest' });
+    const url = assertDestination(t); assert.equal(url.searchParams.get('children'), '0');
+    assert.equal(url.searchParams.has('email'), false); assert.equal(url.searchParams.has('full_name'), false);
+  } finally { t.dom.window.close(); }
 });
-test('a long-stay approval requirement shows reception contact instead of a payment form',async()=>{
- const t=await setup({request:async(url,b)=>b?.action==='availability'?Response.json({room_types:[{...room,room_discount:{discount_bp:0,saving:0,requires_approval:true}}],nights:30,providers:{online_payment:true}}):null});
- try{t.document.querySelector('.quickbook-fab').click();await wait();assert.equal(t.document.querySelector('#liveBookingDetails').hidden,true);assert.match(t.document.querySelector('#liveBookingSummary').textContent,/manager-approved/);t.document.querySelector('.live-booking-panel form').dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();assert.equal(t.calls.filter(c=>c.body?.action==='reserve'||c.body?.action==='checkout').length,0);}finally{t.dom.window.close();}
+test('live app prices populate room cards without inventing suite prices', async () => {
+  const t = await setup(); try {
+    const cards = [...t.document.querySelectorAll('.room-card')];
+    assert.match(cards.find(card => card.querySelector('.room-name').textContent.includes('Comfort')).querySelector('.room-price').textContent, /70,000/);
+    assert.match(cards.find(card => card.querySelector('.room-name').textContent.includes('2 Bedroom')).querySelector('.room-price').textContent, /Contact us/);
+  } finally { t.dom.window.close(); }
+});
+test('room detail pages match the live room price', async () => {
+  const t = await setup({ page: 'room-comfort.html' }); try { assert.match(t.document.querySelector('.room-price').textContent, /70,000/); } finally { t.dom.window.close(); }
+});
+test('unavailable live rates do not leave a stale price visible', async () => {
+  const t = await setup({ request: async (url, body) => url === '/api/hotel-booking' && !body ? Response.json({}, { status: 503 }) : null });
+  try { assert.ok([...t.document.querySelectorAll('.room-price')].every(price => price.textContent === 'Check live rates')); } finally { t.dom.window.close(); }
+});
+test('Forget name removes only the remembered name without making it a login', async () => {
+  const t = await setup(); try {
+    t.window.localStorage.setItem('medallion.remembered-name', 'Ada'); t.window.localStorage.setItem('other-preference', 'keep');
+    t.window.MedallionBooking.forget(); assert.equal(t.window.MedallionBooking.rememberedName(), '');
+    assert.equal(t.window.localStorage.getItem('other-preference'), 'keep');
+  } finally { t.dom.window.close(); }
 });

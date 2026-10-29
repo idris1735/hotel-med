@@ -327,11 +327,18 @@
     if (window.MedallionBooking) {
       window.MedallionBooking.open(Object.fromEntries(new URL(destination).searchParams));
     } else {
-      showError('The booking form could not load. Please reload this page and try again. Your booking has not been submitted.');
+      // The booking destination still works if the live-price script fails to load.
+      const requested = new URL(destination);
+      const target = new URL(LIVE_BOOKING_URL);
+      for (const key of ['room', 'arrival', 'departure', 'adults', 'children', 'ref']) {
+        const value = requested.searchParams.get(key);
+        if (value !== null) target.searchParams.set(key, value);
+      }
+      window.location.assign(target.toString());
     }
   }
 
-  // Legacy Vesper callers open the same in-page form, never a second booking page.
+  // Legacy Vesper callers use the same app booking destination.
   function openPaystackForBooking(bookingData, guestEmail, onSettled, onPaid) {
     const destination = bookingData && bookingData.bookingUrl
       ? bookingData.bookingUrl

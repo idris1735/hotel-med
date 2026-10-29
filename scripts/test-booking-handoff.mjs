@@ -26,7 +26,7 @@ function fixture(href = 'https://hotelmedallion.com/', stored = new Map()) {
   vm.runInNewContext(fs.readFileSync(new URL('../assets/checkout.js',import.meta.url),'utf8'),
     {document,window,URL,Date,Set,JSON});
   hooks.get('DOMContentLoaded')();
-  window.MedallionBooking={open:details=>{const url=new URL('https://hotelmedallion.com/');Object.entries(details).forEach(([key,value])=>url.searchParams.set(key,value));destinations.push(url.toString());}};
+  window.MedallionBooking={open:details=>{const url=new URL('https://app.hotelmedallion.com/book/medallion');Object.entries(details).forEach(([key,value])=>url.searchParams.set(key,value));destinations.push(url.toString());}};
   return {main,quick,hooks,destinations,window};
 }
 
@@ -38,8 +38,8 @@ test('Quick Booking carries the selected dates and guests into the single hotel 
   const {quick,destinations}=fixture();
   quick.handlers.get('submit')({preventDefault(){}});
   const destination=new URL(destinations[0]);
-  assert.equal(destination.origin,'https://hotelmedallion.com');
-  assert.equal(destination.pathname,'/');
+  assert.equal(destination.origin,'https://app.hotelmedallion.com');
+  assert.equal(destination.pathname,'/book/medallion');
   assert.equal(destination.searchParams.get('arrival'),'2026-10-24');
   assert.equal(destination.searchParams.get('departure'),'2026-10-25');
   assert.equal(destination.searchParams.get('adults'),'2');
@@ -52,7 +52,7 @@ test('A room card carries its preferred category instead of creating another boo
   const {hooks,destinations}=fixture();
   hooks.get('room:click')({preventDefault(){}});
   const destination=new URL(destinations[0]);
-  assert.equal(destination.origin,'https://hotelmedallion.com');
+  assert.equal(destination.origin,'https://app.hotelmedallion.com');
   assert.equal(destination.searchParams.get('room'),'Double Bed Deluxe Executive');
 });
 

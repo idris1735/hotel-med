@@ -21,7 +21,7 @@
   const url=new URL(BOOKING_URL);
   const ref=initial.ref||window.MedallionCheckout?.referralCode?.()||'';
   const params={room:initial.room,arrival:initial.arrival,departure:initial.departure,adults:initial.adults,children:initial.children,ref};
-  for(const[key,value]of Object.entries(params))if(value)url.searchParams.set(key,String(value));
+  for(const[key,value]of Object.entries(params))if(value!==undefined&&value!==null&&value!=='')url.searchParams.set(key,String(value));
   window.location.assign(url.toString());
  }
  async function refreshPrices(){let data;try{const r=await fetch('/api/hotel-booking',{cache:'no-store'});if(!r.ok)throw new Error();data=await r.json();}catch{document.querySelectorAll('.room-price').forEach(el=>{el.textContent='Check live rates';delete el.dataset.ngn;delete el.dataset.usd;});return;}

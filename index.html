@@ -1591,6 +1591,10 @@
 
       /* ---------------- BROKEN IMAGE FALLBACK ---------------- */
       document.querySelectorAll('img').forEach((img) => {
+        // A src-less placeholder (e.g. the lightbox image before a photo is
+        // chosen) reports complete && naturalWidth === 0 but is not broken —
+        // skip it so it is never hidden with .img-broken.
+        if (!img.getAttribute('src') && !img.getAttribute('srcset')) return;
         const swapToFallback = () => {
           if (img.dataset.fallback && img.src !== img.dataset.fallback) {
             img.src = img.dataset.fallback;
@@ -2192,6 +2196,7 @@
         const candidates = (img.getAttribute('srcset') || '').split(',')
           .map((s) => s.trim().split(' ')).filter((p) => p.length === 2);
         const largest = candidates.sort((a, b) => parseInt(b[1]) - parseInt(a[1]))[0];
+        lightboxImg.classList.remove('img-broken');
         lightboxImg.src = largest ? largest[0] : img.src;
         lightboxImg.alt = img.alt;
         lightboxCaption.textContent = (item.querySelector('.gallery-caption') || {}).textContent || '';

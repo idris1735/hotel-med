@@ -77,3 +77,13 @@ test('legacy form handoff closes its panel and the live modal restores page acce
   assert.equal(t.document.body.style.overflow,'');assert.equal(closed,1);
  }finally{t.dom.window.close();}
 });
+
+
+test('live discounted room quote shows savings and submits its exact server total',async()=>{
+ const t=await setup({request:async(url,b)=>b?.action==='availability'?Response.json({room_types:[{...room,nightly_rate:6300000,total:12600000,room_discount:{discount_bp:1000,saving:1400000,requires_approval:false}}],nights:2,providers:{online_payment:true}}):null});
+ try{t.document.querySelector('.quickbook-fab').click();await wait();const f=fill(t.document);assert.match(t.document.querySelector('#liveBookingSummary').textContent,/10% room discount/);assert.match(t.document.querySelector('#liveBookingSummary').textContent,/126,000/);f.dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();await wait();assert.equal(t.calls.find(c=>c.body?.action==='reserve').body.expected_total,12600000);}finally{t.dom.window.close();}
+});
+test('a long-stay approval requirement shows reception contact instead of a payment form',async()=>{
+ const t=await setup({request:async(url,b)=>b?.action==='availability'?Response.json({room_types:[{...room,room_discount:{discount_bp:0,saving:0,requires_approval:true}}],nights:30,providers:{online_payment:true}}):null});
+ try{t.document.querySelector('.quickbook-fab').click();await wait();assert.equal(t.document.querySelector('#liveBookingDetails').hidden,true);assert.match(t.document.querySelector('#liveBookingSummary').textContent,/manager-approved/);t.document.querySelector('.live-booking-panel form').dispatchEvent(new t.window.Event('submit',{bubbles:true,cancelable:true}));await wait();assert.equal(t.calls.filter(c=>c.body?.action==='reserve'||c.body?.action==='checkout').length,0);}finally{t.dom.window.close();}
+});

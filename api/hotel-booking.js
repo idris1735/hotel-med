@@ -30,15 +30,18 @@ module.exports=async(req,res)=>{
   }
   if(b.action==='checkout'){
    if(!uuid(b.payment_id))throw new Error('Invalid payment request. Try again.');
+   if(b.provider!==undefined&&!['globalpay','paystack'].includes(b.provider))throw new Error('Choose an available payment provider.');
    const bookingId=readReceipt(b.receipt);await guard(req,'booking');
-   const payment=await provider({action:'initialize_payment',booking_id:bookingId,payment_id:b.payment_id});
+   const payment=await provider({action:'initialize_payment',booking_id:bookingId,payment_id:b.payment_id,...(b.provider?{provider:b.provider}:{})});
+   if(payment.environment==='test')throw new Error('Use the signed-in test page for a simulation. Guest deposits require live payments.');
    if(payment.status==='paid')return res.status(200).json({status:'paid',reference:payment.reference});
    if(Number.isSafeInteger(b.expected_deposit)&&Number(payment.amount)!==b.expected_deposit){
     return res.status(409).json({error:'The deposit amount changed. Review the updated deposit before continuing.',deposit:Number(payment.amount)});
    }
    if(typeof payment.authorization_url!=='string')throw new Error('Payment checkout is not ready yet. Try again shortly.');
    const url=new URL(payment.authorization_url);
-   if(url.protocol!=='https:'||!/(^|\.)globalpay\.(com\.ng|ng)$/.test(url.hostname))throw new Error('Payment link could not be verified. Contact reception.');
+   const trusted=payment.provider==='paystack'?url.hostname==='checkout.paystack.com':/(^|\.)globalpay\.(com\.ng|ng)$/.test(url.hostname);
+   if(url.protocol!=='https:'||url.username||url.password||!trusted)throw new Error('Payment link could not be verified. Contact reception.');
    return res.status(200).json({authorization_url:url.toString()});
   }
   return res.status(400).json({error:'Invalid booking action'});

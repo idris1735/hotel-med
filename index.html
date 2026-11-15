@@ -13,7 +13,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Hotel Medallion">
   <meta property="og:title" content="Hotel Medallion — A Quiet Kind of Luxury">
-  <meta property="og:description" content="A contemporary boutique residence in Lekki Phase 1, Lagos — 25 rooms, minutes from Ikoyi and Victoria Island.">
+  <meta property="og:description" content="A contemporary boutique residence in Lekki Phase 1, Lagos — 43 rooms, minutes from Ikoyi and Victoria Island.">
   <meta property="og:image" content="https://hotel-med.vercel.app/assets/photos/exterior-street-1280.jpg">
   <meta property="og:url" content="https://hotel-med.vercel.app/">
   <meta name="twitter:card" content="summary_large_image">
@@ -34,7 +34,7 @@
     "@context": "https://schema.org",
     "@type": "Hotel",
     "name": "Hotel Medallion",
-    "description": "A contemporary boutique hotel — 25 luxurious rooms, minutes from Ikoyi and Victoria Island in Lekki Phase 1, Lagos.",
+    "description": "A contemporary boutique hotel — 43 luxurious rooms, minutes from Ikoyi and Victoria Island in Lekki Phase 1, Lagos.",
     "address": {
       "@type": "PostalAddress",
       "streetAddress": "Plot 61, Babatunde Anjous Avenue, off Admiralty Way",
@@ -305,7 +305,7 @@
     .hero-shot:nth-child(5) { background: radial-gradient(circle at 70% 22%, rgba(110,198,232,0.16), transparent 52%), linear-gradient(135deg, #090c14 0%, #10232c 58%, #090c14 100%); }
     .hero-shot:nth-child(6) { background: radial-gradient(circle at 72% 20%, rgba(182,149,214,0.14), transparent 52%), linear-gradient(135deg, #090c14 0%, #1b1224 58%, #090c14 100%); }
     .hero-shot.active { opacity: 1; transform: scale(1.06); }
-    .hero-shot img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.89) saturate(0.95); }
+    .hero-shot img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.0) saturate(1); }
     .hero-overlay {
       position: absolute; inset: 0; z-index: 2;
       background: linear-gradient(to bottom, rgba(10,10,15,0.12) 0%, rgba(10,10,15,0.02) 42%, rgba(10,10,15,0.4) 100%);
@@ -403,7 +403,7 @@
       flex-shrink: 0; position: relative; overflow: hidden;
     }
     .room-image { width: 100%; height: 100%; overflow: hidden; position: relative; }
-    .room-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.89) saturate(0.9); }
+    .room-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.05) saturate(1); }
     .room-image::after {
       content: ''; position: absolute; inset: 0;
       background: linear-gradient(to right, transparent 60%, rgba(10,10,15,0.55) 100%);
@@ -508,7 +508,7 @@
     img.img-broken { display: none; }
     .moment { position: relative; height: 78vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
     .moment-image { position: absolute; inset: 0; }
-    .moment-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.64); }
+    .moment-image img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.02); }
     .moment-text {
       position: relative; z-index: 2; font-family: var(--font-display);
       font-size: clamp(1.4rem, 3.4vw, 2.4rem); font-style: italic; color: var(--ivory);
@@ -520,7 +520,7 @@
     .dining { background: var(--midnight); position: relative; overflow: hidden; }
     .dining-grid { display: grid; grid-template-columns: 50% 50%; min-height: 100vh; min-height: 100svh; }
     .dining-visual { position: relative; overflow: hidden; }
-    .dining-visual img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.82) saturate(0.9); }
+    .dining-visual img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.03) saturate(1); }
     #dining-particles { position: absolute; inset: 0; pointer-events: none; }
     .dining-content { display: flex; flex-direction: column; justify-content: center; padding: 5rem 5rem 5rem 5rem; }
     .dining-headline { font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 3.4rem); font-weight: 400; color: var(--ivory); line-height: 1.15; margin-bottom: 1.6rem; }
@@ -564,17 +564,27 @@
     .experiences { background: var(--midnight); padding: 10rem 5rem; position: relative; }
     .experiences-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; max-width: 1400px; margin: 0 auto; background: var(--midnight); }
     .experiences-item { position: relative; height: 58vh; overflow: hidden; cursor: none; }
-    .experiences-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7) saturate(0.85); transition: transform 1.6s var(--ease-cinematic), filter 1.6s; }
-    .experiences-item:hover img { transform: scale(1.06); filter: brightness(0.82) saturate(1); }
+    .experiences-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.02) saturate(1); transition: transform 1.6s var(--ease-cinematic), filter 1.6s; }
+    .experiences-item:hover img { transform: scale(1.06); filter: brightness(1.08) saturate(1); }
     .experiences-item-content { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 2rem; }
-    /* text-shadow rather than a background scrim, since the label sits
-       directly on photos of varying brightness (the "Concierge" card's
-       overcast driveway shot in particular washed the gold text out) --
-       a dark halo keeps it legible against any of the four without
-       needing a per-card override. */
-    .experiences-item-label { font-size: 0.62rem; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: var(--champagne); margin-bottom: 1rem; text-shadow: 0 1px 10px rgba(0,0,0,0.85), 0 1px 3px rgba(0,0,0,0.9); }
-    .experiences-item-title { font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2.2rem); color: var(--ivory); margin-bottom: 0.9rem;  text-shadow: 0 1px 14px rgba(0,0,0,0.6), 0 1px 3px rgba(0,0,0,0.55); }
-    .experiences-item-desc { font-size: 0.8rem; color: var(--ivory-dim); font-weight: 300; max-width: 300px; line-height: 1.65;  text-shadow: 0 1px 8px rgba(0,0,0,0.75), 0 1px 2px rgba(0,0,0,0.85); }
+    /* A brand-navy scrim concentrated behind the centred text — darkest at
+       the middle, fading to transparent before the tile edges so the photo
+       stays bright at the corners. This does the legibility work on every
+       card regardless of the photo under it (the bright gym / concierge
+       shots as well as the dark hall / pool), so the text itself needs only
+       a tight, crisp shadow rather than the wide blurry glow it had before
+       (which read as a haze on the light cards). */
+    .experiences-item-content::before {
+      content: ""; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 82% 62% at 50% 50%,
+        rgba(10,23,40,0.80) 0%, rgba(10,23,40,0.58) 38%,
+        rgba(10,23,40,0.16) 70%, transparent 86%);
+      transition: opacity 1.6s var(--ease-cinematic);
+    }
+    .experiences-item > * { position: relative; z-index: 1; }
+    .experiences-item-label { position: relative; z-index: 1; font-size: 0.62rem; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--champagne); margin-bottom: 1rem; text-shadow: 0 1px 2px rgba(0,0,0,0.6); }
+    .experiences-item-title { position: relative; z-index: 1; font-family: var(--font-display); font-size: clamp(1.5rem, 2.6vw, 2.2rem); color: var(--ivory); margin-bottom: 0.9rem; text-shadow: 0 1px 3px rgba(0,0,0,0.55); }
+    .experiences-item-desc { position: relative; z-index: 1; font-size: 0.82rem; color: var(--ivory); font-weight: 400; max-width: 300px; line-height: 1.65; text-shadow: 0 1px 2px rgba(0,0,0,0.55); }
 
     /* ---------------- EVENTS ---------------- */
     .events { background: var(--ivory); color: var(--midnight); padding: 10rem 5rem; position: relative; overflow: hidden; }
@@ -663,8 +673,8 @@
     .gallery-track { display: flex; gap: 1.5rem; padding: 0 5vw; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -ms-overflow-style: none; }
     .gallery-track::-webkit-scrollbar { display: none; }
     .gallery-item { flex: 0 0 auto; width: 62vw; max-width: 820px; height: 52vh; scroll-snap-align: center; position: relative; overflow: hidden; cursor: none; }
-    .gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.87) saturate(0.9); transition: transform 1.3s var(--ease-cinematic), filter 1.3s; }
-    .gallery-item:hover img { transform: scale(1.05); filter: brightness(1) saturate(1); }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.05) saturate(1); transition: transform 1.3s var(--ease-cinematic), filter 1.3s; }
+    .gallery-item:hover img { transform: scale(1.05); filter: brightness(1.1) saturate(1); }
     .gallery-caption { position: absolute; bottom: 1.1rem; left: 1.3rem; font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase; color: rgba(245,240,232,0.8);  text-shadow: 0 1px 8px rgba(0,0,0,0.75), 0 1px 2px rgba(0,0,0,0.85); }
 
     /* ---------------- TESTIMONIALS ---------------- */
@@ -925,7 +935,7 @@
     <div class="hero-shots" id="heroShots">
       <div class="hero-shot active" data-label="Hotel &amp; Hospitality — Lagos" data-l1="A Quiet" data-l2="Kind of" data-l3="Luxury." data-cta="Discover" data-href="#rooms"><img src="assets/photos/hall-marble-1280.jpg" srcset="assets/photos/hall-marble-768.jpg 768w, assets/photos/hall-marble-1280.jpg 1280w, assets/photos/hall-marble-1920.jpg 1920w" sizes="100vw" alt="The marble hall at Hotel Medallion" loading="eager" fetchpriority="high"></div>
       <div class="hero-shot" data-label="The Arrival" data-l1="Not a Lobby." data-l2="A First" data-l3="Impression." data-cta="Step Inside" data-href="#story"><img src="assets/photos/lobby-arrival-1280.jpg" srcset="assets/photos/lobby-arrival-768.jpg 768w, assets/photos/lobby-arrival-1280.jpg 1280w, assets/photos/lobby-arrival-1920.jpg 1920w" sizes="100vw" alt="The lobby at Hotel Medallion" loading="eager"></div>
-      <div class="hero-shot" data-label="The Residence" data-l1="Twenty-Five" data-l2="Rooms. One" data-l3="Standard." data-cta="See the Rooms" data-href="#rooms"><img src="assets/photos/suite-2bed-1280.jpg" srcset="assets/photos/suite-2bed-768.jpg 768w, assets/photos/suite-2bed-1280.jpg 1280w, assets/photos/suite-2bed-1920.jpg 1920w" sizes="100vw" alt="King bed in the 2 Bedroom Deluxe Suite" loading="lazy"></div>
+      <div class="hero-shot" data-label="The Residence" data-l1="Forty-Three" data-l2="Rooms. One" data-l3="Standard." data-cta="See the Rooms" data-href="#rooms"><img src="assets/photos/suite-2bed-1280.jpg" srcset="assets/photos/suite-2bed-768.jpg 768w, assets/photos/suite-2bed-1280.jpg 1280w, assets/photos/suite-2bed-1920.jpg 1920w" sizes="100vw" alt="King bed in the 2 Bedroom Deluxe Suite" loading="lazy"></div>
       <div class="hero-shot" data-label="Culinary — 24 Hours" data-l1="Lagos Never" data-l2="Sleeps. Neither" data-l3="Does the Kitchen." data-cta="View Dining" data-href="#dining"><img src="assets/photos/dining-room-1280.jpg" srcset="assets/photos/dining-room-768.jpg 768w, assets/photos/dining-room-1280.jpg 1280w, assets/photos/dining-room-1920.jpg 1920w" sizes="100vw" alt="The 24-hour restaurant at Hotel Medallion" loading="lazy"></div>
       <div class="hero-shot" data-label="Evenings" data-l1="Rest, the" data-l2="Way Lagos" data-l3="Rarely Does." data-cta="Find Stillness" data-href="#wellness"><img src="assets/photos/pool-terrace-1280.jpg" srcset="assets/photos/pool-terrace-768.jpg 768w, assets/photos/pool-terrace-1280.jpg 1280w, assets/photos/pool-terrace-1920.jpg 1920w" sizes="100vw" alt="The outdoor pool and terrace at Hotel Medallion" loading="lazy"></div>
       <div class="hero-shot" data-label="The Location" data-l1="Minutes from" data-l2="Ikoyi. Miles" data-l3="from the Noise." data-cta="Explore Lekki" data-href="#location"><img src="assets/photos/exterior-street-1280.jpg" srcset="assets/photos/exterior-street-768.jpg 768w, assets/photos/exterior-street-1280.jpg 1280w, assets/photos/exterior-street-1920.jpg 1920w" sizes="100vw" alt="Hotel Medallion seen from the street in Lekki Phase 1" loading="lazy"></div>
@@ -1264,7 +1274,7 @@
   <section class="events" id="events">
     <div class="events-grid">
       <div class="events-image" id="eventsImage">
-        <img src="assets/photos/lobby-columns-1280.jpg" srcset="assets/photos/lobby-columns-768.jpg 768w, assets/photos/lobby-columns-1280.jpg 1280w, assets/photos/lobby-columns-1920.jpg 1920w" sizes="(max-width: 900px) 100vw, 50vw" alt="The marble event hall at Hotel Medallion">
+        <img src="assets/photos/boardroom-1280.jpg" srcset="assets/photos/boardroom-768.jpg 768w, assets/photos/boardroom-1280.jpg 1280w, assets/photos/boardroom-1920.jpg 1920w" sizes="(max-width: 900px) 100vw, 50vw" alt="The boardroom at Hotel Medallion, set for a corporate meeting">
       </div>
       <div>
         <span class="label label-muted">Events</span>
@@ -1326,6 +1336,7 @@
       <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: The Hall"><img src="assets/photos/lobby-arrival-1280.jpg" srcset="assets/photos/lobby-arrival-768.jpg 768w, assets/photos/lobby-arrival-1280.jpg 1280w, assets/photos/lobby-arrival-1920.jpg 1920w" sizes="(max-width: 768px) 85vw, 62vw" alt="An interior hall at Hotel Medallion" loading="lazy"><span class="gallery-caption">The Hall</span></div>
       <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Suite Bathroom"><img src="assets/photos/bathroom-wide-1200.jpg" srcset="assets/photos/bathroom-wide-640.jpg 640w, assets/photos/bathroom-wide-1200.jpg 1200w" sizes="(max-width: 768px) 85vw, 62vw" alt="A bathroom in a Hotel Medallion suite" loading="lazy"><span class="gallery-caption">Suite Bathroom</span></div>
       <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: The Table"><img src="assets/photos/dining-room-1280.jpg" srcset="assets/photos/dining-room-768.jpg 768w, assets/photos/dining-room-1280.jpg 1280w, assets/photos/dining-room-1920.jpg 1920w" sizes="(max-width: 768px) 85vw, 62vw" alt="The restaurant at Hotel Medallion" loading="lazy"><span class="gallery-caption">The Table</span></div>
+      <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: The Boardroom"><img src="assets/photos/boardroom-1280.jpg" srcset="assets/photos/boardroom-768.jpg 768w, assets/photos/boardroom-1280.jpg 1280w, assets/photos/boardroom-1920.jpg 1920w" sizes="(max-width: 768px) 85vw, 62vw" alt="The boardroom at Hotel Medallion, set for a corporate meeting" loading="lazy"><span class="gallery-caption">The Boardroom</span></div>
       <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Pool"><img src="assets/photos/pool-terrace-1280.jpg" srcset="assets/photos/pool-terrace-768.jpg 768w, assets/photos/pool-terrace-1280.jpg 1280w, assets/photos/pool-terrace-1920.jpg 1920w" sizes="(max-width: 768px) 85vw, 62vw" alt="The outdoor pool at Hotel Medallion" loading="lazy"><span class="gallery-caption">Pool</span></div>
       <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Detail"><img src="assets/photos/bed-detail-1200.jpg" srcset="assets/photos/bed-detail-640.jpg 640w, assets/photos/bed-detail-1200.jpg 1200w" sizes="(max-width: 768px) 85vw, 62vw" alt="Turn-down detail on a Medallion bed" loading="lazy"><span class="gallery-caption">Detail</span></div>
       <div class="gallery-item" tabindex="0" role="button" aria-label="View photo: Architecture"><img src="assets/photos/hall-glass-1200.jpg" srcset="assets/photos/hall-glass-640.jpg 640w, assets/photos/hall-glass-1200.jpg 1200w" sizes="(max-width: 768px) 85vw, 62vw" alt="Etched glass partitions in the Medallion hall" loading="lazy"><span class="gallery-caption">Architecture</span></div>

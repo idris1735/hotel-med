@@ -9,14 +9,14 @@ Note: the live site is polluted with injected SEO spam (casino text in many lang
 
 - Name: **Medallion Hospitality Services / Medallion Hotel**
 - Tagline: **"True residence"**
-- Type: contemporary boutique hotel, 25 luxurious rooms
+- Type: contemporary boutique hotel, 43 luxurious rooms
 
 ### Headline copy (verbatim)
 > "We are inspired by our desire and our passion to consistently create seamless distinctive services that will give our guest a memorable experience."
 
 > "This contemporary boutique hotel, is meticulously designed, elegantly furnished and finished, to give you a clean residence, peace and tranquility in mind and a superb ambience, make you like feel home away from home."
 
-> "The feeling of home — Start from the Elegant Reception, the beautiful corridors and to the 25 Luxurious rooms, the Medallion guest's rooms guaranty you peace and tranquility, the rooms are tastefully finished with King Size beds and kitchenette in the suites. All rooms has large legroom with cozy bathrooms."
+> "The feeling of home — Start from the Elegant Reception, the beautiful corridors and to the 43 Luxurious rooms, the Medallion guest's rooms guaranty you peace and tranquility, the rooms are tastefully finished with King Size beds and kitchenette in the suites. All rooms has large legroom with cozy bathrooms."
 
 > "The rooms are designed to provide the comfort expected of an international hotel."
 
@@ -31,7 +31,7 @@ Note: the live site is polluted with injected SEO spam (casino text in many lang
 
 ---
 
-## Rooms (4 types, 25 rooms total)
+## Rooms (5 types, 43 rooms total)
 
 Prices on site are placeholders ("From ₦0"). Sizes not set (0 m²).
 

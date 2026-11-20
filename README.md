@@ -6,7 +6,7 @@ The public website for Hotel Medallion, Lekki, Lagos. Static HTML/CSS/JavaScript
 
 Hotel OS owns room categories, rates, availability, reservations, deposits and verified payment status in Supabase project `loxvlxtnqoeixmwyyihh`. The website does not create a second reservation database.
 
-Room cards, room detail pages, Quick Booking and Vesper use the same live public APIs. A base-rate change in the staff app reaches the website on refresh/focus and its 60-second refresh cycle. Explicit website rate-plan overrides take priority for matching dates. Converted currencies are estimates; checkout is in NGN. Rooms without configured online inventory show a contact message instead of an invented price.
+Room cards, room detail pages, Quick Booking and Vesper use the same live public APIs. New bookings use the configured room rate without automatic booking discounts. A rate change in the staff app reaches the website on refresh/focus and its 60-second refresh cycle. Explicit website rate-plan overrides take priority for matching dates. Converted currencies are estimates; checkout is in NGN. Rooms without configured online inventory show a contact message instead of an invented price.
 
 Choose dates → check availability → choose a live room type → enter name, phone and email → review the total and confirm → reservation appears in Hotel OS → secure GlobalPay deposit checkout. Website booking buttons open https://app.hotelmedallion.com/book/medallion directly, carrying the chosen room, dates, party size and referral. Availability, guest details and the final quote are reviewed on that page before GlobalPay checkout. Reception confirms the physical room assignment. Server inventory holds and the normal booking lifecycle still apply.
 
